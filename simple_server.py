@@ -63,7 +63,7 @@ class SimpleContentManager:
                     "type": "image",
                     "filename": image_file.name,
                     "title": self._filename_to_title(image_file.name),
-                    "path": str(image_file.relative_to(Path.cwd())),
+                    "path": f"content/images/{image_file.name}",
                     "tags": self._extract_tags_from_filename(image_file.name),
                     "added_at": datetime.now().isoformat(),
                     "notes": ""
