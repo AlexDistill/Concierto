@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Content cache (we'll track structure but not content)
+content/scraped/*.json
+content/manual-input/images/*
+!content/manual-input/images/README.md
+content/manual-input/spreadsheet-data/*.csv
+!content/manual-input/spreadsheet-data/README.md
+
+# Temporary files
+*.tmp
+*.bak
+server.log
+test_server.py
+
+# Archive of old code
+archive/
+
+# Environment variables
+.env
+.env.local
+
+# Node modules (if we add any frontend tools)
+node_modules/
+
+# Build artifacts
+dist/
+build/
