@@ -2,6 +2,7 @@
 """
 Simple, working content server for Concierto.
 No over-engineering - just a dashboard that works.
+Enhanced with AI image analysis capabilities.
 """
 
 import json
@@ -11,14 +12,28 @@ from datetime import datetime
 from aiohttp import web
 import aiofiles
 
+# Import AI analysis (optional - works without API key)
+try:
+    from image_analyzer import SmartContentManager
+    AI_AVAILABLE = True
+except ImportError:
+    AI_AVAILABLE = False
+
 class SimpleContentManager:
-    """Dead simple content management"""
+    """Content management with optional AI analysis"""
     
     def __init__(self):
         self.content_dir = Path("content")
         self.images_dir = self.content_dir / "images"
         self.notes_dir = self.content_dir / "notes"
         self.data_file = self.content_dir / "data.json"
+        
+        # Initialize AI analyzer if available
+        self.ai_manager = None
+        if AI_AVAILABLE:
+            api_key = os.getenv('OPENAI_API_KEY')
+            self.ai_manager = SmartContentManager(api_key)
+            print(f"🤖 AI Analysis: {'Enabled' if api_key else 'Disabled (no API key)'}")
         
         # Create directories
         self.content_dir.mkdir(exist_ok=True)
@@ -49,6 +64,19 @@ class SimpleContentManager:
     
     def scan_images(self):
         """Scan for new images and add to database"""
+        # Always use basic scanning for now to avoid async issues
+        # AI analysis can be triggered separately via API
+        return self._scan_images_basic()
+    
+    async def scan_images_with_ai(self):
+        """Async method for AI-powered image analysis"""
+        if self.ai_manager:
+            return await self.ai_manager.analyze_and_update_images()
+        else:
+            return self._scan_images_basic()
+    
+    def _scan_images_basic(self):
+        """Basic image scanning without AI"""
         data = self._load_data()
         existing_files = {item.get('filename') for item in data['items'] if item.get('type') == 'image'}
         
@@ -81,7 +109,7 @@ class SimpleContentManager:
             self._save_data(data)
             print(f"Added {len(new_items)} new images")
         
-        return new_items
+        return len(new_items)
     
     def _filename_to_title(self, filename):
         """Convert filename to readable title"""
@@ -224,6 +252,26 @@ async def dashboard(request):
             border-radius: 20px;
             font-size: 0.8rem;
         }
+        .ai-tag {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 500;
+        }
+        .ai-insights {
+            background: #f8f9ff;
+            border-left: 3px solid #667eea;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .item-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            line-height: 1.4;
+        }
         .refresh-btn {
             background: #667eea;
             color: white;
@@ -236,6 +284,17 @@ async def dashboard(request):
         }
         .refresh-btn:hover {
             background: #5a67d8;
+        }
+        .ai-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+        .ai-btn:hover {
+            background: linear-gradient(45deg, #5a67d8, #6b46c1);
+        }
+        .ai-btn:disabled {
+            background: #gray;
+            cursor: not-allowed;
+            opacity: 0.6;
         }
         .empty-state {
             text-align: center;
@@ -260,9 +319,14 @@ async def dashboard(request):
     </div>
     
     <div class="container">
-        <button class="refresh-btn" onclick="refreshContent()">
-            📱 Scan for New Content
-        </button>
+        <div style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button class="refresh-btn" onclick="refreshContent()">
+                📱 Quick Scan
+            </button>
+            <button class="refresh-btn ai-btn" onclick="aiScan()" id="aiScanBtn">
+                🤖 AI Analysis
+            </button>
+        </div>
         
         <div class="instructions">
             <strong>💡 Quick Start:</strong> Drop your inspiration images into the <code>content/images/</code> folder, 
@@ -316,15 +380,28 @@ async def dashboard(request):
                 } else {
                     const contentHtml = data.items.map(item => {
                         if (item.type === 'image') {
+                            const aiInsights = item.creative_insights ? `
+                                <div class="ai-insights">
+                                    <strong>🤖 AI Insights:</strong> ${item.creative_insights}
+                                </div>
+                            ` : '';
+                            
+                            const description = item.description ? `
+                                <p class="item-description">${item.description}</p>
+                            ` : '';
+                            
                             return `
                                 <div class="content-item">
                                     <img src="/${item.path}" alt="${item.title}" class="image-preview" 
                                          onerror="this.style.display='none'">
                                     <div class="item-content">
                                         <div class="item-title">${item.title}</div>
+                                        ${description}
                                         <div class="item-tags">
-                                            ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                            ${(item.ai_tags || []).map(tag => `<span class="tag ai-tag">🤖 ${tag}</span>`).join('')}
+                                            ${(item.tags || []).filter(tag => !(item.ai_tags || []).includes(tag)).map(tag => `<span class="tag">${tag}</span>`).join('')}
                                         </div>
+                                        ${aiInsights}
                                     </div>
                                 </div>
                             `;
@@ -353,11 +430,40 @@ async def dashboard(request):
         async function refreshContent() {
             document.body.classList.add('loading');
             try {
-                await fetch('/api/scan', { method: 'POST' });
+                const response = await fetch('/api/scan', { method: 'POST' });
+                const result = await response.json();
+                console.log('Scan result:', result);
                 await loadContent();
             } catch (error) {
                 console.error('Failed to refresh content:', error);
             } finally {
+                document.body.classList.remove('loading');
+            }
+        }
+        
+        async function aiScan() {
+            const aiBtn = document.getElementById('aiScanBtn');
+            aiBtn.disabled = true;
+            aiBtn.textContent = '🤖 Analyzing...';
+            document.body.classList.add('loading');
+            
+            try {
+                const response = await fetch('/api/ai-scan', { method: 'POST' });
+                const result = await response.json();
+                
+                if (response.ok) {
+                    console.log('AI analysis result:', result);
+                    alert(`✅ ${result.message || 'AI analysis completed!'}`);
+                    await loadContent();
+                } else {
+                    alert(`❌ ${result.message || 'AI analysis failed'}`);
+                }
+            } catch (error) {
+                console.error('AI analysis failed:', error);
+                alert('❌ AI analysis failed. Check console for details.');
+            } finally {
+                aiBtn.disabled = false;
+                aiBtn.textContent = '🤖 AI Analysis';
                 document.body.classList.remove('loading');
             }
         }
@@ -378,7 +484,28 @@ async def api_content(request):
 async def api_scan(request):
     """API endpoint to scan for new content"""
     new_items = content_manager.scan_images()
-    return web.json_response({"scanned": len(new_items), "new_items": new_items})
+    return web.json_response({"scanned": new_items, "method": "basic"})
+
+async def api_ai_scan(request):
+    """API endpoint to scan with AI analysis"""
+    try:
+        if not content_manager.ai_manager:
+            return web.json_response({
+                "error": "AI analysis not available",
+                "message": "No OpenAI API key configured"
+            }, status=400)
+        
+        new_count = await content_manager.scan_images_with_ai()
+        return web.json_response({
+            "scanned": new_count, 
+            "method": "ai_analysis",
+            "message": f"Analyzed {new_count} images with AI"
+        })
+    except Exception as e:
+        return web.json_response({
+            "error": "AI analysis failed",
+            "message": str(e)
+        }, status=500)
 
 async def serve_file(request):
     """Serve static files"""
@@ -419,6 +546,7 @@ def create_app():
     app.router.add_get('/', dashboard)
     app.router.add_get('/api/content', api_content)
     app.router.add_post('/api/scan', api_scan)
+    app.router.add_post('/api/ai-scan', api_ai_scan)
     app.router.add_get('/{path:.*}', serve_file)
     
     return app

@@ -19,8 +19,11 @@ cd Concierto
 # Install dependencies
 pip install aiohttp aiofiles
 
+# Optional: Set up AI image analysis
+python3 setup_ai.py
+
 # Start the dashboard
-python simple_server.py
+python3 simple_server.py
 ```
 
 Visit http://localhost:8080 to see your content dashboard.
@@ -46,8 +49,10 @@ Concierto/
 
 ### ✅ **Working Features**
 - **Image Gallery** - Visual inspiration board
+- **🤖 AI Image Analysis** - Intelligent content understanding
+- **Smart Tagging** - Auto-generated tags from AI + filenames
+- **Creative Insights** - AI-powered design analysis
 - **Note Taking** - Quick creative insights
-- **Tag System** - Organize your content
 - **Search** - Find what you need quickly
 - **Manual Curation** - You control the quality
 
