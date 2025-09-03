@@ -1686,6 +1686,194 @@ async def working_dashboard(request):
             gap: 0.5rem;
             margin-top: 0.5rem;
         }
+        
+        /* Edit Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #ddd;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+        
+        /* Tag Editor Styles */
+        .tag-editor {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 0.75rem;
+            background: #f8f9fa;
+        }
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            min-height: 32px;
+        }
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            animation: slideIn 0.2s ease;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .tag-chip button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0;
+            margin: 0;
+            line-height: 1;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .tag-chip button:hover {
+            opacity: 1;
+        }
+        .tag-input-wrapper {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .tag-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        .tag-add-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+        .tag-add-btn:hover {
+            background: #5a67d8;
+        }
+        .tag-suggestions {
+            display: none;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        .tag-suggestions.show {
+            display: flex;
+        }
+        .tag-suggestion {
+            background: white;
+            border: 1px solid #ddd;
+            color: #6c757d;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tag-suggestion:hover {
+            border-color: #667eea;
+            color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        /* Edit button overlay */
+        .content-item {
+            position: relative;
+        }
+        .edit-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(102, 126, 234, 0.95);
+            color: white;
+            border: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            transition: all 0.2s;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .content-item:hover .edit-btn {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        .edit-btn:hover {
+            background: #5a67d8;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
@@ -1736,6 +1924,54 @@ async def working_dashboard(request):
             </div>
             <div id="modalBody">
                 <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Edit Content</h2>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" onsubmit="saveEdit(event)">
+                    <div class="form-group">
+                        <label for="editTitle">Title:</label>
+                        <input type="text" id="editTitle" name="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editDescription">Description:</label>
+                        <textarea id="editDescription" name="description" rows="4" placeholder="Add your refined description or intent for this reference image..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editNotes">Personal Notes:</label>
+                        <textarea id="editNotes" name="notes" rows="3" placeholder="Add personal notes about why this image is important, what it represents, or how you want to use it..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Tags:</label>
+                        <div class="tag-editor">
+                            <div id="tagList" class="tag-list"></div>
+                            <div class="tag-input-wrapper">
+                                <input type="text" id="tagInput" class="tag-input" placeholder="Add a tag and press Enter" onkeydown="handleTagInput(event)">
+                                <button type="button" class="tag-add-btn" onclick="addTag()">+ Add</button>
+                            </div>
+                            <div id="tagSuggestions" class="tag-suggestions"></div>
+                        </div>
+                        <input type="hidden" id="editTags" name="tags">
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+                        <button type="button" class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">💾 Save Changes</button>
+                    </div>
+                    
+                    <input type="hidden" id="editItemId" name="id">
+                </form>
             </div>
         </div>
     </div>
@@ -1834,10 +2070,11 @@ async def working_dashboard(request):
                 if (item.type === 'image') {
                     html += `
                         <div class="content-item" onclick="showItemModal(${items.indexOf(item)})">
+                            <button class="edit-btn" onclick="event.stopPropagation(); editItem('${item.id}')" title="Edit this item">✏️ Edit</button>
                             ${path ? `<img src="/${path}" alt="${title}" class="image-preview" onerror="this.style.display='none'">` : ''}
                             <div class="item-content">
                                 <div class="item-title">${escapeHtml(title)}</div>
-                                ${description ? `<p class="item-description">${escapeHtml(description.substring(0, 150))}${description.length > 150 ? '... <em style="color: #667eea;">Click to read more</em>' : ''}</p>` : ''}
+                                ${description ? `<p class="item-description">${escapeHtml(description.substring(0, 150))}${description.length > 150 ? '... <em style="color: #667eea;">Click to read more</em>' : ''}</p>` : '<p class="item-description" style="color: #999; font-style: italic;">No description yet - click edit to add one</p>'}
                                 ${notes ? `<p style="color: #764ba2; font-style: italic;">📝 ${escapeHtml(notes)}</p>` : ''}
                                 <div class="item-tags">
                                     ${aiTags.map(tag => `<span class="tag ai-tag">🤖 ${escapeHtml(tag)}</span>`).join('')}
@@ -1850,6 +2087,7 @@ async def working_dashboard(request):
                     const content = item.content || '';
                     html += `
                         <div class="content-item" onclick="showItemModal(${items.indexOf(item)})">
+                            <button class="edit-btn" onclick="event.stopPropagation(); editItem('${item.id}')" title="Edit this item">✏️ Edit</button>
                             <div class="item-content">
                                 <div class="item-title">${escapeHtml(title)}</div>
                                 <p>${escapeHtml(content.substring(0, 150))}${content.length > 150 ? '... <em style="color: #667eea;">Click to read more</em>' : ''}</p>
@@ -2098,6 +2336,163 @@ async def working_dashboard(request):
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeModal();
+            }
+        });
+        
+        // Edit Modal Functions
+        function editItem(itemId) {
+            console.log('Edit item:', itemId);
+            
+            if (!contentData || !contentData.items) {
+                alert('❌ Content not loaded');
+                return;
+            }
+            
+            const item = contentData.items.find(i => i.id === itemId);
+            if (!item) {
+                alert('❌ Item not found');
+                return;
+            }
+            
+            // Populate the edit form
+            document.getElementById('editItemId').value = item.id;
+            document.getElementById('editTitle').value = item.title || '';
+            document.getElementById('editDescription').value = item.description || '';
+            document.getElementById('editNotes').value = item.notes || '';
+            
+            // Handle tags - populate the new tag editor
+            const tags = item.tags || [];
+            currentEditTags = [...tags]; // Create a copy
+            renderTags();
+            
+            // Show tag suggestions based on existing tags in the system
+            showTagSuggestions();
+            
+            // Show the edit modal
+            document.getElementById('editModal').classList.add('show');
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+            currentEditTags = []; // Clear tags when closing
+        }
+        
+        // Tag management
+        let currentEditTags = [];
+        
+        function renderTags() {
+            const tagList = document.getElementById('tagList');
+            tagList.innerHTML = currentEditTags.map(tag => 
+                `<div class="tag-chip">
+                    <span>${escapeHtml(tag)}</span>
+                    <button type="button" onclick="removeTag('${escapeHtml(tag).replace(/'/g, "\\'")}')" title="Remove tag">×</button>
+                </div>`
+            ).join('');
+            
+            // Update the hidden input
+            document.getElementById('editTags').value = currentEditTags.join(',');
+        }
+        
+        function addTag(tagText) {
+            const input = document.getElementById('tagInput');
+            const tag = (tagText || input.value).trim().toLowerCase();
+            
+            if (tag && !currentEditTags.includes(tag)) {
+                currentEditTags.push(tag);
+                renderTags();
+                input.value = '';
+            }
+        }
+        
+        function removeTag(tag) {
+            currentEditTags = currentEditTags.filter(t => t !== tag);
+            renderTags();
+        }
+        
+        function handleTagInput(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                addTag();
+            }
+        }
+        
+        function showTagSuggestions() {
+            if (!contentData || !contentData.tags) return;
+            
+            const suggestionsDiv = document.getElementById('tagSuggestions');
+            const commonTags = ['inspiration', 'reference', 'mood', 'color-palette', 'composition', 
+                               'lighting', 'texture', 'style', 'concept', 'draft', 'final', 
+                               'client-work', 'personal', 'archive'];
+            
+            // Combine common tags with existing tags from the data
+            const allTags = [...new Set([...commonTags, ...contentData.tags])];
+            const availableTags = allTags.filter(tag => !currentEditTags.includes(tag)).slice(0, 12);
+            
+            if (availableTags.length > 0) {
+                suggestionsDiv.innerHTML = '<small style="color: #6c757d; margin-right: 1rem;">Suggestions:</small>' +
+                    availableTags.map(tag => 
+                        `<span class="tag-suggestion" onclick="addTag('${tag}')">${escapeHtml(tag)}</span>`
+                    ).join('');
+                suggestionsDiv.classList.add('show');
+            } else {
+                suggestionsDiv.classList.remove('show');
+            }
+        }
+        
+        async function saveEdit(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            // Tags are already in the currentEditTags array
+            const tags = currentEditTags;
+            
+            const updateData = {
+                id: formData.get('id'),
+                title: formData.get('title'),
+                description: formData.get('description'),
+                notes: formData.get('notes'),
+                tags: tags
+            };
+            
+            try {
+                const response = await fetch('/api/update-item', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updateData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    closeEditModal();
+                    loadContent(); // Reload content to show changes
+                    document.getElementById('status').innerHTML = '<div class="success">✅ Item updated successfully!</div>';
+                    setTimeout(() => { document.getElementById('status').innerHTML = ''; }, 3000);
+                } else {
+                    alert('❌ Failed to update item: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error updating item:', error);
+                alert('❌ Error updating item: ' + error.message);
+            }
+        }
+        
+        // Close edit modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        });
+        
+        // Close edit modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeEditModal();
             }
         });
         
