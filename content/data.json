@@ -48,7 +48,33 @@
         "analyzed_at": "2025-08-26T16:07:42.334146",
         "success": true
       },
-      "last_modified": "2025-09-03T15:05:09.146577"
+      "last_modified": "2025-09-03T15:25:31.036820",
+      "style_vector": {
+        "energy": 0.14779467120059228,
+        "sophistication": 0.9326893547286816,
+        "density": 0.3751640625,
+        "temperature": 1.0,
+        "era": 0.36313275200391554,
+        "dominant_colors": [
+          "#c1b6af",
+          "#5d5b4f",
+          "#ada59d",
+          "#827d75",
+          "#cec3b9"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#c1b6af",
+        "secondary_color": "#5d5b4f",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "calm",
+          "refined",
+          "warm",
+          "timeless"
+        ]
+      }
     },
     {
       "id": "img_2",
@@ -95,6 +121,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-08-26T16:07:42.334196",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.2951439901501043,
+        "sophistication": 0.8393387322948882,
+        "density": 0.3189140625,
+        "temperature": 0.9541284403669724,
+        "era": 0.4284766299230832,
+        "dominant_colors": [
+          "#302e2c",
+          "#9a9a92",
+          "#877361",
+          "#aaafac",
+          "#6a4034"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#302e2c",
+        "secondary_color": "#9a9a92",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "calm",
+          "refined",
+          "warm",
+          "timeless"
+        ]
       }
     },
     {
@@ -143,6 +195,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-08-26T16:07:42.334235",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.3923306088457975,
+        "sophistication": 0.7142631495522509,
+        "density": 0.2475138888888889,
+        "temperature": 0.5,
+        "era": 0.7402507633915054,
+        "dominant_colors": [
+          "#c0a3ee",
+          "#941fe3",
+          "#b690dd",
+          "#ac6ae9",
+          "#9e3fe4"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#c0a3ee",
+        "secondary_color": "#941fe3",
+        "font_class": "sans-serif",
+        "spacing_unit": "16px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "minimal",
+          "futuristic"
+        ]
       }
     },
     {
@@ -190,6 +268,31 @@
       "ai_analysis": {
         "analyzed_at": "2025-08-26T16:07:42.334276",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.2392988246840033,
+        "sophistication": 0.6891927050626592,
+        "density": 0.3071640625,
+        "temperature": 0.396551724137931,
+        "era": 0.3877490944776992,
+        "dominant_colors": [
+          "#e2c7c8",
+          "#3fd7b6",
+          "#dbf2e6",
+          "#e78fa6",
+          "#c4e5a2"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#e2c7c8",
+        "secondary_color": "#3fd7b6",
+        "font_class": "sans-serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "calm",
+          "professional",
+          "timeless"
+        ]
       }
     },
     {
@@ -237,6 +340,31 @@
       "ai_analysis": {
         "analyzed_at": "2025-08-26T16:07:42.334318",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.20260596466721792,
+        "sophistication": 1.0,
+        "density": 0.5555732484076433,
+        "temperature": 0.5,
+        "era": 0.40130298233360895,
+        "dominant_colors": [
+          "#adadad",
+          "#4d4d4d",
+          "#202020",
+          "#d1d1d1",
+          "#777777"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#adadad",
+        "secondary_color": "#4d4d4d",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "calm",
+          "refined",
+          "timeless"
+        ]
       }
     },
     {
@@ -284,6 +412,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-08-26T16:07:42.334357",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.30704608318438387,
+        "sophistication": 0.806709399550486,
+        "density": 0.5507734375,
+        "temperature": 0.9411764705882354,
+        "era": 0.4369554800210974,
+        "dominant_colors": [
+          "#7b6c61",
+          "#d5d3cd",
+          "#131418",
+          "#4e4640",
+          "#a79487"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#7b6c61",
+        "secondary_color": "#d5d3cd",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "warm",
+          "timeless"
+        ]
       }
     },
     {
@@ -332,6 +486,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-08-26T16:07:42.334397",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.3983694095372716,
+        "sophistication": 0.8601550166260374,
+        "density": 0.5968799682034976,
+        "temperature": 1.0,
+        "era": 0.47265804722586224,
+        "dominant_colors": [
+          "#928f7b",
+          "#20220b",
+          "#eff0e4",
+          "#5f5c39",
+          "#bdbdb5"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#928f7b",
+        "secondary_color": "#20220b",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "warm",
+          "timeless"
+        ]
       }
     },
     {
@@ -379,6 +559,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-08-26T16:07:42.334433",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.5382622233453689,
+        "sophistication": 0.6303763826120686,
+        "density": 0.6164583333333333,
+        "temperature": 0.9295774647887324,
+        "era": 0.8079798747039538,
+        "dominant_colors": [
+          "#e2ab26",
+          "#2e1e14",
+          "#aa3128",
+          "#d3965d",
+          "#45684e"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#e2ab26",
+        "secondary_color": "#2e1e14",
+        "font_class": "sans-serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "dynamic",
+          "professional",
+          "warm",
+          "futuristic"
+        ]
       }
     },
     {
@@ -426,6 +632,33 @@
       "ai_analysis": {
         "analyzed_at": "2025-08-26T16:07:42.334058",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.531961888724599,
+        "sophistication": 0.6769456493371364,
+        "density": 0.727194388777555,
+        "temperature": 0.8307692307692307,
+        "era": 0.5180756316761741,
+        "dominant_colors": [
+          "#b96c2c",
+          "#d1cec3",
+          "#130f07",
+          "#60868c",
+          "#4f3f1e"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#b96c2c",
+        "secondary_color": "#d1cec3",
+        "font_class": "sans-serif",
+        "spacing_unit": "4px",
+        "mood_keywords": [
+          "dynamic",
+          "professional",
+          "rich",
+          "warm",
+          "contemporary"
+        ]
       }
     },
     {
@@ -496,6 +729,31 @@
       "ai_analysis": {
         "analyzed_at": "2025-08-28T10:47:59.542317",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.47425808579967343,
+        "sophistication": 0.6662552301537648,
+        "density": 0.42646017699115046,
+        "temperature": 0.6618357487922705,
+        "era": 0.4929285133215432,
+        "dominant_colors": [
+          "#378b7e",
+          "#fefefe",
+          "#ce4d3e",
+          "#6ca49e",
+          "#e68264"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#378b7e",
+        "secondary_color": "#fefefe",
+        "font_class": "sans-serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "professional",
+          "timeless"
+        ]
       }
     },
     {
@@ -543,6 +801,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T10:31:44.555332",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.2229915694357128,
+        "sophistication": 0.6847081850218939,
+        "density": 0.3308333333333333,
+        "temperature": 0.9166666666666666,
+        "era": 0.6854771338849641,
+        "dominant_colors": [
+          "#eea2a3",
+          "#ececec",
+          "#e4282b",
+          "#7f9493",
+          "#c3c4c6"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#eea2a3",
+        "secondary_color": "#ececec",
+        "font_class": "sans-serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "calm",
+          "professional",
+          "warm",
+          "contemporary"
+        ]
       }
     },
     {
@@ -592,6 +876,33 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T10:31:44.555356",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.4016735980789047,
+        "sophistication": 0.7133690034085567,
+        "density": 0.29505555555555557,
+        "temperature": 1.0,
+        "era": 0.7435514728566635,
+        "dominant_colors": [
+          "#efa3a4",
+          "#e31f22",
+          "#e96668",
+          "#ec8789",
+          "#e7474a"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#efa3a4",
+        "secondary_color": "#e31f22",
+        "font_class": "sans-serif",
+        "spacing_unit": "16px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "minimal",
+          "warm",
+          "futuristic"
+        ]
       }
     },
     {
@@ -639,6 +950,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T10:31:44.555289",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.0917166927088064,
+        "sophistication": 0.9399636618359236,
+        "density": 0.2519166666666667,
+        "temperature": 0.5,
+        "era": 0.3341829356678622,
+        "dominant_colors": [
+          "#dfcdfb",
+          "#d4cbe1",
+          "#938c9c",
+          "#dbd2e9",
+          "#c2bacf"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#dfcdfb",
+        "secondary_color": "#d4cbe1",
+        "font_class": "serif",
+        "spacing_unit": "16px",
+        "mood_keywords": [
+          "calm",
+          "refined",
+          "minimal",
+          "timeless"
+        ]
       }
     },
     {
@@ -688,6 +1025,31 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T10:31:44.555378",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.2392585535934653,
+        "sophistication": 0.8402647442921192,
+        "density": 0.5981388888888889,
+        "temperature": 0.5,
+        "era": 0.38777502028397254,
+        "dominant_colors": [
+          "#c0a3ef",
+          "#7b699a",
+          "#967fbb",
+          "#5e5075",
+          "#ad93d8"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#c0a3ef",
+        "secondary_color": "#7b699a",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "calm",
+          "refined",
+          "timeless"
+        ]
       }
     },
     {
@@ -735,6 +1097,31 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T10:31:44.555397",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.348703342596546,
+        "sophistication": 0.6668842871269465,
+        "density": 0.5724583333333334,
+        "temperature": 0.4201680672268908,
+        "era": 0.43419274889609355,
+        "dominant_colors": [
+          "#fd8856",
+          "#d5d1bb",
+          "#faf3f3",
+          "#72b5d4",
+          "#4063f2"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#fd8856",
+        "secondary_color": "#d5d1bb",
+        "font_class": "sans-serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "professional",
+          "timeless"
+        ]
       }
     },
     {
@@ -782,6 +1169,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T13:32:02.528163",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.44216448257447744,
+        "sophistication": 0.644205065155951,
+        "density": 0.8573437500000001,
+        "temperature": 0.6069182389937108,
+        "era": 0.4836605683584903,
+        "dominant_colors": [
+          "#b06054",
+          "#242023",
+          "#e7e5e3",
+          "#2352a0",
+          "#d4bd77"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#b06054",
+        "secondary_color": "#242023",
+        "font_class": "sans-serif",
+        "spacing_unit": "4px",
+        "mood_keywords": [
+          "balanced",
+          "professional",
+          "rich",
+          "timeless"
+        ]
       }
     },
     {
@@ -829,6 +1242,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T13:32:02.528211",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.4284278064937551,
+        "sophistication": 0.7804181967949431,
+        "density": 0.5845659947984395,
+        "temperature": 1.0,
+        "era": 0.7748702276587027,
+        "dominant_colors": [
+          "#999178",
+          "#1c2215",
+          "#deaf18",
+          "#d9d2b9",
+          "#5e583f"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#999178",
+        "secondary_color": "#1c2215",
+        "font_class": "sans-serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "warm",
+          "futuristic"
+        ]
       }
     },
     {
@@ -876,6 +1315,33 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T13:32:02.528239",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.3478470412146379,
+        "sophistication": 0.7867752885784112,
+        "density": 0.76869140625,
+        "temperature": 0.0,
+        "era": 0.43295935647718775,
+        "dominant_colors": [
+          "#253328",
+          "#46ac4d",
+          "#3e7041",
+          "#449249",
+          "#344138"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#253328",
+        "secondary_color": "#46ac4d",
+        "font_class": "serif",
+        "spacing_unit": "4px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "rich",
+          "cool",
+          "timeless"
+        ]
       }
     },
     {
@@ -919,6 +1385,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T13:32:02.528263",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.22268975889835713,
+        "sophistication": 0.8577261654648928,
+        "density": 0.4637312382739212,
+        "temperature": 0.9166666666666671,
+        "era": 0.40827991315792883,
+        "dominant_colors": [
+          "#666464",
+          "#bebcb9",
+          "#121111",
+          "#434140",
+          "#8e8e8f"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#666464",
+        "secondary_color": "#bebcb9",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "calm",
+          "refined",
+          "warm",
+          "timeless"
+        ]
       }
     },
     {
@@ -966,6 +1458,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T13:32:02.528286",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.37632035344132575,
+        "sophistication": 0.7699649083446305,
+        "density": 0.38590625,
+        "temperature": 0.0,
+        "era": 0.456715856061762,
+        "dominant_colors": [
+          "#3f4c55",
+          "#7b827a",
+          "#aeb5b1",
+          "#141826",
+          "#351f77"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#3f4c55",
+        "secondary_color": "#7b827a",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "cool",
+          "timeless"
+        ]
       }
     },
     {
@@ -1013,6 +1531,31 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T13:38:15.646984",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.44615772104677814,
+        "sophistication": 0.6790383287437278,
+        "density": 0.44249116607773853,
+        "temperature": 0.4972972972972973,
+        "era": 0.779936880186116,
+        "dominant_colors": [
+          "#221e1f",
+          "#acabac",
+          "#d7242c",
+          "#35af75",
+          "#3f3f7f"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#221e1f",
+        "secondary_color": "#acabac",
+        "font_class": "sans-serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "professional",
+          "futuristic"
+        ]
       }
     },
     {
@@ -1060,6 +1603,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T13:38:15.647025",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.44854534837020543,
+        "sophistication": 0.6539107511076895,
+        "density": 0.867890625,
+        "temperature": 0.5844594594594594,
+        "era": 0.4861442671601032,
+        "dominant_colors": [
+          "#d49470",
+          "#211e23",
+          "#e4e2df",
+          "#894f45",
+          "#24529f"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#d49470",
+        "secondary_color": "#211e23",
+        "font_class": "sans-serif",
+        "spacing_unit": "4px",
+        "mood_keywords": [
+          "balanced",
+          "professional",
+          "rich",
+          "timeless"
+        ]
       }
     },
     {
@@ -1107,6 +1676,33 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T13:38:15.647047",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.49211671195947226,
+        "sophistication": 0.7391969796930208,
+        "density": 1.0,
+        "temperature": 0.0,
+        "era": 0.7953951790347557,
+        "dominant_colors": [
+          "#318dd2",
+          "#eaeeef",
+          "#aeddf3",
+          "#0687ef",
+          "#74b7e2"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#318dd2",
+        "secondary_color": "#eaeeef",
+        "font_class": "sans-serif",
+        "spacing_unit": "4px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "rich",
+          "cool",
+          "futuristic"
+        ]
       }
     },
     {
@@ -1154,6 +1750,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T13:38:15.647066",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.3447686612465755,
+        "sophistication": 0.7897649808671547,
+        "density": 0.45095312499999995,
+        "temperature": 0.0,
+        "era": 0.7337285212071049,
+        "dominant_colors": [
+          "#eff0f0",
+          "#0a86ea",
+          "#51a2de",
+          "#a1d4f1",
+          "#e9eaea"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#eff0f0",
+        "secondary_color": "#0a86ea",
+        "font_class": "sans-serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "cool",
+          "futuristic"
+        ]
       }
     },
     {
@@ -1201,6 +1823,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T13:38:15.647084",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.14794461718892937,
+        "sophistication": 0.9045792156976158,
+        "density": 0.5887708333333332,
+        "temperature": 0.0,
+        "era": 0.3587956700237445,
+        "dominant_colors": [
+          "#d5d6db",
+          "#73a6c1",
+          "#c1c2c7",
+          "#cacbd0",
+          "#96b9cd"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#d5d6db",
+        "secondary_color": "#73a6c1",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "calm",
+          "refined",
+          "cool",
+          "timeless"
+        ]
       }
     },
     {
@@ -1248,6 +1896,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T14:50:07.262346",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.2717231241155933,
+        "sophistication": 0.7989785486443828,
+        "density": 0.407141181988743,
+        "temperature": 0.0,
+        "era": 0.3970034355280696,
+        "dominant_colors": [
+          "#366048",
+          "#4c7462",
+          "#3e6a57",
+          "#2f573d",
+          "#5a7e6c"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#366048",
+        "secondary_color": "#4c7462",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "calm",
+          "refined",
+          "cool",
+          "timeless"
+        ]
       }
     },
     {
@@ -1295,6 +1969,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T14:50:07.262356",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.4493074373964181,
+        "sophistication": 0.6556614888324113,
+        "density": 0.8548359375000001,
+        "temperature": 0.5874587458745875,
+        "era": 0.4859967180855834,
+        "dominant_colors": [
+          "#22519f",
+          "#201e22",
+          "#e4e2dd",
+          "#d3926d",
+          "#864e41"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#22519f",
+        "secondary_color": "#201e22",
+        "font_class": "sans-serif",
+        "spacing_unit": "4px",
+        "mood_keywords": [
+          "balanced",
+          "professional",
+          "rich",
+          "timeless"
+        ]
       }
     },
     {
@@ -1342,6 +2042,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T14:50:07.262365",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.3405062042436741,
+        "sophistication": 0.8109011616445043,
+        "density": 0.6797021575984991,
+        "temperature": 0.27272727272727276,
+        "era": 0.45433810622157333,
+        "dominant_colors": [
+          "#2a2b25",
+          "#e7e9f6",
+          "#70715f",
+          "#4f4f3a",
+          "#c8d7f1"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#2a2b25",
+        "secondary_color": "#e7e9f6",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "cool",
+          "timeless"
+        ]
       }
     },
     {
@@ -1353,7 +2079,33 @@
       "tags": [],
       "added_at": "2025-09-03T13:31:08.624687",
       "notes": "",
-      "description": ""
+      "description": "",
+      "style_vector": {
+        "energy": 0.35522816908882726,
+        "sophistication": 0.6889882688540476,
+        "density": 0.36448170731707313,
+        "temperature": 0.0,
+        "era": 0.4330935323167755,
+        "dominant_colors": [
+          "#49745f",
+          "#db66df",
+          "#376041",
+          "#295337",
+          "#436c4c"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#49745f",
+        "secondary_color": "#db66df",
+        "font_class": "sans-serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "professional",
+          "cool",
+          "timeless"
+        ]
+      }
     },
     {
       "id": "img_32",
@@ -1366,7 +2118,33 @@
       ],
       "added_at": "2025-09-03T13:31:08.624710",
       "notes": "",
-      "description": ""
+      "description": "",
+      "style_vector": {
+        "energy": 0.2870220060338103,
+        "sophistication": 0.7502390097347416,
+        "density": 0.693093339587242,
+        "temperature": 0.0,
+        "era": 0.41558474471667073,
+        "dominant_colors": [
+          "#466b50",
+          "#888b82",
+          "#c3c5c0",
+          "#2c4d36",
+          "#d867dc"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#466b50",
+        "secondary_color": "#888b82",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "calm",
+          "refined",
+          "cool",
+          "timeless"
+        ]
+      }
     },
     {
       "id": "img_33",
@@ -1377,7 +2155,33 @@
       "tags": [],
       "added_at": "2025-09-03T13:31:08.624725",
       "notes": "",
-      "description": ""
+      "description": "",
+      "style_vector": {
+        "energy": 0.42380717644332844,
+        "sophistication": 0.8582464675231818,
+        "density": 0.5494957786116323,
+        "temperature": 1.0,
+        "era": 0.48462905475310436,
+        "dominant_colors": [
+          "#faf8f7",
+          "#554334",
+          "#c8b8b1",
+          "#1d130e",
+          "#a0836b"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#faf8f7",
+        "secondary_color": "#554334",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "warm",
+          "timeless"
+        ]
+      }
     },
     {
       "id": "img_34",
@@ -1388,7 +2192,34 @@
       "tags": [],
       "added_at": "2025-09-03T13:31:08.624739",
       "notes": "",
-      "description": ""
+      "description": "",
+      "style_vector": {
+        "energy": 0.39703232553369777,
+        "sophistication": 0.6636459096611633,
+        "density": 0.7333125,
+        "temperature": 1.0,
+        "era": 0.7660884496876958,
+        "dominant_colors": [
+          "#d1c8c1",
+          "#232322",
+          "#aba494",
+          "#9f8648",
+          "#85161f"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#d1c8c1",
+        "secondary_color": "#232322",
+        "font_class": "sans-serif",
+        "spacing_unit": "4px",
+        "mood_keywords": [
+          "balanced",
+          "professional",
+          "rich",
+          "warm",
+          "futuristic"
+        ]
+      }
     },
     {
       "id": "img_35",
@@ -1435,6 +2266,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T14:15:58.954142",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.549953874609219,
+        "sophistication": 0.5360876051737924,
+        "density": 0.8040941127694858,
+        "temperature": 0.6090047393364929,
+        "era": 0.8168050763115842,
+        "dominant_colors": [
+          "#e8c3bc",
+          "#230d1d",
+          "#cc9377",
+          "#046fa9",
+          "#984d2e"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#e8c3bc",
+        "secondary_color": "#230d1d",
+        "font_class": "sans-serif",
+        "spacing_unit": "4px",
+        "mood_keywords": [
+          "dynamic",
+          "professional",
+          "rich",
+          "futuristic"
+        ]
       }
     },
     {
@@ -1482,6 +2339,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T14:15:58.954190",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.24932871533550965,
+        "sophistication": 0.7826685705257895,
+        "density": 0.3387102122015915,
+        "temperature": 1.0,
+        "era": 0.41759327902759275,
+        "dominant_colors": [
+          "#767377",
+          "#141111",
+          "#ddd7ce",
+          "#484448",
+          "#acaaa4"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#767377",
+        "secondary_color": "#141111",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "calm",
+          "refined",
+          "warm",
+          "timeless"
+        ]
       }
     },
     {
@@ -1529,6 +2412,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T14:15:58.954217",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.4013563496973694,
+        "sophistication": 0.7834326514523584,
+        "density": 0.620703125,
+        "temperature": 0.0,
+        "era": 0.7675114471160048,
+        "dominant_colors": [
+          "#141d1a",
+          "#3c5143",
+          "#0d5c88",
+          "#ced5c8",
+          "#809281"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#141d1a",
+        "secondary_color": "#3c5143",
+        "font_class": "sans-serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "cool",
+          "futuristic"
+        ]
       }
     },
     {
@@ -1576,6 +2485,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T14:15:58.954239",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.38152224226508225,
+        "sophistication": 0.795310567334202,
+        "density": 0.4656306104129264,
+        "temperature": 0.939655172413793,
+        "era": 0.4674419450754433,
+        "dominant_colors": [
+          "#d3c4ac",
+          "#080d0f",
+          "#878175",
+          "#c6b79e",
+          "#433f37"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#d3c4ac",
+        "secondary_color": "#080d0f",
+        "font_class": "serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "refined",
+          "warm",
+          "timeless"
+        ]
       }
     },
     {
@@ -1623,6 +2558,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T14:15:58.954259",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.394558720315487,
+        "sophistication": 0.6605820028126892,
+        "density": 0.7510658914728683,
+        "temperature": 0.5588235294117646,
+        "era": 0.4657438578312169,
+        "dominant_colors": [
+          "#ef7e7a",
+          "#faf3e1",
+          "#6498dc",
+          "#281e1f",
+          "#919276"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#ef7e7a",
+        "secondary_color": "#faf3e1",
+        "font_class": "sans-serif",
+        "spacing_unit": "4px",
+        "mood_keywords": [
+          "balanced",
+          "professional",
+          "rich",
+          "timeless"
+        ]
       }
     },
     {
@@ -1670,6 +2631,32 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T14:50:07.262326",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.3677220653677937,
+        "sophistication": 0.6225876277831854,
+        "density": 0.5865970919324578,
+        "temperature": 1.0,
+        "era": 0.744797603813656,
+        "dominant_colors": [
+          "#a71528",
+          "#655548",
+          "#efe9e4",
+          "#a09183",
+          "#3e241b"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#a71528",
+        "secondary_color": "#655548",
+        "font_class": "sans-serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "professional",
+          "warm",
+          "futuristic"
+        ]
       }
     },
     {
@@ -1717,6 +2704,33 @@
       "ai_analysis": {
         "analyzed_at": "2025-09-03T14:50:07.262373",
         "success": true
+      },
+      "style_vector": {
+        "energy": 0.29245651945054457,
+        "sophistication": 0.9181390763009445,
+        "density": 0.8268553067993366,
+        "temperature": 1.0,
+        "era": 0.43117572314095254,
+        "dominant_colors": [
+          "#f7f6f2",
+          "#888074",
+          "#bbb5ab",
+          "#1b160f",
+          "#ebe7de"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#f7f6f2",
+        "secondary_color": "#888074",
+        "font_class": "serif",
+        "spacing_unit": "4px",
+        "mood_keywords": [
+          "calm",
+          "refined",
+          "rich",
+          "warm",
+          "timeless"
+        ]
       }
     },
     {
@@ -1728,7 +2742,33 @@
       "tags": [],
       "added_at": "2025-09-03T14:11:01.953948",
       "notes": "",
-      "description": ""
+      "description": "",
+      "style_vector": {
+        "energy": 0.4132213921231803,
+        "sophistication": 0.6515476712597266,
+        "density": 0.4285168810289389,
+        "temperature": 0.7247386759581881,
+        "era": 0.4686354584308911,
+        "dominant_colors": [
+          "#c5c4c5",
+          "#175466",
+          "#f76934",
+          "#221817",
+          "#a2a2a1"
+        ]
+      },
+      "brand_tokens": {
+        "primary_color": "#c5c4c5",
+        "secondary_color": "#175466",
+        "font_class": "sans-serif",
+        "spacing_unit": "8px",
+        "mood_keywords": [
+          "balanced",
+          "professional",
+          "warm",
+          "timeless"
+        ]
+      }
     }
   ],
   "tags": [
@@ -1884,7 +2924,7 @@
     "wild",
     "wildlife"
   ],
-  "last_updated": "2025-09-03T15:05:09.146621",
+  "last_updated": "2025-09-03T15:38:42.992871",
   "projects": [
     {
       "id": "project_1",

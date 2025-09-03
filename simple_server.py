@@ -32,6 +32,17 @@ except ImportError as e:
     print(f"⚠️ Concept generation not available: {e}")
     CONCEPT_GEN_AVAILABLE = False
 
+# Import style vector analysis
+try:
+    from style_vector import analyze_style_vector, StyleVector
+    STYLE_VECTOR_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️ Style vector analysis not available: {e}")
+    STYLE_VECTOR_AVAILABLE = False
+except Exception as e:
+    print(f"❌ Error loading style vector analyzer: {e}")
+    STYLE_VECTOR_AVAILABLE = False
+
 class SimpleContentManager:
     """Content management with optional AI analysis"""
     
@@ -128,6 +139,17 @@ class SimpleContentManager:
                     "added_at": datetime.now().isoformat(),
                     "notes": ""
                 }
+                
+                # Add style vector analysis if available
+                if STYLE_VECTOR_AVAILABLE:
+                    try:
+                        style_data = analyze_style_vector(str(image_file))
+                        if style_data:
+                            item.update(style_data)
+                            print(f"✨ Style vector analyzed for {image_file.name}")
+                    except Exception as e:
+                        print(f"⚠️ Style vector analysis failed for {image_file.name}: {e}")
+                
                 new_items.append(item)
         
         if new_items:
@@ -1874,6 +1896,122 @@ async def working_dashboard(request):
             background: #5a67d8;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
+        
+        /* Style Vector Display */
+        .style-vector-mini {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .style-dimension {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 1px solid #dee2e6;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .style-bar {
+            width: 20px;
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .style-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+        .brand-colors {
+            display: flex;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+        .color-chip {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        /* Modal Style Vector Details */
+        .style-vector-details {
+            background: linear-gradient(135deg, #f8f9ff, #f0f4ff);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid #e3e8ff;
+        }
+        .style-dimension-full {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .dimension-label {
+            font-weight: 600;
+            color: #495057;
+            min-width: 100px;
+        }
+        .dimension-bar {
+            flex: 1;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin: 0 1rem;
+            overflow: hidden;
+        }
+        .dimension-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+        .dimension-value {
+            font-weight: bold;
+            color: #667eea;
+            min-width: 60px;
+            text-align: right;
+        }
+        .brand-tokens-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .brand-token-group {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .brand-token-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+        .brand-token-value {
+            font-weight: 600;
+            color: #495057;
+        }
+        .color-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .color-display .color-chip {
+            width: 24px;
+            height: 24px;
+        }
     </style>
 </head>
 <body>
@@ -1888,6 +2026,7 @@ async def working_dashboard(request):
         <div style="margin-bottom: 2rem;">
             <button class="refresh-btn" onclick="location.reload()">🔄 Refresh Page</button>
             <button class="refresh-btn" style="background: linear-gradient(45deg, #667eea, #764ba2);" onclick="runAIAnalysis()">🤖 Run AI Analysis</button>
+            <button class="refresh-btn" style="background: linear-gradient(45deg, #ff9500, #ff6b35);" onclick="runStyleAnalysis()">🎨 Style Analysis</button>
             <button class="campaign-btn" onclick="loadCampaigns()">📋 View Campaigns</button>
         </div>
         
@@ -2080,6 +2219,7 @@ async def working_dashboard(request):
                                     ${aiTags.map(tag => `<span class="tag ai-tag">🤖 ${escapeHtml(tag)}</span>`).join('')}
                                     ${tags.filter(t => !aiTags.includes(t)).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
                                 </div>
+                                ${item.style_vector ? renderStyleVectorMini(item.style_vector, item.brand_tokens) : ''}
                             </div>
                         </div>
                     `;
@@ -2101,6 +2241,149 @@ async def working_dashboard(request):
             });
             
             contentDiv.innerHTML = html || '<div class="loading">No items to display</div>';
+        }
+        
+        // Render mini style vector display for content cards
+        function renderStyleVectorMini(styleVector, brandTokens) {
+            if (!styleVector) return '';
+            
+            const dimensions = [
+                { key: 'energy', label: 'Energy', value: styleVector.energy },
+                { key: 'sophistication', label: 'Sophistication', value: styleVector.sophistication },
+                { key: 'temperature', label: 'Temp', value: styleVector.temperature }
+            ];
+            
+            let html = '<div class="style-vector-mini">';
+            
+            // Show top 3 dimensions as mini bars
+            dimensions.forEach(dim => {
+                const percentage = Math.round(dim.value * 100);
+                html += `
+                    <div class="style-dimension" title="${dim.label}: ${percentage}%">
+                        <span>${dim.label.substring(0,3)}</span>
+                        <div class="style-bar">
+                            <div class="style-bar-fill" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            
+            // Add brand colors if available
+            if (brandTokens && (brandTokens.primary_color || brandTokens.secondary_color)) {
+                html += '<div class="brand-colors">';
+                if (brandTokens.primary_color) {
+                    html += `<div class="color-chip" style="background-color: ${brandTokens.primary_color}" title="Primary: ${brandTokens.primary_color}"></div>`;
+                }
+                if (brandTokens.secondary_color && brandTokens.secondary_color !== brandTokens.primary_color) {
+                    html += `<div class="color-chip" style="background-color: ${brandTokens.secondary_color}" title="Secondary: ${brandTokens.secondary_color}"></div>`;
+                }
+                html += '</div>';
+            }
+            
+            return html;
+        }
+        
+        // Render detailed style vector display for modal
+        function renderStyleVectorModal(styleVector, brandTokens) {
+            if (!styleVector) return '';
+            
+            const dimensions = [
+                { 
+                    key: 'energy', 
+                    label: 'Energy', 
+                    value: styleVector.energy, 
+                    description: styleVector.energy > 0.7 ? 'Energetic' : styleVector.energy > 0.5 ? 'Dynamic' : styleVector.energy > 0.3 ? 'Balanced' : 'Calm'
+                },
+                { 
+                    key: 'sophistication', 
+                    label: 'Sophistication', 
+                    value: styleVector.sophistication,
+                    description: styleVector.sophistication > 0.7 ? 'Refined' : styleVector.sophistication > 0.5 ? 'Professional' : styleVector.sophistication > 0.3 ? 'Approachable' : 'Playful'
+                },
+                { 
+                    key: 'density', 
+                    label: 'Density', 
+                    value: styleVector.density,
+                    description: styleVector.density > 0.7 ? 'Rich' : styleVector.density > 0.5 ? 'Detailed' : styleVector.density > 0.3 ? 'Balanced' : 'Minimal'
+                },
+                { 
+                    key: 'temperature', 
+                    label: 'Temperature', 
+                    value: styleVector.temperature,
+                    description: styleVector.temperature > 0.7 ? 'Warm' : styleVector.temperature > 0.5 ? 'Neutral' : 'Cool'
+                },
+                { 
+                    key: 'era', 
+                    label: 'Era', 
+                    value: styleVector.era,
+                    description: styleVector.era > 0.7 ? 'Futuristic' : styleVector.era > 0.5 ? 'Contemporary' : styleVector.era > 0.3 ? 'Timeless' : 'Classic'
+                }
+            ];
+            
+            let html = `
+                <div class="style-vector-details">
+                    <h3>🎨 Style Vector Analysis</h3>
+                    <p style="color: #6c757d; font-size: 0.9rem; margin-bottom: 1rem;">Computational analysis of visual style characteristics</p>
+            `;
+            
+            // Render dimension bars
+            dimensions.forEach(dim => {
+                const percentage = Math.round(dim.value * 100);
+                html += `
+                    <div class="style-dimension-full">
+                        <div class="dimension-label">${dim.label}</div>
+                        <div class="dimension-bar">
+                            <div class="dimension-bar-fill" style="width: ${percentage}%"></div>
+                        </div>
+                        <div class="dimension-value">${percentage}% <small>(${dim.description})</small></div>
+                    </div>
+                `;
+            });
+            
+            // Brand tokens section
+            if (brandTokens) {
+                html += `
+                    <h4 style="margin: 1.5rem 0 1rem 0; color: #495057;">Brand Design Tokens</h4>
+                    <div class="brand-tokens-display">
+                        <div class="brand-token-group">
+                            <div class="brand-token-label">Primary Color</div>
+                            <div class="brand-token-value color-display">
+                                <div class="color-chip" style="background-color: ${brandTokens.primary_color || '#ccc'}"></div>
+                                ${brandTokens.primary_color || 'N/A'}
+                            </div>
+                        </div>
+                        
+                        <div class="brand-token-group">
+                            <div class="brand-token-label">Secondary Color</div>
+                            <div class="brand-token-value color-display">
+                                <div class="color-chip" style="background-color: ${brandTokens.secondary_color || '#ccc'}"></div>
+                                ${brandTokens.secondary_color || 'N/A'}
+                            </div>
+                        </div>
+                        
+                        <div class="brand-token-group">
+                            <div class="brand-token-label">Font Classification</div>
+                            <div class="brand-token-value">${brandTokens.font_class || 'N/A'}</div>
+                        </div>
+                        
+                        <div class="brand-token-group">
+                            <div class="brand-token-label">Spacing Unit</div>
+                            <div class="brand-token-value">${brandTokens.spacing_unit || 'N/A'}</div>
+                        </div>
+                        
+                        <div class="brand-token-group" style="grid-column: 1 / -1;">
+                            <div class="brand-token-label">Mood Keywords</div>
+                            <div class="brand-token-value">${brandTokens.mood_keywords ? brandTokens.mood_keywords.join(', ') : 'N/A'}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += '</div>';
+            
+            return html;
         }
         
         // Load campaigns
@@ -2172,6 +2455,28 @@ async def working_dashboard(request):
             }
         }
         
+        // Run Style Vector Analysis on images
+        async function runStyleAnalysis() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = '<div class="loading">🎨 Running style vector analysis... This may take 30-60 seconds</div>';
+            
+            try {
+                const response = await fetch('/api/style-analysis', { method: 'POST' });
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    statusDiv.innerHTML = `<div class="success">✅ Style analysis complete! Analyzed ${result.processed} images with style vectors and brand tokens</div>`;
+                    setTimeout(loadContent, 1000);
+                } else {
+                    statusDiv.innerHTML = `<div class="error">❌ ${result.error || result.message || 'Style analysis failed'}</div>`;
+                }
+                setTimeout(() => { statusDiv.innerHTML = ''; }, 5000);
+                
+            } catch (error) {
+                console.error('Error with style analysis:', error);
+                statusDiv.innerHTML = '<div class="error">❌ Style analysis failed. Check console for details.</div>';
+            }
+        }
         
         // Utility function to escape HTML
         function escapeHtml(text) {
@@ -2210,6 +2515,11 @@ async def working_dashboard(request):
                         <p>${escapeHtml(item.description)}</p>
                     </div>
                 `;
+            }
+            
+            // Style Vector Analysis
+            if (item.style_vector && item.brand_tokens) {
+                modalContent += renderStyleVectorModal(item.style_vector, item.brand_tokens);
             }
             
             // Enhanced Multi-Agent Analysis or Regular AI Insights
@@ -3312,6 +3622,69 @@ async def api_batch_multi_agent_analysis(request):
         print(f"Batch multi-agent analysis error: {e}")
         return web.json_response({"error": str(e)}, status=500)
 
+async def api_style_analysis(request):
+    """API endpoint to analyze or re-analyze style vectors for images"""
+    try:
+        # Check if style vector analysis is available
+        if not STYLE_VECTOR_AVAILABLE:
+            return web.json_response({
+                "error": "Style vector analysis not available. Install required dependencies: pip install scikit-learn pillow numpy"
+            }, status=503)
+        
+        data = content_manager._load_data()
+        
+        # Find images that need style analysis (don't have style_vector)
+        images_to_process = []
+        for item in data['items']:
+            if item.get('type') == 'image' and not item.get('style_vector'):
+                images_to_process.append(item)
+        
+        if not images_to_process:
+            return web.json_response({
+                "success": True,
+                "message": "All images already have style vectors",
+                "processed": 0
+            })
+        
+        print(f"🎨 Starting style vector analysis on {len(images_to_process)} images...")
+        processed_count = 0
+        
+        # Process each image
+        for item in images_to_process:
+            try:
+                image_path = Path(item['path'])
+                if image_path.exists():
+                    print(f"Analyzing style vector for {item['filename']}...")
+                    
+                    style_data = analyze_style_vector(str(image_path))
+                    if style_data:
+                        # Update item with style vector data
+                        item.update(style_data)
+                        processed_count += 1
+                        print(f"✨ Style vector added to {item['filename']}")
+                    else:
+                        print(f"❌ Style analysis failed for {item['filename']}")
+                else:
+                    print(f"⚠️ Image file not found: {image_path}")
+                    
+            except Exception as e:
+                print(f"Error processing {item['filename']}: {e}")
+                continue
+        
+        # Save updated data
+        content_manager._save_data(data)
+        
+        return web.json_response({
+            "success": True,
+            "message": f"Style vector analysis completed on {processed_count}/{len(images_to_process)} images",
+            "processed": processed_count,
+            "total_found": len(images_to_process)
+        })
+        
+    except Exception as e:
+        print(f"Style analysis error: {e}")
+        return web.json_response({"error": str(e)}, status=500)
+
 def create_app():
     """Create the web application"""
     app = web.Application()
@@ -3325,6 +3698,7 @@ def create_app():
     app.router.add_get('/api/content', api_content)
     app.router.add_post('/api/scan', api_scan)
     app.router.add_post('/api/ai-scan', api_ai_scan)
+    app.router.add_post('/api/style-analysis', api_style_analysis)
     app.router.add_post('/api/multi-agent-analysis', api_multi_agent_analysis)
     app.router.add_post('/api/batch-multi-agent-analysis', api_batch_multi_agent_analysis)
     app.router.add_post('/api/update-item', api_update_item)
