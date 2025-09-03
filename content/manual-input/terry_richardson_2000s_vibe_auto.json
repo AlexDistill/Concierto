@@ -1,0 +1,18 @@
+{
+  "id": "df4c5d30",
+  "source": "manual_input_image",
+  "type": "image",
+  "filename": "terry_richardson_2000s_vibe.png",
+  "filepath": "../content/manual-input/images/terry_richardson_2000s_vibe.png",
+  "title": "Terry Richardson 2000s Vibe",
+  "description": "Image uploaded: terry_richardson_2000s_vibe.png",
+  "tags": [
+    "2000s",
+    "terry",
+    "richardson",
+    "vibe"
+  ],
+  "category": "visual_inspiration",
+  "added_at": "2025-08-18T13:56:58.808309",
+  "processing_method": "auto_from_filename"
+}

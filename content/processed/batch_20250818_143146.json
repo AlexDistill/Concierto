@@ -1,0 +1,77 @@
+[
+  {
+    "id": "sample001",
+    "source": "twitter_FigsFromPlums",
+    "type": "tweet",
+    "content": "The best design often comes from constraints. When you have unlimited options, you create nothing. When you have specific boundaries, you create magic.",
+    "url": "https://twitter.com/FigsFromPlums",
+    "timestamp": "2025-08-18T14:31:46.894298",
+    "tags": [
+      "design",
+      "creativity",
+      "constraints",
+      "inspiration"
+    ],
+    "media_urls": [],
+    "fetched_at": "2025-08-18T14:31:46.894321",
+    "processed_at": "2025-08-18T14:31:46.901078",
+    "analysis": {
+      "content_type": "tweet",
+      "source": "twitter_FigsFromPlums",
+      "has_media": false,
+      "word_count": 23,
+      "tags_count": 4,
+      "quality_score": 0.7
+    }
+  },
+  {
+    "id": "sample002",
+    "source": "twitter_FigsFromPlums",
+    "type": "tweet",
+    "content": "Typography is not about choosing fonts. It's about creating hierarchy, rhythm, and emotion through the arrangement of letters.",
+    "url": "https://twitter.com/FigsFromPlums",
+    "timestamp": "2025-08-18T14:31:46.894327",
+    "tags": [
+      "typography",
+      "design",
+      "visual",
+      "hierarchy"
+    ],
+    "media_urls": [],
+    "fetched_at": "2025-08-18T14:31:46.894329",
+    "processed_at": "2025-08-18T14:31:46.901117",
+    "analysis": {
+      "content_type": "tweet",
+      "source": "twitter_FigsFromPlums",
+      "has_media": false,
+      "word_count": 18,
+      "tags_count": 4,
+      "quality_score": 0.7
+    }
+  },
+  {
+    "id": "sample003",
+    "source": "twitter_FigsFromPlums",
+    "type": "tweet",
+    "content": "Bold gradients are making a comeback, but this time with more subtlety. Think aurora borealis, not rainbow.",
+    "url": "https://twitter.com/FigsFromPlums",
+    "timestamp": "2025-08-18T14:31:46.894331",
+    "tags": [
+      "gradient",
+      "trends",
+      "color",
+      "design"
+    ],
+    "media_urls": [],
+    "fetched_at": "2025-08-18T14:31:46.894333",
+    "processed_at": "2025-08-18T14:31:46.901128",
+    "analysis": {
+      "content_type": "tweet",
+      "source": "twitter_FigsFromPlums",
+      "has_media": false,
+      "word_count": 17,
+      "tags_count": 4,
+      "quality_score": 0.7
+    }
+  }
+]

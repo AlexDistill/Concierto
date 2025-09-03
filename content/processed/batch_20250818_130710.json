@@ -1,0 +1,90 @@
+[
+  {
+    "id": "df4c5d30",
+    "source": "manual_input_image",
+    "type": "image",
+    "filename": "terry_richardson_2000s_vibe.png",
+    "filepath": "../content/manual-input/images/terry_richardson_2000s_vibe.png",
+    "title": "Terry Richardson 2000s Vibe",
+    "description": "Image uploaded: terry_richardson_2000s_vibe.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T10:03:42.087910",
+    "processing_method": "auto_from_filename",
+    "processed_at": "2025-08-18T13:07:10.548413",
+    "analysis": {
+      "content_type": "image",
+      "source": "manual_input_image",
+      "has_media": true,
+      "word_count": 0,
+      "tags_count": 0,
+      "quality_score": 0.7
+    }
+  },
+  {
+    "id": "9732118e",
+    "source": "manual_input_image",
+    "type": "image",
+    "filename": "raw and emotional b&w portrait photo.png",
+    "filepath": "../content/manual-input/images/raw and emotional b&w portrait photo.png",
+    "title": "Raw And Emotional B&w Portrait Photo",
+    "description": "Image uploaded: raw and emotional b&w portrait photo.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T10:03:42.087740",
+    "processing_method": "auto_from_filename",
+    "processed_at": "2025-08-18T13:07:10.548431",
+    "analysis": {
+      "content_type": "image",
+      "source": "manual_input_image",
+      "has_media": true,
+      "word_count": 0,
+      "tags_count": 0,
+      "quality_score": 0.7
+    }
+  },
+  {
+    "id": "9732118e",
+    "source": "manual_input_image",
+    "type": "image",
+    "filename": "raw and emotional b&w portrait photo.png",
+    "filepath": "../content/manual-input/images/raw and emotional b&w portrait photo.png",
+    "title": "Raw And Emotional B&w Portrait Photo",
+    "description": "Image uploaded: raw and emotional b&w portrait photo.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T10:03:42.087740",
+    "processing_method": "auto_from_filename",
+    "processed_at": "2025-08-18T13:07:10.548434",
+    "analysis": {
+      "content_type": "image",
+      "source": "manual_input_image",
+      "has_media": true,
+      "word_count": 0,
+      "tags_count": 0,
+      "quality_score": 0.7
+    }
+  },
+  {
+    "id": "df4c5d30",
+    "source": "manual_input_image",
+    "type": "image",
+    "filename": "terry_richardson_2000s_vibe.png",
+    "filepath": "../content/manual-input/images/terry_richardson_2000s_vibe.png",
+    "title": "Terry Richardson 2000s Vibe",
+    "description": "Image uploaded: terry_richardson_2000s_vibe.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T10:03:42.087910",
+    "processing_method": "auto_from_filename",
+    "processed_at": "2025-08-18T13:07:10.548437",
+    "analysis": {
+      "content_type": "image",
+      "source": "manual_input_image",
+      "has_media": true,
+      "word_count": 0,
+      "tags_count": 0,
+      "quality_score": 0.7
+    }
+  }
+]

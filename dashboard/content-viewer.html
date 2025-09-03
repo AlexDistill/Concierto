@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Concierto Content Viewer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            opacity: 0.9;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .source-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .source-siteinspire {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .source-twitter {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .source-manual {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+        
+        .content-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1a202c;
+        }
+        
+        .content-description {
+            color: #4a5568;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .content-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .tag {
+            background: #f7fafc;
+            color: #4a5568;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.75em;
+        }
+        
+        .content-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+        
+        .content-link:hover {
+            text-decoration: underline;
+        }
+        
+        .timestamp {
+            color: #a0aec0;
+            font-size: 0.75em;
+        }
+        
+        .manual-input-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .manual-input-section h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+        
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            background: #f7fafc;
+        }
+        
+        .upload-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #718096;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .refresh-btn {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .refresh-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1>📚 Content Ingestion Viewer</h1>
+                <div class="subtitle">Monitor scraped content from SiteInspire, Twitter, and manual uploads</div>
+            </div>
+            <button class="refresh-btn" onclick="loadContent()">🔄 Refresh</button>
+        </div>
+    </div>
+    
+    <div class="stats-section" id="stats">
+        <div class="stat-card">
+            <div class="stat-value" id="total-count">0</div>
+            <div class="stat-label">Total Items</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="siteinspire-count">0</div>
+            <div class="stat-label">SiteInspire</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="twitter-count">0</div>
+            <div class="stat-label">Twitter/X</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="manual-count">0</div>
+            <div class="stat-label">Manual Input</div>
+        </div>
+    </div>
+    
+    <div class="manual-input-section">
+        <h2>📁 Manual Content Input</h2>
+        <div class="upload-area">
+            <div class="upload-icon">📸</div>
+            <p><strong>Add content manually:</strong></p>
+            <p style="margin-top: 10px;">Drop images or JSON files in:</p>
+            <code style="background: #2d3748; color: white; padding: 5px 10px; border-radius: 5px; display: inline-block; margin-top: 10px;">
+                /content/manual-input/
+            </code>
+            <p style="margin-top: 15px; color: #718096; font-size: 0.9em;">
+                Supported: .jpg, .png, .gif, .webp, .svg, .json
+            </p>
+        </div>
+    </div>
+    
+    <h2 style="margin-bottom: 20px; color: #2d3748;">📋 Scraped Content</h2>
+    <div class="content-grid" id="content-grid">
+        <div style="grid-column: 1 / -1; text-align: center; color: #a0aec0; padding: 40px;">
+            Loading content...
+        </div>
+    </div>
+    
+    <script>
+        async function loadContent() {
+            try {
+                // Load content cache
+                const response = await fetch('../content/scraped/content_cache.json');
+                if (!response.ok) {
+                    console.error('Failed to load content');
+                    return;
+                }
+                
+                const content = await response.json();
+                
+                // Update statistics
+                document.getElementById('total-count').textContent = content.length;
+                
+                const stats = {
+                    siteinspire: 0,
+                    twitter: 0,
+                    manual: 0
+                };
+                
+                content.forEach(item => {
+                    if (item.source === 'siteinspire') stats.siteinspire++;
+                    else if (item.source.includes('twitter')) stats.twitter++;
+                    else if (item.source === 'manual_input') stats.manual++;
+                });
+                
+                document.getElementById('siteinspire-count').textContent = stats.siteinspire;
+                document.getElementById('twitter-count').textContent = stats.twitter;
+                document.getElementById('manual-count').textContent = stats.manual;
+                
+                // Display content cards
+                const grid = document.getElementById('content-grid');
+                grid.innerHTML = '';
+                
+                if (content.length === 0) {
+                    grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #a0aec0; padding: 40px;">No content yet. Run the ingester to fetch content.</div>';
+                    return;
+                }
+                
+                // Show latest items first
+                content.reverse().forEach(item => {
+                    const card = createContentCard(item);
+                    grid.appendChild(card);
+                });
+                
+            } catch (error) {
+                console.error('Error loading content:', error);
+                document.getElementById('content-grid').innerHTML = 
+                    '<div style="grid-column: 1 / -1; text-align: center; color: #e53e3e; padding: 40px;">Error loading content. Make sure the ingester has run.</div>';
+            }
+        }
+        
+        function createContentCard(item) {
+            const card = document.createElement('div');
+            card.className = 'content-card';
+            
+            // Source badge
+            const sourceBadge = document.createElement('div');
+            sourceBadge.className = 'source-badge';
+            if (item.source === 'siteinspire') {
+                sourceBadge.className += ' source-siteinspire';
+                sourceBadge.textContent = '🎨 SiteInspire';
+            } else if (item.source.includes('twitter')) {
+                sourceBadge.className += ' source-twitter';
+                sourceBadge.textContent = '🐦 Twitter';
+            } else {
+                sourceBadge.className += ' source-manual';
+                sourceBadge.textContent = '📁 Manual';
+            }
+            card.appendChild(sourceBadge);
+            
+            // Add image preview for all content types
+            const imageContainer = document.createElement('div');
+            imageContainer.style.width = '100%';
+            imageContainer.style.height = '200px';
+            imageContainer.style.marginBottom = '15px';
+            imageContainer.style.borderRadius = '8px';
+            imageContainer.style.overflow = 'hidden';
+            imageContainer.style.backgroundColor = '#f0f0f0';
+            imageContainer.style.display = 'flex';
+            imageContainer.style.alignItems = 'center';
+            imageContainer.style.justifyContent = 'center';
+            imageContainer.style.position = 'relative';
+            
+            let hasImage = false;
+            
+            // For manual images with filepath
+            if (item.type === 'image' && item.filepath) {
+                const img = document.createElement('img');
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                
+                // Convert relative path to absolute path for server
+                let imagePath = item.filepath;
+                if (imagePath.startsWith('../')) {
+                    imagePath = imagePath.substring(3); // Remove ../
+                }
+                img.src = '/' + imagePath;
+                
+                img.onerror = () => {
+                    // If image fails to load, show placeholder
+                    imageContainer.innerHTML = `
+                        <div style="text-align: center; color: #a0aec0;">
+                            <div style="font-size: 3em; margin-bottom: 10px;">🖼️</div>
+                            <div style="font-size: 0.9em;">${item.filename || 'Image'}</div>
+                        </div>
+                    `;
+                };
+                
+                imageContainer.appendChild(img);
+                hasImage = true;
+            } 
+            // For SiteInspire and other web design items
+            else if (item.source === 'siteinspire' || item.type === 'web_design') {
+                // Create a styled preview card (no broken image attempts)
+                const previewContent = document.createElement('div');
+                previewContent.style.width = '100%';
+                previewContent.style.height = '100%';
+                previewContent.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                previewContent.style.display = 'flex';
+                previewContent.style.flexDirection = 'column';
+                previewContent.style.alignItems = 'center';
+                previewContent.style.justifyContent = 'center';
+                previewContent.style.color = 'white';
+                previewContent.style.textAlign = 'center';
+                previewContent.style.padding = '20px';
+                previewContent.style.cursor = 'pointer';
+                
+                // Add click handler to open the URL
+                previewContent.onclick = () => {
+                    if (item.url) window.open(item.url, '_blank');
+                };
+                
+                // Create a beautiful preview without trying to load external images
+                const icon = document.createElement('div');
+                icon.style.fontSize = '2.5em';
+                icon.style.marginBottom = '10px';
+                icon.innerHTML = '🌐';
+                
+                const title = document.createElement('div');
+                title.style.fontSize = '1.1em';
+                title.style.fontWeight = '600';
+                title.style.marginBottom = '5px';
+                title.textContent = item.title || 'Web Design';
+                
+                const desc = document.createElement('div');
+                desc.style.fontSize = '0.8em';
+                desc.style.opacity = '0.9';
+                desc.style.lineHeight = '1.3';
+                desc.textContent = item.description ? item.description.split('\n')[0] : 'Click to view site';
+                
+                previewContent.appendChild(icon);
+                previewContent.appendChild(title);
+                previewContent.appendChild(desc);
+                
+                imageContainer.appendChild(previewContent);
+                hasImage = true;
+            }
+            // For Twitter content
+            else if (item.source && item.source.includes('twitter')) {
+                const tweetPreview = document.createElement('div');
+                tweetPreview.style.width = '100%';
+                tweetPreview.style.height = '100%';
+                tweetPreview.style.background = 'linear-gradient(135deg, #1DA1F2 0%, #0d8bd9 100%)';
+                tweetPreview.style.display = 'flex';
+                tweetPreview.style.flexDirection = 'column';
+                tweetPreview.style.alignItems = 'center';
+                tweetPreview.style.justifyContent = 'center';
+                tweetPreview.style.color = 'white';
+                tweetPreview.style.padding = '20px';
+                tweetPreview.innerHTML = `
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">🐦</div>
+                    <div style="font-size: 0.9em; opacity: 0.9;">${item.content ? item.content.substring(0, 100) + '...' : 'Tweet'}</div>
+                `;
+                imageContainer.appendChild(tweetPreview);
+                hasImage = true;
+            }
+            // For other inspiration data
+            else if (item.type === 'inspiration_data') {
+                const inspirationPreview = document.createElement('div');
+                inspirationPreview.style.width = '100%';
+                inspirationPreview.style.height = '100%';
+                inspirationPreview.style.background = 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)';
+                inspirationPreview.style.display = 'flex';
+                inspirationPreview.style.flexDirection = 'column';
+                inspirationPreview.style.alignItems = 'center';
+                inspirationPreview.style.justifyContent = 'center';
+                inspirationPreview.style.color = 'white';
+                inspirationPreview.style.padding = '20px';
+                inspirationPreview.style.textAlign = 'center';
+                inspirationPreview.innerHTML = `
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">💡</div>
+                    <div style="font-size: 1.1em; font-weight: 600;">${item.title || 'Inspiration'}</div>
+                `;
+                imageContainer.appendChild(inspirationPreview);
+                hasImage = true;
+            }
+            
+            // Add the image container to the card if we have content
+            if (hasImage) {
+                card.appendChild(imageContainer);
+            }
+            
+            // Title (make it clickable if URL exists)
+            if (item.url) {
+                const titleLink = document.createElement('a');
+                titleLink.className = 'content-title';
+                titleLink.href = item.url;
+                titleLink.target = '_blank';
+                titleLink.textContent = item.title || item.content?.substring(0, 50) || 'Untitled';
+                titleLink.style.textDecoration = 'none';
+                titleLink.style.display = 'block';
+                titleLink.style.color = '#1a202c';
+                titleLink.onmouseover = () => titleLink.style.textDecoration = 'underline';
+                titleLink.onmouseout = () => titleLink.style.textDecoration = 'none';
+                card.appendChild(titleLink);
+            } else {
+                const title = document.createElement('div');
+                title.className = 'content-title';
+                title.textContent = item.title || item.content?.substring(0, 50) || 'Untitled';
+                card.appendChild(title);
+            }
+            
+            // Description
+            if (item.description || item.content) {
+                const desc = document.createElement('div');
+                desc.className = 'content-description';
+                const text = item.description || item.content || '';
+                desc.textContent = text.length > 150 ? text.substring(0, 150) + '...' : text;
+                card.appendChild(desc);
+            }
+            
+            // Tags
+            if (item.tags && item.tags.length > 0) {
+                const tags = document.createElement('div');
+                tags.className = 'tags';
+                tags.style.marginBottom = '10px';
+                item.tags.forEach(tag => {
+                    const tagEl = document.createElement('span');
+                    tagEl.className = 'tag';
+                    tagEl.textContent = tag;
+                    tags.appendChild(tagEl);
+                });
+                card.appendChild(tags);
+            }
+            
+            // Meta info
+            const meta = document.createElement('div');
+            meta.className = 'content-meta';
+            
+            // Link container
+            const linkContainer = document.createElement('div');
+            linkContainer.style.display = 'flex';
+            linkContainer.style.flexDirection = 'column';
+            linkContainer.style.gap = '5px';
+            
+            // Main source link
+            if (item.url) {
+                const link = document.createElement('a');
+                link.className = 'content-link';
+                link.href = item.url;
+                link.target = '_blank';
+                link.textContent = '🔗 View Original →';
+                linkContainer.appendChild(link);
+                
+                // Show full URL for verification
+                const urlDisplay = document.createElement('div');
+                urlDisplay.style.fontSize = '0.7em';
+                urlDisplay.style.color = '#a0aec0';
+                urlDisplay.style.wordBreak = 'break-all';
+                urlDisplay.textContent = item.url;
+                linkContainer.appendChild(urlDisplay);
+            }
+            
+            meta.appendChild(linkContainer);
+            
+            // Timestamp
+            const timestamp = document.createElement('div');
+            timestamp.className = 'timestamp';
+            const date = new Date(item.fetched_at || item.added_at || item.date);
+            timestamp.textContent = date.toLocaleDateString();
+            meta.appendChild(timestamp);
+            
+            card.appendChild(meta);
+            
+            return card;
+        }
+        
+        // Load content on page load
+        loadContent();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(loadContent, 30000);
+    </script>
+</body>
+</html>

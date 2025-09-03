@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Concierto - Simple Working Version</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .content-item { border: 1px solid #ddd; padding: 10px; }
+        .image-preview { width: 100%; height: 200px; object-fit: cover; }
+    </style>
+</head>
+<body>
+    <h1>Concierto Dashboard</h1>
+    <div id="stats"></div>
+    <div id="content" class="content-grid"></div>
+
+    <script>
+        // Simple working version
+        fetch('/api/content')
+            .then(response => response.json())
+            .then(data => {
+                // Show stats
+                document.getElementById('stats').innerHTML = 
+                    '<p>Total items: ' + data.items.length + '</p>';
+                
+                // Show content
+                var html = '';
+                data.items.forEach(function(item) {
+                    if (item.type === 'image') {
+                        html += '<div class="content-item">';
+                        html += '<img src="/' + item.path + '" class="image-preview">';
+                        html += '<h3>' + item.title + '</h3>';
+                        html += '</div>';
+                    }
+                });
+                document.getElementById('content').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('content').innerHTML = 'Error loading content';
+            });
+    </script>
+</body>
+</html>

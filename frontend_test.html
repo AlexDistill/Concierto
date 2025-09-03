@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frontend Test</title>
+</head>
+<body>
+    <h1>Testing Dashboard</h1>
+    <div id="status">Loading...</div>
+    <div id="content"></div>
+    <div id="campaigns"></div>
+    
+    <button onclick="testContent()">Test Content API</button>
+    <button onclick="testCampaigns()">Test Campaigns API</button>
+    <button onclick="testUpload()">Test Upload (Click to Browse)</button>
+    <input type="file" id="fileTest" style="display: none;" onchange="handleTestUpload(event)">
+    
+    <script>
+        async function testContent() {
+            try {
+                const response = await fetch('/api/content');
+                const data = await response.json();
+                document.getElementById('content').innerHTML = `
+                    <h2>Content API ✅</h2>
+                    <p>Items: ${data.items.length}</p>
+                    <p>Images: ${data.items.filter(i => i.type === 'image').length}</p>
+                `;
+            } catch (error) {
+                document.getElementById('content').innerHTML = `<h2>Content API ❌</h2><p>${error}</p>`;
+            }
+        }
+        
+        async function testCampaigns() {
+            try {
+                const response = await fetch('/api/campaigns');
+                const data = await response.json();
+                document.getElementById('campaigns').innerHTML = `
+                    <h2>Campaigns API ✅</h2>
+                    <p>Campaigns: ${data.length}</p>
+                    ${data.map(c => `<p>- ${c.name} (${c.client})</p>`).join('')}
+                `;
+            } catch (error) {
+                document.getElementById('campaigns').innerHTML = `<h2>Campaigns API ❌</h2><p>${error}</p>`;
+            }
+        }
+        
+        function testUpload() {
+            document.getElementById('fileTest').click();
+        }
+        
+        async function handleTestUpload(event) {
+            const files = Array.from(event.target.files);
+            if (files.length === 0) return;
+            
+            const formData = new FormData();
+            files.forEach(file => {
+                formData.append('file', file);
+            });
+            
+            try {
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                if (response.ok) {
+                    alert(`✅ Upload successful: ${result.uploaded.length} files`);
+                } else {
+                    alert(`❌ Upload failed: ${result.error}`);
+                }
+            } catch (error) {
+                alert(`❌ Upload error: ${error.message}`);
+            }
+        }
+        
+        // Auto-test on load
+        document.addEventListener('DOMContentLoaded', () => {
+            testContent();
+            testCampaigns();
+            document.getElementById('status').textContent = 'Tests loaded ✅';
+        });
+    </script>
+</body>
+</html>

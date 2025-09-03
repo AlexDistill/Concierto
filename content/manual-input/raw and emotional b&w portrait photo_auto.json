@@ -1,0 +1,18 @@
+{
+  "id": "9732118e",
+  "source": "manual_input_image",
+  "type": "image",
+  "filename": "raw and emotional b&w portrait photo.png",
+  "filepath": "../content/manual-input/images/raw and emotional b&w portrait photo.png",
+  "title": "Raw And Emotional B&w Portrait Photo",
+  "description": "Image uploaded: raw and emotional b&w portrait photo.png",
+  "tags": [
+    "portrait",
+    "raw",
+    "emotional",
+    "b&w"
+  ],
+  "category": "visual_inspiration",
+  "added_at": "2025-08-18T13:56:58.808086",
+  "processing_method": "auto_from_filename"
+}

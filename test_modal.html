@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Modal</title>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal.show { display: flex; align-items: center; justify-content: center; }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Modal Test</h1>
+    <button onclick="showModal()">Show Modal</button>
+    
+    <div id="testModal" class="modal">
+        <div class="modal-content">
+            <h2>Test Modal</h2>
+            <p>This is a test modal with full AI description content!</p>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+    
+    <script>
+        function showModal() {
+            document.getElementById('testModal').classList.add('show');
+        }
+        function closeModal() {
+            document.getElementById('testModal').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
+</content>

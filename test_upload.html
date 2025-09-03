@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Test</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        #dropZone {
+            border: 3px dashed #ccc;
+            border-radius: 10px;
+            padding: 50px;
+            text-align: center;
+            margin: 20px 0;
+            background: #f9f9f9;
+            cursor: pointer;
+        }
+        #dropZone.dragover {
+            background: #e0e0ff;
+            border-color: #666;
+        }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Test Upload Functionality</h1>
+    
+    <div id="dropZone">
+        <h2>📸 Drop images here or click to browse</h2>
+        <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+    </div>
+    
+    <div id="status"></div>
+    <div id="console"></div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const status = document.getElementById('status');
+        const consoleDiv = document.getElementById('console');
+        
+        function log(msg, isError = false) {
+            const p = document.createElement('p');
+            p.textContent = new Date().toISOString().split('T')[1].split('.')[0] + ' - ' + msg;
+            p.className = isError ? 'error' : '';
+            consoleDiv.appendChild(p);
+            console.log(msg);
+        }
+        
+        // Click to browse
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        // File input change
+        fileInput.addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            log(`Selected ${files.length} files`);
+            await uploadFiles(files);
+        });
+        
+        // Drag over
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropZone.classList.add('dragover');
+            log('Drag over detected');
+        });
+        
+        // Drag leave
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropZone.classList.remove('dragover');
+        });
+        
+        // Drop
+        dropZone.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropZone.classList.remove('dragover');
+            
+            const files = Array.from(e.dataTransfer.files);
+            log(`Dropped ${files.length} files`);
+            files.forEach(f => log(`  - ${f.name} (${f.type})`));
+            await uploadFiles(files);
+        });
+        
+        // Upload function
+        async function uploadFiles(files) {
+            const formData = new FormData();
+            let imageCount = 0;
+            
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    formData.append('file', file);
+                    imageCount++;
+                    log(`Adding image: ${file.name}`);
+                } else {
+                    log(`Skipping non-image: ${file.name} (${file.type})`, true);
+                }
+            });
+            
+            if (imageCount === 0) {
+                status.innerHTML = '<p class="error">No image files found!</p>';
+                return;
+            }
+            
+            try {
+                log(`Uploading ${imageCount} images...`);
+                const response = await fetch('http://localhost:8080/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                log(`Response status: ${response.status}`);
+                
+                if (response.ok) {
+                    status.innerHTML = `<p class="success">✅ Uploaded ${result.uploaded.length} files successfully!</p>`;
+                    log(`Success: ${JSON.stringify(result)}`);
+                } else {
+                    status.innerHTML = `<p class="error">❌ Upload failed: ${result.error}</p>`;
+                    log(`Error: ${JSON.stringify(result)}`, true);
+                }
+            } catch (error) {
+                status.innerHTML = `<p class="error">❌ Network error: ${error.message}</p>`;
+                log(`Network error: ${error}`, true);
+            }
+        }
+        
+        // Prevent default drag behavior
+        document.addEventListener('dragover', (e) => e.preventDefault());
+        document.addEventListener('drop', (e) => e.preventDefault());
+        
+        log('Upload test page loaded');
+    </script>
+</body>
+</html>

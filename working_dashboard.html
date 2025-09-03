@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concierto - Working Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 2rem; 
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-number { 
+            font-size: 2rem; 
+            font-weight: bold; 
+            color: #667eea; 
+        }
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .content-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+            cursor: pointer;
+        }
+        .content-item:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f1f3f4;
+        }
+        .item-content {
+            padding: 1.5rem;
+        }
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        .item-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            line-height: 1.4;
+        }
+        .item-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        .ai-tag {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+        .campaign-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ff8787);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        .refresh-btn:hover {
+            background: #5a67d8;
+        }
+        .error {
+            background: #ff6b6b;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .success {
+            background: #51cf66;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎼 Concierto</h1>
+        <p>Your Creative Content Dashboard</p>
+    </div>
+    
+    <div class="container">
+        <div id="status"></div>
+        
+        <div style="margin-bottom: 2rem;">
+            <button class="refresh-btn" onclick="location.reload()">🔄 Refresh Page</button>
+            <button class="refresh-btn" onclick="loadContent()">📱 Reload Content</button>
+            <button class="campaign-btn" onclick="loadCampaigns()">📋 View Campaigns</button>
+        </div>
+        
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-number">-</div>
+                <div class="stat-label">Total Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">-</div>
+                <div class="stat-label">Images</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">-</div>
+                <div class="stat-label">Tags</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">-</div>
+                <div class="stat-label">Campaigns</div>
+            </div>
+        </div>
+        
+        <div id="content" class="content-grid">
+            <div class="loading">Loading content...</div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let contentData = null;
+        let campaignsData = null;
+        
+        // Main function to load content
+        async function loadContent() {
+            console.log('Loading content...');
+            const contentDiv = document.getElementById('content');
+            const statusDiv = document.getElementById('status');
+            
+            try {
+                // Show loading state
+                contentDiv.innerHTML = '<div class="loading">Loading content from API...</div>';
+                
+                // Fetch data from API
+                const response = await fetch('/api/content');
+                console.log('API Response Status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`API returned status ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Data received:', data);
+                contentData = data;
+                
+                // Update statistics
+                updateStats(data);
+                
+                // Display content
+                displayContent(data.items || []);
+                
+                // Show success message
+                statusDiv.innerHTML = '<div class="success">✅ Content loaded successfully!</div>';
+                setTimeout(() => { statusDiv.innerHTML = ''; }, 3000);
+                
+            } catch (error) {
+                console.error('Error loading content:', error);
+                contentDiv.innerHTML = `<div class="error">❌ Error loading content: ${error.message}</div>`;
+                statusDiv.innerHTML = `<div class="error">Failed to load content. Check console for details.</div>`;
+            }
+        }
+        
+        // Update statistics display
+        function updateStats(data) {
+            const stats = document.getElementById('stats');
+            const itemCount = data.items ? data.items.length : 0;
+            const imageCount = data.items ? data.items.filter(i => i.type === 'image').length : 0;
+            const tagCount = data.tags ? data.tags.length : 0;
+            
+            stats.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${itemCount}</div>
+                    <div class="stat-label">Total Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${imageCount}</div>
+                    <div class="stat-label">Images</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${tagCount}</div>
+                    <div class="stat-label">Tags</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="campaignCount">-</div>
+                    <div class="stat-label">Campaigns</div>
+                </div>
+            `;
+        }
+        
+        // Display content items
+        function displayContent(items) {
+            const contentDiv = document.getElementById('content');
+            
+            if (!items || items.length === 0) {
+                contentDiv.innerHTML = '<div class="loading">No content items found. Add images to content/images/ folder.</div>';
+                return;
+            }
+            
+            // Build HTML for each item
+            let html = '';
+            items.forEach(item => {
+                // Safely get values with defaults
+                const title = item.title || 'Untitled';
+                const description = item.description || '';
+                const path = item.path || '';
+                const tags = item.tags || [];
+                const aiTags = item.ai_tags || [];
+                const notes = item.notes || '';
+                
+                if (item.type === 'image') {
+                    html += `
+                        <div class="content-item">
+                            ${path ? `<img src="/${path}" alt="${title}" class="image-preview" onerror="this.style.display='none'">` : ''}
+                            <div class="item-content">
+                                <div class="item-title">${escapeHtml(title)}</div>
+                                ${description ? `<p class="item-description">${escapeHtml(description.substring(0, 150))}...</p>` : ''}
+                                ${notes ? `<p style="color: #764ba2; font-style: italic;">📝 ${escapeHtml(notes)}</p>` : ''}
+                                <div class="item-tags">
+                                    ${aiTags.map(tag => `<span class="tag ai-tag">🤖 ${escapeHtml(tag)}</span>`).join('')}
+                                    ${tags.filter(t => !aiTags.includes(t)).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const content = item.content || '';
+                    html += `
+                        <div class="content-item">
+                            <div class="item-content">
+                                <div class="item-title">${escapeHtml(title)}</div>
+                                <p>${escapeHtml(content.substring(0, 150))}${content.length > 150 ? '...' : ''}</p>
+                                <div class="item-tags">
+                                    ${tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            contentDiv.innerHTML = html || '<div class="loading">No items to display</div>';
+        }
+        
+        // Load campaigns
+        async function loadCampaigns() {
+            try {
+                const response = await fetch('/api/campaigns');
+                const campaigns = await response.json();
+                campaignsData = campaigns;
+                
+                // Update campaign count
+                document.getElementById('campaignCount').textContent = campaigns.length;
+                
+                // Show campaigns in alert for now
+                if (campaigns.length > 0) {
+                    alert(`Found ${campaigns.length} campaigns:\n\n${campaigns.map(c => `• ${c.name} (${c.client})`).join('\n')}`);
+                } else {
+                    alert('No campaigns found.');
+                }
+                
+            } catch (error) {
+                console.error('Error loading campaigns:', error);
+                alert('Failed to load campaigns');
+            }
+        }
+        
+        // Utility function to escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Load content when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Page loaded, fetching content...');
+            loadContent();
+            loadCampaigns();
+        });
+        
+        // Also try to load immediately
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            console.log('Document ready, loading content...');
+            loadContent();
+            loadCampaigns();
+        }
+    </script>
+</body>
+</html>
+</content>

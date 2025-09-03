@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Dashboard</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .content-item { 
+            border: 1px solid #ccc; 
+            padding: 10px; 
+            margin: 10px 0;
+            background: #f5f5f5;
+        }
+        .tag { 
+            background: #007bff; 
+            color: white; 
+            padding: 2px 8px; 
+            margin: 2px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        .error { color: red; font-weight: bold; }
+        .success { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Dashboard Debug</h1>
+    <div id="status">Loading...</div>
+    <div id="stats"></div>
+    <div id="content"></div>
+
+    <script>
+        console.log('Starting debug dashboard...');
+        
+        async function loadContent() {
+            const statusDiv = document.getElementById('status');
+            const statsDiv = document.getElementById('stats');
+            const contentDiv = document.getElementById('content');
+            
+            try {
+                console.log('Fetching content...');
+                statusDiv.innerHTML = '<p>Fetching content...</p>';
+                
+                const response = await fetch('/api/content');
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Data received:', data);
+                
+                // Display status
+                statusDiv.innerHTML = '<p class="success">✅ API Connected Successfully!</p>';
+                
+                // Display stats
+                statsDiv.innerHTML = `
+                    <h2>Statistics</h2>
+                    <p>Total Items: <strong>${data.items ? data.items.length : 0}</strong></p>
+                    <p>Total Tags: <strong>${data.tags ? data.tags.length : 0}</strong></p>
+                    <p>Last Updated: ${data.last_updated || 'Never'}</p>
+                `;
+                
+                // Display content
+                if (data.items && data.items.length > 0) {
+                    let html = '<h2>Content Items</h2>';
+                    
+                    data.items.forEach((item, index) => {
+                        html += `
+                            <div class="content-item">
+                                <h3>${index + 1}. ${item.title || 'Untitled'}</h3>
+                                <p>Type: ${item.type || 'unknown'}</p>
+                                <p>ID: ${item.id}</p>
+                                ${item.path ? `<p>Path: ${item.path}</p>` : ''}
+                                ${item.description ? `<p>Description: ${item.description.substring(0, 200)}...</p>` : ''}
+                                <div>Tags: ${
+                                    item.tags && item.tags.length > 0 
+                                    ? item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')
+                                    : 'No tags'
+                                }</div>
+                            </div>
+                        `;
+                    });
+                    
+                    contentDiv.innerHTML = html;
+                } else {
+                    contentDiv.innerHTML = '<p class="error">No items found in data!</p>';
+                    console.error('No items in data:', data);
+                }
+                
+            } catch (error) {
+                console.error('Error loading content:', error);
+                statusDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+                
+                // Try to show raw response
+                try {
+                    const rawResponse = await fetch('/api/content');
+                    const text = await rawResponse.text();
+                    console.log('Raw response:', text.substring(0, 500));
+                } catch (e) {
+                    console.error('Could not get raw response:', e);
+                }
+            }
+        }
+        
+        // Load content immediately
+        loadContent();
+        
+        // Also add a manual refresh button
+        document.addEventListener('DOMContentLoaded', () => {
+            const button = document.createElement('button');
+            button.textContent = 'Refresh Data';
+            button.onclick = loadContent;
+            button.style.padding = '10px 20px';
+            button.style.fontSize = '16px';
+            button.style.marginTop = '20px';
+            document.body.insertBefore(button, document.getElementById('status'));
+        });
+    </script>
+</body>
+</html>
+</content>

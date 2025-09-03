@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Multi-Agent Modal</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; padding: 20px; background: #f8f9fa; }
+        .test-container { max-width: 800px; margin: 0 auto; }
+        .test-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        /* Modal styles copied from main dashboard */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+        .agent-section {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        .agent-section h3 { margin: 0 0 0.5rem 0; color: #667eea; }
+        .analysis-quality {
+            background: #e8f5e8;
+            border-left: 4px solid #4caf50;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🚀 Multi-Agent Analysis Modal Test</h1>
+        <p>This tests the modal display for multi-agent enhanced analysis results.</p>
+        
+        <button class="test-btn" onclick="testMultiAgentModal()">🤖 Test Multi-Agent Analysis Modal</button>
+        <button class="test-btn" onclick="testAPICall()">📡 Test API Call</button>
+    </div>
+
+    <!-- Modal HTML -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Enhanced Analysis Results</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody">
+                <!-- Content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function testMultiAgentModal() {
+            // Mock multi-agent analysis data
+            const mockData = {
+                enhanced_analysis: {
+                    enhanced_description: "**Multi-Agent Enhanced Description**: The image features a middle-aged woman with gray hair, wearing a plain white t-shirt and hoop earrings, set against a neutral background. The visual style is black and white with a soft-focus effect, giving it a timeless, classic aesthetic. The woman's expression is serious and contemplative, conveying a mood of introspection or solemnity. This comprehensive analysis reveals sophisticated design thinking across multiple disciplines, demonstrating both immediate commercial viability and long-term innovation potential.",
+                    strategic_insights: "**Strategic Brand Analysis**: This visual asset demonstrates strong commercial potential for cultural technology sectors, particularly appealing to digitally-native audiences aged 25-45. The aesthetic positioning suggests premium brand alignment with innovation-focused messaging.",
+                    narrative_analysis: "**Visual Narrative Structure**: Employs sophisticated layered storytelling technique with progressive complexity that guides viewer engagement. The composition creates emotional journey from curiosity through exploration to understanding, ideal for brand narratives focused on discovery and transformation.",
+                    design_applications: "**Interface Design Applications**: Color hierarchy and geometric patterns translate excellently to digital interfaces. High contrast ratios ensure accessibility compliance while abstract elements provide modern interaction metaphors for progressive web applications and creative industry tools.",
+                    innovation_potential: "**Innovation Opportunities**: This aesthetic approach represents emerging 'Controlled Chaos Design' trend - structured randomness that appeals to AI-native generation. Applications include: generative art platforms, creative AI tools, immersive brand experiences, and next-generation design systems that adapt to user behavior.",
+                    enhanced_tags: ["vintage", "portrait", "monochrome", "minimal", "serious", "calm", "neutral tones", "photography", "editorial", "fine art", "multi-agent analyzed", "strategic potential", "narrative structure", "interface applications", "innovation catalyst", "commercial viability"],
+                    confidence_score: 0.92,
+                    analysis_depth: "comprehensive",
+                    agent_collaboration: true
+                }
+            };
+            
+            showMultiAgentModal(mockData.enhanced_analysis);
+        }
+        
+        async function testAPICall() {
+            try {
+                console.log('Testing API call...');
+                const response = await fetch('http://localhost:8080/api/multi-agent-analysis', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ item_id: 'img_1' })
+                });
+                
+                const result = await response.json();
+                console.log('API Response:', result);
+                
+                if (response.ok && result.enhanced_analysis) {
+                    showMultiAgentModal(result.enhanced_analysis);
+                } else {
+                    alert('API call failed: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('API call error:', error);
+                alert('API call failed: ' + error.message);
+            }
+        }
+        
+        function showMultiAgentModal(analysis) {
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <div class="agent-section">
+                    <h3>🎯 Brand Strategy Agent</h3>
+                    <p>${analysis.strategic_insights}</p>
+                </div>
+                
+                <div class="agent-section">
+                    <h3>📖 Visual Storytelling Agent</h3>
+                    <p>${analysis.narrative_analysis}</p>
+                </div>
+                
+                <div class="agent-section">
+                    <h3>🎨 UI/UX Design Agent</h3>
+                    <p>${analysis.design_applications}</p>
+                </div>
+                
+                <div class="agent-section">
+                    <h3>🚀 Innovation Catalyst Agent</h3>
+                    <p>${analysis.innovation_potential}</p>
+                </div>
+                
+                <div class="analysis-quality">
+                    <h3>📊 Analysis Quality Metrics</h3>
+                    <p><strong>Confidence Score:</strong> ${Math.round(analysis.confidence_score * 100)}%</p>
+                    <p><strong>Analysis Depth:</strong> ${analysis.analysis_depth}</p>
+                    <p><strong>Agent Collaboration:</strong> ${analysis.agent_collaboration ? 'Active' : 'Inactive'}</p>
+                </div>
+                
+                <div class="agent-section">
+                    <h3>🔍 Enhanced Description</h3>
+                    <p>${analysis.enhanced_description}</p>
+                </div>
+            `;
+            
+            document.getElementById('viewModal').classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('viewModal').classList.remove('show');
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('viewModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

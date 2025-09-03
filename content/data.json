@@ -435,7 +435,8 @@
       "path": "content/images/test_upload.jpg",
       "tags": [],
       "added_at": "2025-08-28T10:13:36.987375",
-      "notes": ""
+      "notes": "",
+      "description": ""
     },
     {
       "id": "img_11",
@@ -445,7 +446,8 @@
       "path": "content/images/upload_test.png",
       "tags": [],
       "added_at": "2025-08-28T10:46:14.708457",
-      "notes": ""
+      "notes": "",
+      "description": ""
     },
     {
       "id": "img_12",
@@ -1208,7 +1210,8 @@
       "path": "content/images/ML_BGs.png",
       "tags": [],
       "added_at": "2025-09-03T13:31:08.624631",
-      "notes": ""
+      "notes": "",
+      "description": ""
     },
     {
       "id": "img_29",
@@ -1218,7 +1221,8 @@
       "path": "content/images/Gp-M56VWkAAaTxz.jpeg",
       "tags": [],
       "added_at": "2025-09-03T13:31:08.624649",
-      "notes": ""
+      "notes": "",
+      "description": ""
     },
     {
       "id": "img_30",
@@ -1228,7 +1232,8 @@
       "path": "content/images/IMG_6392.JPG",
       "tags": [],
       "added_at": "2025-09-03T13:31:08.624673",
-      "notes": ""
+      "notes": "",
+      "description": ""
     },
     {
       "id": "img_31",
@@ -1238,7 +1243,8 @@
       "path": "content/images/treeHeader.png",
       "tags": [],
       "added_at": "2025-09-03T13:31:08.624687",
-      "notes": ""
+      "notes": "",
+      "description": ""
     },
     {
       "id": "img_32",
@@ -1250,7 +1256,8 @@
         "poster"
       ],
       "added_at": "2025-09-03T13:31:08.624710",
-      "notes": ""
+      "notes": "",
+      "description": ""
     },
     {
       "id": "img_33",
@@ -1260,7 +1267,8 @@
       "path": "content/images/bcn_poblenou.JPG",
       "tags": [],
       "added_at": "2025-09-03T13:31:08.624725",
-      "notes": ""
+      "notes": "",
+      "description": ""
     },
     {
       "id": "img_34",
@@ -1270,7 +1278,276 @@
       "path": "content/images/IMG_1500.JPG",
       "tags": [],
       "added_at": "2025-09-03T13:31:08.624739",
-      "notes": ""
+      "notes": "",
+      "description": ""
+    },
+    {
+      "id": "img_35",
+      "type": "image",
+      "filename": "embroidered luchador.jpeg",
+      "title": "Embroidered Luchador",
+      "path": "content/images/embroidered luchador.jpeg",
+      "tags": [
+        "colorful",
+        "textile art",
+        "portrait",
+        "avant-garde",
+        "bold",
+        "creative expression",
+        "artistic",
+        "abstract",
+        "contemporary",
+        "vibrant"
+      ],
+      "added_at": "2025-09-03T14:03:16.337647",
+      "notes": "",
+      "description": "The image depicts a person wearing a uniquely designed mask and garment, featuring intricate, colorful patterns resembling beadwork or embroidery against a bold blue background. The mask is adorned with floral and geometric designs, creating a visually arresting and textured appearance. The overall aesthetic is artistic and cultural, conveying a mood of mystery and creativity.",
+      "ai_tags": [
+        "abstract",
+        "textile art",
+        "bold",
+        "colorful",
+        "contemporary",
+        "portrait",
+        "artistic",
+        "vibrant",
+        "creative expression",
+        "avant-garde"
+      ],
+      "creative_insights": "1. **Textural Intricacy and Craftsmanship:**\n   The use of beadwork or embroidery contributes to a rich, tactile surface, showcasing the beauty of handcrafted detail. This intricate texture invites viewers to appreciate the artistry and skill involved. It highlights a trend towards valuing slow, deliberate artistic processes that emphasize tactile engagement and the tactile dimension of art.\n\n2. **Cultural and Symbolic Elements:**\n   The patterns and colors evoke traditional motifs, suggesting influences from folk art or indigenous craftwork. This mix of old and new can inspire creative professionals to blend cultural elements with contemporary design. Such hybrid styles can resonate well in fashion, installation art, and even editorial contexts, offering a fresh take while honoring heritage.\n\n3. **Bold Color Contrast:**\n   The vibrant colors against a blue background create a striking visual impact. This use of contrasting colors can be leveraged to draw attention and convey energy and movement. It's an effective choice for editorial photography, book covers, or promotional material where capturing immediate attention is crucial.",
+      "technical_info": {
+        "filename": "embroidered luchador.jpeg",
+        "size_bytes": 306371,
+        "size_mb": 0.29,
+        "format": "jpeg",
+        "last_modified": 1756929573.8808563,
+        "note": "Install Pillow for image dimensions: pip install Pillow"
+      },
+      "ai_analysis": {
+        "analyzed_at": "2025-09-03T14:15:58.954142",
+        "success": true
+      }
+    },
+    {
+      "id": "img_36",
+      "type": "image",
+      "filename": "total recall briefcase.jpeg",
+      "title": "Total Recall Briefcase",
+      "path": "content/images/total recall briefcase.jpeg",
+      "tags": [
+        "modern",
+        "gadget",
+        "technology",
+        "portrait",
+        "film memorabilia",
+        "dramatic",
+        "sci-fi",
+        "futuristic",
+        "retro",
+        "metallic"
+      ],
+      "added_at": "2025-09-03T14:03:16.337666",
+      "notes": "",
+      "description": "The image depicts a retro-futuristic device resembling an old laptop or communications terminal with a large screen displaying a man's face. The device rests on a dark surface with a metallic finish and visible control panels, suggesting a sci-fi or cyberpunk theme. The overall aesthetic and lighting create a sleek, high-tech mood, conveying a blend of nostalgia and futuristic intrigue.",
+      "ai_tags": [
+        "futuristic",
+        "retro",
+        "gadget",
+        "technology",
+        "metallic",
+        "modern",
+        "portrait",
+        "dramatic",
+        "sci-fi",
+        "film memorabilia"
+      ],
+      "creative_insights": "### Key Insights\n\n1. **Retro-Futuristic Design:**\n   - The object features a retro-futuristic aesthetic, blending elements from past design trends with futuristic concepts. The metallic finish and analog components evoke technology from the past, while the central screen suggests more advanced digital capabilities. This combination can inspire design projects seeking to invoke nostalgia while integrating modern technology.\n\n2. **Geometric Precision and Minimalism:**\n   - The design employs clean lines and geometric shapes, presenting a minimalist yet industrial feel. This approach emphasizes function and form, making it visually striking and structurally coherent. Designers can draw inspiration from such simplicity, integrating precision with functionality in their work, especially in tech or fashion industries.\n\n3. **Potential Narrative and Contextual Use:**\n   - The image captures the imagination by suggesting a narrative context, possibly from a film or conceptual project. This type of design could be used as a prop in visual storytelling, enhancing world-building in sci-fi or speculative scenarios. It encourages creatives to think about the stories their designs might tell or the environments they might inhabit.",
+      "technical_info": {
+        "filename": "total recall briefcase.jpeg",
+        "size_bytes": 84518,
+        "size_mb": 0.08,
+        "format": "jpeg",
+        "last_modified": 1756929645.63361,
+        "note": "Install Pillow for image dimensions: pip install Pillow"
+      },
+      "ai_analysis": {
+        "analyzed_at": "2025-09-03T14:15:58.954190",
+        "success": true
+      }
+    },
+    {
+      "id": "img_37",
+      "type": "image",
+      "filename": "goo.vision - orbit.jpeg",
+      "title": "Goo Vision Orbit",
+      "path": "content/images/goo.vision - orbit.jpeg",
+      "tags": [
+        "modern",
+        "conceptual",
+        "floral",
+        "dramatic",
+        "artistic",
+        "skull",
+        "automotive",
+        "editorial",
+        "surreal",
+        "vibrant"
+      ],
+      "added_at": "2025-09-03T14:03:16.337677",
+      "notes": "",
+      "description": "The image features the interior of an old car with a steering wheel adorned with a skull and various colorful flowers. The sky outside appears bright and clear, suggesting an outdoor setting. The visual style is surreal, combining elements of decay with natural beauty, conveying a mood that is both eerie and contemplative.",
+      "ai_tags": [
+        "surreal",
+        "conceptual",
+        "dramatic",
+        "vibrant",
+        "floral",
+        "skull",
+        "automotive",
+        "artistic",
+        "modern",
+        "editorial"
+      ],
+      "creative_insights": "### Surreal Juxtaposition\n\n**Insight 1: Contrast and Symbolism**\nThe image effectively uses contrast between life and death, symbolized by vibrant flowers and a skull. This juxtaposition creates a striking visual narrative that can evoke deep emotional responses. The skull in the context of a car steering wheel suggests themes of mortality and the passage of time, offering rich material for artistic exploration and storytelling.\n\n### Nature and Decay\n\n**Insight 2: Integration of Organic and Man-made**\nThe blending of organic elements (flowers) with mechanical parts (car interior) reflects the tension between nature and technology. This integration can inspire creative projects that explore ecological themes and the impact of human activity on the environment. It's an effective commentary on how life reclaims human constructs, adding depth and meaning to the visual.\n\n### Potential Use Cases\n\n**Insight 3: Versatility in Application**\nThis imagery is versatile and could be used in various contexts, such as editorial design, advertising campaigns, or album covers, particularly for themes related to transformation and renewal. Its unique combination of elements captures attention and encourages viewers to reflect on the underlying messages, making it a powerful tool for communication in visual arts and media.",
+      "technical_info": {
+        "filename": "goo.vision - orbit.jpeg",
+        "size_bytes": 3160990,
+        "size_mb": 3.01,
+        "format": "jpeg",
+        "last_modified": 1756929473.7615888,
+        "note": "Install Pillow for image dimensions: pip install Pillow"
+      },
+      "ai_analysis": {
+        "analyzed_at": "2025-09-03T14:15:58.954217",
+        "success": true
+      }
+    },
+    {
+      "id": "img_38",
+      "type": "image",
+      "filename": "missblanchie_ciggs'.jpeg",
+      "title": "Missblanchie Ciggs'",
+      "path": "content/images/missblanchie_ciggs'.jpeg",
+      "tags": [
+        "typography",
+        "black and white",
+        "branding",
+        "bold",
+        "print design",
+        "minimal",
+        "vintage",
+        "graphic design",
+        "abstract",
+        "geometric"
+      ],
+      "added_at": "2025-09-03T14:03:16.337687",
+      "notes": "",
+      "description": "The image is a stylized advertisement for \"Miss Blanche Cigarettes,\" featuring bold, geometric typography and abstract forms. The design is minimalistic with a monochromatic color scheme, and the central abstract figure may imply a stylized person or product. The visual style is characteristic of early 20th-century modernism, conveying a mood of sophistication and elegance.",
+      "ai_tags": [
+        "minimal",
+        "vintage",
+        "typography",
+        "bold",
+        "black and white",
+        "geometric",
+        "abstract",
+        "print design",
+        "graphic design",
+        "branding"
+      ],
+      "creative_insights": "1. **Use of Geometric Shapes and Minimalism**: \n   - The design prominently features geometric shapes and a minimalist style, which are key aspects of modernist design. This approach highlights simplicity and directness, which can effectively capture attention and convey a clear message without unnecessary embellishments. Such a design can be particularly effective for branding, where clarity and recognizability are crucial.\n\n2. **Typographic Style and Boldness**: \n   - The bold, blocky typography is a hallmark of early 20th-century design, reminiscent of movements like De Stijl or Bauhaus. This style emphasizes functionality and aesthetics, making it well-suited for advertising purposes. The strong contrast and legibility ensure that the message is both eye-catching and easy to read, which is essential in both print and digital media.\n\nThese insights suggest that leveraging clean lines, bold typography, and minimalistic design can produce strikingly effective visuals that are versatile across various media and applications.",
+      "technical_info": {
+        "filename": "missblanchie_ciggs'.jpeg",
+        "size_bytes": 134107,
+        "size_mb": 0.13,
+        "format": "jpeg",
+        "last_modified": 1756929547.5770414,
+        "note": "Install Pillow for image dimensions: pip install Pillow"
+      },
+      "ai_analysis": {
+        "analyzed_at": "2025-09-03T14:15:58.954239",
+        "success": true
+      }
+    },
+    {
+      "id": "img_39",
+      "type": "image",
+      "filename": "domestic dogs - enigmatriz.jpeg",
+      "title": "Domestic Dogs Enigmatriz",
+      "path": "content/images/domestic dogs - enigmatriz.jpeg",
+      "tags": [
+        "colorful",
+        "playful",
+        "creative industry",
+        "bold typography",
+        "dynamic",
+        "illustration",
+        "animals",
+        "graphic design",
+        "print",
+        "modern"
+      ],
+      "added_at": "2025-09-03T14:03:16.337695",
+      "notes": "",
+      "description": "This image features a group of colorful dogs, each comprised of various letters and words, creating a text-based art style. The background is minimalist, allowing the vibrant rainbow palette of the dogs to stand out prominently. The image conveys a playful and whimsical mood, enhanced by the large, bold text \"domestic dogs\" at the top and bottom, suggesting a celebration of diversity among dog breeds.",
+      "ai_tags": [
+        "bold typography",
+        "colorful",
+        "illustration",
+        "playful",
+        "modern",
+        "animals",
+        "print",
+        "graphic design",
+        "dynamic",
+        "creative industry"
+      ],
+      "creative_insights": "### Typography as a Visual Element:\nThe use of text to create the silhouettes of dogs is a striking example of typographic art. This approach not only visually engages viewers but also integrates language and imagery seamlessly. The text forms intricate patterns and shapes, giving a textured, mosaic-like appearance. This technique can be particularly effective for projects that aim to convey information creatively, such as infographics or educational posters.\n\n### Color Palette and Composition:\nThe image utilizes a vibrant, diverse color palette, with each dog silhouette having distinct, bold colors. This choice enhances interest and ensures each figure stands out while maintaining cohesion. The strategic use of bright colors can be particularly appealing in advertisements or children\u2019s book illustrations, where capturing attention quickly is vital. The horizontal band of color at the top and bottom framing the central image adds balance to the composition.\n\n### Modern and Retro Influences:\nThe bold colors and pixelated typography suggest influences from both modern design and retro digital art, reminiscent of early computer graphics. This fusion of styles can make the piece appealing to a wide range of audiences, from tech enthusiasts to retro art lovers. It can serve as an inspiration for branding projects aiming to evoke nostalgia while maintaining a contemporary edge.",
+      "technical_info": {
+        "filename": "domestic dogs - enigmatriz.jpeg",
+        "size_bytes": 662868,
+        "size_mb": 0.63,
+        "format": "jpeg",
+        "last_modified": 1756929598.5172524,
+        "note": "Install Pillow for image dimensions: pip install Pillow"
+      },
+      "ai_analysis": {
+        "analyzed_at": "2025-09-03T14:15:58.954259",
+        "success": true
+      }
+    },
+    {
+      "id": "img_40",
+      "type": "image",
+      "filename": "--sref 4189945837 .jpeg",
+      "title": "Sref 4189945837",
+      "path": "content/images/--sref 4189945837 .jpeg",
+      "tags": [],
+      "added_at": "2025-09-03T14:03:16.337701",
+      "notes": "",
+      "description": ""
+    },
+    {
+      "id": "img_41",
+      "type": "image",
+      "filename": "frederick hammersly 1969.jpeg",
+      "title": "Frederick Hammersly 1969",
+      "path": "content/images/frederick hammersly 1969.jpeg",
+      "tags": [],
+      "added_at": "2025-09-03T14:11:01.953930",
+      "notes": "",
+      "description": ""
+    },
+    {
+      "id": "img_42",
+      "type": "image",
+      "filename": "Muhammed Sajid.jpeg",
+      "title": "Muhammed Sajid",
+      "path": "content/images/Muhammed Sajid.jpeg",
+      "tags": [],
+      "added_at": "2025-09-03T14:11:01.953948",
+      "notes": "",
+      "description": ""
     }
   ],
   "tags": [
@@ -1278,15 +1555,19 @@
     "album cover",
     "alien",
     "ambient",
+    "animals",
     "apparel",
     "art",
     "artistic",
     "ascii art",
+    "automotive",
+    "avant-garde",
     "black and white",
     "blue",
     "bohemian",
     "bold",
     "bold illustration",
+    "bold typography",
     "branding",
     "calm",
     "candid",
@@ -1320,7 +1601,11 @@
     "event poster",
     "expressive",
     "fashion",
+    "film memorabilia",
     "fine art",
+    "floral",
+    "futuristic",
+    "gadget",
     "gemstones",
     "geometric",
     "graphic design",
@@ -1334,6 +1619,7 @@
     "light-hearted",
     "low light",
     "macro",
+    "metallic",
     "minimal",
     "minimalist",
     "modern",
@@ -1371,9 +1657,11 @@
     "repetitive",
     "retro",
     "retro-futuristic",
+    "sci-fi",
     "serene",
     "serious",
     "skateboarding",
+    "skull",
     "social media",
     "sports",
     "statement",
@@ -1382,8 +1670,11 @@
     "street art",
     "street photography",
     "subculture",
+    "surreal",
     "tech-inspired",
     "technological",
+    "technology",
+    "textile art",
     "texture",
     "torn poster",
     "tote bag",
@@ -1403,7 +1694,7 @@
     "white",
     "wildlife"
   ],
-  "last_updated": "2025-09-03T13:38:15.647182",
+  "last_updated": "2025-09-03T14:15:58.954368",
   "projects": [
     {
       "id": "project_1",

@@ -1,0 +1,31 @@
+[
+  {
+    "id": "33219960",
+    "source": "manual_input",
+    "type": "inspiration_data",
+    "filename": "example-inspiration.json",
+    "title": "Bold Typography Trend 2025",
+    "content": "Oversized typography with gradient fills is becoming the dominant trend in web design. Brands are using massive type as the primary visual element, often filling the entire viewport.",
+    "inspiration": "This trend emphasizes clarity and impact, perfect for brands wanting to make bold statements",
+    "tags": [
+      "typography",
+      "bold",
+      "gradient",
+      "2025",
+      "web-design"
+    ],
+    "category": "design-trends",
+    "source_url": "manual-observation",
+    "reference": "Observed from FigsFromPlums posts about typography evolution",
+    "added_at": "2025-08-17T16:46:54.668198",
+    "processed_at": "2025-08-17T16:46:54.668276",
+    "analysis": {
+      "content_type": "inspiration_data",
+      "source": "manual_input",
+      "has_media": false,
+      "word_count": 28,
+      "tags_count": 5,
+      "quality_score": 0.7
+    }
+  }
+]

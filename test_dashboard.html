@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Test</title>
+</head>
+<body>
+    <h1>Testing Dashboard API</h1>
+    <div id="status">Loading...</div>
+    <pre id="content"></pre>
+    <pre id="campaigns"></pre>
+    
+    <script>
+        async function testAPI() {
+            const status = document.getElementById('status');
+            const contentDiv = document.getElementById('content');
+            const campaignsDiv = document.getElementById('campaigns');
+            
+            try {
+                // Test content API
+                const contentResponse = await fetch('http://localhost:8080/api/content');
+                const contentData = await contentResponse.json();
+                
+                // Test campaigns API
+                const campaignsResponse = await fetch('http://localhost:8080/api/campaigns');
+                const campaignsData = await campaignsResponse.json();
+                
+                status.innerHTML = `
+                    <h2>✅ API Working!</h2>
+                    <p>Items: ${contentData.items.length}</p>
+                    <p>Tags: ${contentData.tags.length}</p>
+                    <p>Campaigns: ${campaignsData.length}</p>
+                `;
+                
+                contentDiv.textContent = `Content Items:\n${JSON.stringify(contentData.items.slice(0, 3), null, 2)}`;
+                campaignsDiv.textContent = `Campaigns:\n${JSON.stringify(campaignsData, null, 2)}`;
+                
+            } catch (error) {
+                status.innerHTML = `<h2>❌ Error: ${error.message}</h2>`;
+                console.error('API Error:', error);
+            }
+        }
+        
+        testAPI();
+    </script>
+</body>
+</html>
+</content>

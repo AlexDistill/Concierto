@@ -1,0 +1,297 @@
+[
+  {
+    "id": "a0dfb7f4",
+    "source": "siteinspire",
+    "title": "Loewe",
+    "url": "https://www.siteinspire.com/website/13248-loewe",
+    "date": "Fri, 20 Jun 2025 11:36:25 +0000",
+    "description": "Categories: Fashion, E-Commerce",
+    "type": "web_design",
+    "tags": [],
+    "fetched_at": "2025-08-17T16:22:10.725817"
+  },
+  {
+    "id": "e8548c73",
+    "source": "siteinspire",
+    "title": "Nothing",
+    "url": "https://www.siteinspire.com/website/13249-nothing",
+    "date": "Fri, 20 Jun 2025 11:35:52 +0000",
+    "description": "Categories: Technology",
+    "type": "web_design",
+    "tags": [],
+    "fetched_at": "2025-08-17T16:22:10.725988"
+  },
+  {
+    "id": "4bbb6b13",
+    "source": "siteinspire",
+    "title": "Dia",
+    "url": "https://www.siteinspire.com/website/13247-dia",
+    "date": "Wed, 11 Jun 2025 13:57:47 +0000",
+    "description": "Categories: Tech Start-ups, Technology\nCredits: Buena Suerte LLC",
+    "type": "web_design",
+    "tags": [],
+    "fetched_at": "2025-08-17T16:22:10.726208"
+  },
+  {
+    "id": "129df8e7",
+    "source": "siteinspire",
+    "title": "Medusmo",
+    "url": "https://www.siteinspire.com/website/13246-medusmo",
+    "date": "Fri, 06 Jun 2025 13:56:05 +0000",
+    "description": "Categories: Tech Start-ups, Technology",
+    "type": "web_design",
+    "tags": [],
+    "fetched_at": "2025-08-17T16:22:10.726313"
+  },
+  {
+    "id": "ae629e9a",
+    "source": "siteinspire",
+    "title": "GT Standard",
+    "url": "https://www.siteinspire.com/website/13245-gt-standard",
+    "date": "Fri, 06 Jun 2025 13:54:37 +0000",
+    "description": "Categories: Typography, Typographic, Monochrome",
+    "type": "web_design",
+    "tags": [
+      "typography",
+      "monochrome"
+    ],
+    "fetched_at": "2025-08-17T16:22:10.726436"
+  },
+  {
+    "id": "2c4747c0",
+    "source": "siteinspire",
+    "title": "Home | seb-astian",
+    "url": "https://www.siteinspire.com/website/13241-home-or-seb-astian",
+    "date": "Sat, 31 May 2025 18:00:01 +0000",
+    "description": "Categories: Web & Interactive Design, Portfolio",
+    "type": "web_design",
+    "tags": [
+      "interactive"
+    ],
+    "fetched_at": "2025-08-17T16:22:10.726541"
+  },
+  {
+    "id": "0c5d4335",
+    "source": "siteinspire",
+    "title": "Xavier C\u00e9dric",
+    "url": "https://www.siteinspire.com/website/13242-xavier-cedric",
+    "date": "Sat, 31 May 2025 14:00:00 +0000",
+    "description": "Categories: Design & Art Direction, Portfolio",
+    "type": "web_design",
+    "tags": [],
+    "fetched_at": "2025-08-17T16:22:10.726660"
+  },
+  {
+    "id": "28626adf",
+    "source": "siteinspire",
+    "title": "Shed",
+    "url": "https://www.siteinspire.com/website/13243-shed",
+    "date": "Sat, 31 May 2025 10:00:00 +0000",
+    "description": "Categories: Interior Design\nCredits: Isaac Powell",
+    "type": "web_design",
+    "tags": [],
+    "fetched_at": "2025-08-17T16:22:10.726776"
+  },
+  {
+    "id": "86f5cca3",
+    "source": "siteinspire",
+    "title": "Luura",
+    "url": "https://www.siteinspire.com/website/13244-luura",
+    "date": "Sat, 31 May 2025 02:00:01 +0000",
+    "description": "Categories: Hotels & Venues\nCredits: Index Studio",
+    "type": "web_design",
+    "tags": [],
+    "fetched_at": "2025-08-17T16:22:10.726883"
+  },
+  {
+    "id": "17595c36",
+    "source": "siteinspire",
+    "title": "Verde",
+    "url": "https://www.siteinspire.com/website/3952-verde",
+    "date": "Fri, 30 May 2025 22:15:15 +0000",
+    "description": "Categories: Portfolio, Web & App Development, Web & Interactive Design\nCredits: VERDE",
+    "type": "web_design",
+    "tags": [
+      "interactive"
+    ],
+    "fetched_at": "2025-08-17T16:22:10.727043"
+  },
+  {
+    "id": "33219960",
+    "source": "manual_input",
+    "type": "inspiration_data",
+    "filename": "example-inspiration.json",
+    "title": "Bold Typography Trend 2025",
+    "content": "Oversized typography with gradient fills is becoming the dominant trend in web design. Brands are using massive type as the primary visual element, often filling the entire viewport.",
+    "inspiration": "This trend emphasizes clarity and impact, perfect for brands wanting to make bold statements",
+    "tags": [
+      "typography",
+      "bold",
+      "gradient",
+      "2025",
+      "web-design"
+    ],
+    "category": "design-trends",
+    "source_url": "manual-observation",
+    "reference": "Observed from FigsFromPlums posts about typography evolution",
+    "added_at": "2025-08-17T16:46:54.668198"
+  },
+  {
+    "id": "df4c5d30",
+    "source": "manual_input_image",
+    "type": "image",
+    "filename": "terry_richardson_2000s_vibe.png",
+    "filepath": "../content/manual-input/images/terry_richardson_2000s_vibe.png",
+    "title": "Terry Richardson 2000s Vibe",
+    "description": "Image uploaded: terry_richardson_2000s_vibe.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T10:03:42.087910",
+    "processing_method": "auto_from_filename"
+  },
+  {
+    "id": "9732118e",
+    "source": "manual_input_image",
+    "type": "image",
+    "filename": "raw and emotional b&w portrait photo.png",
+    "filepath": "../content/manual-input/images/raw and emotional b&w portrait photo.png",
+    "title": "Raw And Emotional B&w Portrait Photo",
+    "description": "Image uploaded: raw and emotional b&w portrait photo.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T10:03:42.087740",
+    "processing_method": "auto_from_filename"
+  },
+  {
+    "id": "sample001",
+    "source": "twitter_FigsFromPlums",
+    "type": "tweet",
+    "content": "The best design often comes from constraints. When you have unlimited options, you create nothing. When you have specific boundaries, you create magic.",
+    "url": "https://twitter.com/FigsFromPlums",
+    "timestamp": "2025-08-18T14:31:46.894298",
+    "tags": [
+      "design",
+      "creativity",
+      "constraints",
+      "inspiration"
+    ],
+    "media_urls": [],
+    "fetched_at": "2025-08-18T14:31:46.894321"
+  },
+  {
+    "id": "sample002",
+    "source": "twitter_FigsFromPlums",
+    "type": "tweet",
+    "content": "Typography is not about choosing fonts. It's about creating hierarchy, rhythm, and emotion through the arrangement of letters.",
+    "url": "https://twitter.com/FigsFromPlums",
+    "timestamp": "2025-08-18T14:31:46.894327",
+    "tags": [
+      "typography",
+      "design",
+      "visual",
+      "hierarchy"
+    ],
+    "media_urls": [],
+    "fetched_at": "2025-08-18T14:31:46.894329"
+  },
+  {
+    "id": "sample003",
+    "source": "twitter_FigsFromPlums",
+    "type": "tweet",
+    "content": "Bold gradients are making a comeback, but this time with more subtlety. Think aurora borealis, not rainbow.",
+    "url": "https://twitter.com/FigsFromPlums",
+    "timestamp": "2025-08-18T14:31:46.894331",
+    "tags": [
+      "gradient",
+      "trends",
+      "color",
+      "design"
+    ],
+    "media_urls": [],
+    "fetched_at": "2025-08-18T14:31:46.894333"
+  },
+  {
+    "id": "a050317c",
+    "source": "manual_input",
+    "type": "image",
+    "filename": "scrollSlowlyAndSee - ig - 3.png",
+    "filepath": "../content/manual-input/images/scrollSlowlyAndSee - ig - 3.png",
+    "title": "scrollSlowlyAndSee - ig - 3.png",
+    "description": "Manual image: scrollSlowlyAndSee - ig - 3.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T14:34:54.188033"
+  },
+  {
+    "id": "5940bb3b",
+    "source": "manual_input",
+    "type": "image",
+    "filename": "you'll never see this tote.png",
+    "filepath": "../content/manual-input/images/you'll never see this tote.png",
+    "title": "you'll never see this tote.png",
+    "description": "Manual image: you'll never see this tote.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T14:34:54.188203"
+  },
+  {
+    "id": "f310e2f0",
+    "source": "manual_input",
+    "type": "image",
+    "filename": "Instagram story - 6.png",
+    "filepath": "../content/manual-input/images/Instagram story - 6.png",
+    "title": "Instagram story - 6.png",
+    "description": "Manual image: Instagram story - 6.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T14:34:54.188272"
+  },
+  {
+    "id": "d7c0d401",
+    "source": "manual_input",
+    "type": "image",
+    "filename": "stop scrolling start making.png",
+    "filepath": "../content/manual-input/images/stop scrolling start making.png",
+    "title": "stop scrolling start making.png",
+    "description": "Manual image: stop scrolling start making.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T14:34:54.188343"
+  },
+  {
+    "id": "ac1c8838",
+    "source": "manual_input",
+    "type": "image",
+    "filename": "Instagram story - 1.png",
+    "filepath": "../content/manual-input/images/Instagram story - 1.png",
+    "title": "Instagram story - 1.png",
+    "description": "Manual image: Instagram story - 1.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T14:34:54.188423"
+  },
+  {
+    "id": "946a0007",
+    "source": "manual_input",
+    "type": "image",
+    "filename": "okaymaybe - ig.png",
+    "filepath": "../content/manual-input/images/okaymaybe - ig.png",
+    "title": "okaymaybe - ig.png",
+    "description": "Manual image: okaymaybe - ig.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T14:34:54.188493"
+  },
+  {
+    "id": "03d7041c",
+    "source": "manual_input",
+    "type": "image",
+    "filename": "iguagoatPosterA.png",
+    "filepath": "../content/manual-input/images/iguagoatPosterA.png",
+    "title": "iguagoatPosterA.png",
+    "description": "Manual image: iguagoatPosterA.png",
+    "tags": [],
+    "category": "visual_inspiration",
+    "added_at": "2025-08-18T14:34:54.188562"
+  }
+]
