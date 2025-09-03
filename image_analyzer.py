@@ -9,6 +9,7 @@ import json
 import asyncio
 from pathlib import Path
 from typing import Dict, List, Any, Optional
+from datetime import datetime
 import aiohttp
 import aiofiles
 
@@ -108,7 +109,7 @@ Provide 2-3 key insights that would be valuable for creative inspiration."""
         }
         
         payload = {
-            "model": "gpt-4o-mini",  # Use the vision model
+            "model": "gpt-4o",  # Use GPT-4 Omni model with vision
             "messages": [
                 {
                     "role": "user",
@@ -128,16 +129,21 @@ Provide 2-3 key insights that would be valuable for creative inspiration."""
         
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.post(self.base_url, headers=headers, json=payload) as response:
+                async with session.post(self.base_url, headers=headers, json=payload, 
+                                       timeout=aiohttp.ClientTimeout(total=30)) as response:
                     if response.status == 200:
                         result = await response.json()
                         return result['choices'][0]['message']['content'].strip()
                     else:
                         error_text = await response.text()
+                        print(f"❌ OpenAI API Error {response.status}: {error_text[:200]}")
                         raise Exception(f"API Error {response.status}: {error_text}")
         
+        except asyncio.TimeoutError:
+            print(f"⏱️ Request timed out after 30 seconds")
+            return self._generate_placeholder_analysis(prompt)
         except Exception as e:
-            print(f"Vision API error: {e}")
+            print(f"❌ Vision API error: {str(e)[:200]}")
             return self._generate_placeholder_analysis(prompt)
     
     def _generate_placeholder_analysis(self, prompt: str) -> str:
@@ -192,15 +198,16 @@ Provide 2-3 key insights that would be valuable for creative inspiration."""
         except Exception as e:
             return {'error': str(e)}
     
-    async def analyze_batch(self, image_paths: List[Path], max_concurrent: int = 3) -> Dict[str, Dict]:
+    async def analyze_batch(self, image_paths: List[Path], max_concurrent: int = 2) -> Dict[str, Dict]:
         """Analyze multiple images with concurrency control"""
         results = {}
         
-        # Process in batches to avoid rate limiting
+        # Process in batches to avoid rate limiting - reduce concurrency
         semaphore = asyncio.Semaphore(max_concurrent)
         
         async def analyze_single(path):
             async with semaphore:
+                print(f"  Analyzing: {path.name}...")
                 return await self.analyze_image(path)
         
         # Create tasks for all images
@@ -255,14 +262,14 @@ class SmartContentManager:
         with open(self.data_file, 'w') as f:
             json.dump(data, f, indent=2)
     
-    async def analyze_and_update_images(self, force_reanalyze: bool = False):
+    async def analyze_and_update_images(self, force_reanalyze: bool = False, max_images: int = 5):
         """Analyze images with AI and update database"""
         data = self._load_data()
         
         # Find images that need analysis
         existing_items = {item.get('filename'): item for item in data['items'] if item.get('type') == 'image'}
         
-        image_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'}
+        image_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}  # Remove .svg as it can't be analyzed
         images_to_analyze = []
         
         for image_file in self.images_dir.iterdir():
@@ -276,7 +283,12 @@ class SmartContentManager:
             print("No new images to analyze")
             return 0
         
-        print(f"Analyzing {len(images_to_analyze)} images with AI...")
+        # Limit number of images to analyze in one go
+        if len(images_to_analyze) > max_images:
+            print(f"Found {len(images_to_analyze)} images. Analyzing first {max_images}...")
+            images_to_analyze = images_to_analyze[:max_images]
+        else:
+            print(f"Analyzing {len(images_to_analyze)} images with AI...")
         
         # Analyze images
         analysis_results = await self.analyzer.analyze_batch(images_to_analyze)
@@ -397,6 +409,17 @@ class SmartContentManager:
 async def main():
     """Example usage of the image analyzer"""
     import os
+    from pathlib import Path
+    
+    # Try to load from .env file first (safe method)
+    env_file = Path('.env')
+    if env_file.exists():
+        with open(env_file, 'r') as f:
+            for line in f:
+                if line.startswith('OPENAI_API_KEY='):
+                    key_value = line.strip().split('=', 1)[1]
+                    os.environ['OPENAI_API_KEY'] = key_value
+                    break
     
     # Get API key from environment variable
     api_key = os.getenv('OPENAI_API_KEY')
