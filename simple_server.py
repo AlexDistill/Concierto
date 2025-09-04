@@ -34,14 +34,44 @@ except ImportError as e:
 
 # Import style vector analysis
 try:
-    from style_vector import analyze_style_vector, StyleVector
+    from style_vector_fixed import analyze_style_vector, StyleVector
     STYLE_VECTOR_AVAILABLE = True
 except ImportError as e:
-    print(f"⚠️ Style vector analysis not available: {e}")
-    STYLE_VECTOR_AVAILABLE = False
+    # Fallback to original if fixed not available
+    try:
+        from style_vector import analyze_style_vector, StyleVector
+        STYLE_VECTOR_AVAILABLE = True
+        print("⚠️ Using original style_vector (not fixed)")
+    except:
+        STYLE_VECTOR_AVAILABLE = False
+        print(f"⚠️ Style vector analysis not available: {e}")
 except Exception as e:
     print(f"❌ Error loading style vector analyzer: {e}")
     STYLE_VECTOR_AVAILABLE = False
+
+# Import semantic analyzer (honest version)
+try:
+    from semantic_analyzer import analyze_semantic
+    SEMANTIC_ANALYZER_AVAILABLE = True
+    print("✅ Semantic analyzer loaded")
+except ImportError as e:
+    print(f"⚠️ Semantic analyzer not available: {e}")
+    SEMANTIC_ANALYZER_AVAILABLE = False
+except Exception as e:
+    print(f"❌ Error loading semantic analyzer: {e}")
+    SEMANTIC_ANALYZER_AVAILABLE = False
+
+# Import brand synthesis engine
+try:
+    from synthesis_engine import BrandSynthesizer
+    SYNTHESIS_ENGINE_AVAILABLE = True
+    print("✅ Brand synthesis engine loaded")
+except ImportError as e:
+    print(f"⚠️ Brand synthesis engine not available: {e}")
+    SYNTHESIS_ENGINE_AVAILABLE = False
+except Exception as e:
+    print(f"❌ Error loading synthesis engine: {e}")
+    SYNTHESIS_ENGINE_AVAILABLE = False
 
 class SimpleContentManager:
     """Content management with optional AI analysis"""
@@ -150,6 +180,25 @@ class SimpleContentManager:
                     except Exception as e:
                         print(f"⚠️ Style vector analysis failed for {image_file.name}: {e}")
                 
+                # Add semantic analysis automatically
+                if SEMANTIC_ANALYZER_AVAILABLE:
+                    try:
+                        semantic_data = analyze_semantic(str(image_file), item.get('description', ''))
+                        if semantic_data and 'error' not in semantic_data:
+                            item['semantic_analysis'] = semantic_data
+                            
+                            # Extract key colors for quick access
+                            if 'colors' in semantic_data and 'most_common' in semantic_data['colors']:
+                                colors = semantic_data['colors']['most_common']
+                                if colors:
+                                    item['primary_color_actual'] = colors[0]['hex']
+                                    if len(colors) > 1:
+                                        item['secondary_color_actual'] = colors[1]['hex']
+                            
+                            print(f"🔍 Semantic analysis completed for {image_file.name}")
+                    except Exception as e:
+                        print(f"⚠️ Semantic analysis failed for {image_file.name}: {e}")
+                
                 new_items.append(item)
         
         if new_items:
@@ -222,1279 +271,6 @@ class SimpleContentManager:
 # Global content manager
 content_manager = SimpleContentManager()
 
-async def dashboard(request):
-    """Serve main dashboard"""
-    html = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concierto - Content Dashboard</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: #f8f9fa;
-            color: #2c3e50;
-            line-height: 1.6;
-        }
-        
-        /* Search and Filter Bar */
-        .search-bar {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .search-input {
-            flex: 1;
-            min-width: 200px;
-            padding: 0.75rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        .filter-select {
-            padding: 0.75rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-        
-        /* Projects/Collections */
-        .projects-section {
-            margin-bottom: 2rem;
-        }
-        .projects-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .project-cards {
-            display: flex;
-            gap: 1rem;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
-        }
-        .project-card {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            min-width: 180px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .project-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        .project-card.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        .add-project-btn {
-            background: #f0f0f0;
-            border: 2px dashed #ccc;
-            color: #666;
-            padding: 1rem;
-            border-radius: 8px;
-            min-width: 180px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .add-project-btn:hover {
-            border-color: #667eea;
-            color: #667eea;
-        }
-        
-        /* Upload Area */
-        .upload-zone {
-            background: white;
-            border: 3px dashed #d0d0d0;
-            border-radius: 12px;
-            padding: 3rem 2rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        .upload-zone:hover, .upload-zone.dragover {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
-        .upload-zone h3 {
-            color: #667eea;
-            margin-bottom: 1rem;
-        }
-        .upload-zone p {
-            color: #6c757d;
-        }
-        
-        /* Edit Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal.active {
-            display: flex;
-        }
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #999;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        .tag-input-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            min-height: 50px;
-        }
-        .tag-input {
-            border: none;
-            outline: none;
-            flex: 1;
-            min-width: 100px;
-        }
-        
-        /* Export Button */
-        .export-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        .export-btn:hover {
-            background: linear-gradient(45deg, #5a67d8, #6b46c1);
-        }
-        
-        /* Campaign Styles */
-        .campaign-btn {
-            background: linear-gradient(135deg, #ff6b6b, #ff8787);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        .campaign-btn:hover {
-            background: linear-gradient(135deg, #ff5252, #ff6b6b);
-        }
-        .campaigns-section {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .campaign-card {
-            background: linear-gradient(135deg, #f8f9fa, #fff);
-            border-left: 4px solid #ff6b6b;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .campaign-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .campaign-status {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        .status-concept { background: #e3f2fd; color: #1976d2; }
-        .status-active { background: #e8f5e9; color: #388e3c; }
-        .status-completed { background: #f3e5f5; color: #7b1fa2; }
-        
-        /* Campaign Modal */
-        .campaign-form {
-            display: grid;
-            gap: 1.5rem;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        .form-row.full { grid-template-columns: 1fr; }
-        .image-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 0.5rem;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-        }
-        .image-thumb {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 4px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-        }
-        .image-thumb:hover {
-            transform: scale(1.1);
-        }
-        .image-thumb.selected {
-            border-color: #ff6b6b;
-            box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
-        }
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .header p { opacity: 0.9; font-size: 1.1rem; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .stat-number { font-size: 2rem; font-weight: bold; color: #667eea; }
-        .stat-label { color: #6c757d; font-size: 0.9rem; margin-top: 0.5rem; }
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        .content-item {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: transform 0.2s ease;
-        }
-        .content-item:hover { transform: translateY(-4px); }
-        .image-preview {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background: #f1f3f4;
-        }
-        .item-content {
-            padding: 1.5rem;
-        }
-        .item-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #2c3e50;
-        }
-        .item-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        .tag {
-            background: #e9ecef;
-            color: #495057;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-        .ai-tag {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            font-weight: 500;
-        }
-        .ai-insights {
-            background: #f8f9ff;
-            border-left: 3px solid #667eea;
-            padding: 0.75rem;
-            margin-top: 1rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-        .item-description {
-            color: #6c757d;
-            font-size: 0.9rem;
-            margin: 0.5rem 0;
-            line-height: 1.4;
-        }
-        .refresh-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-bottom: 2rem;
-        }
-        .refresh-btn:hover {
-            background: #5a67d8;
-        }
-        .ai-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-        }
-        .ai-btn:hover {
-            background: linear-gradient(45deg, #5a67d8, #6b46c1);
-        }
-        .ai-btn:disabled {
-            background: #gray;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: #6c757d;
-        }
-        .empty-state h3 { margin-bottom: 1rem; }
-        .instructions {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 1rem;
-            margin: 2rem 0;
-            border-radius: 4px;
-        }
-        .loading { opacity: 0.6; pointer-events: none; }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1>🎼 Concierto</h1>
-        <p>Your Creative Content Dashboard</p>
-    </div>
-    
-    <div class="container">
-        <!-- Upload Zone -->
-        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-            <h3>📸 Drag & Drop Images Here</h3>
-            <p>or click to browse files</p>
-            <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
-        </div>
-        
-        <!-- Search and Filter -->
-        <div class="search-bar">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search by title, tags, or description..." onkeyup="debounceSearch()">
-            <select class="filter-select" id="typeFilter" onchange="applyFilters()">
-                <option value="all">All Types</option>
-                <option value="image">Images</option>
-                <option value="note">Notes</option>
-            </select>
-            <select class="filter-select" id="projectFilter" onchange="applyFilters()">
-                <option value="all">All Projects</option>
-            </select>
-            <button class="campaign-btn" onclick="showCampaigns()">📋 Campaigns</button>
-            <button class="export-btn" onclick="exportContent()">📥 Export</button>
-        </div>
-        
-        <!-- Projects/Collections -->
-        <div class="projects-section">
-            <div class="projects-header">
-                <h2>📁 Projects</h2>
-                <button class="refresh-btn" onclick="createProject()">+ New Project</button>
-            </div>
-            <div class="project-cards" id="projectCards">
-                <div class="project-card active" onclick="selectProject('all')">
-                    <h3>All Content</h3>
-                    <p id="allContentCount">0 items</p>
-                </div>
-            </div>
-        </div>
-        
-        <div style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-            <button class="refresh-btn" onclick="refreshContent()">
-                📱 Quick Scan
-            </button>
-            <button class="refresh-btn ai-btn" onclick="aiScan()" id="aiScanBtn">
-                🤖 AI Analysis
-            </button>
-        </div>
-        
-        <div class="instructions">
-            <strong>💡 Quick Start:</strong> Drop your inspiration images into the <code>content/images/</code> folder, 
-            then click "Scan for New Content" to see them here!
-        </div>
-        
-        <div class="stats" id="stats">
-            <!-- Stats will be loaded here -->
-        </div>
-        
-        <div class="content-grid" id="content">
-            <!-- Content will be loaded here -->
-        </div>
-    </div>
-
-    <script>
-        // Escape function to handle quotes in strings
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
-        
-        async function loadContent() {
-            try {
-                const response = await fetch('/api/content');
-                const data = await response.json();
-                allContent = data.items;
-                
-                // Update stats
-                const statsHtml = '<div class="stat-card">' +
-                        '<div class="stat-number">' + data.items.length + '</div>' +
-                        '<div class="stat-label">Total Items</div>' +
-                    '</div>' +
-                    '<div class="stat-card">' +
-                        '<div class="stat-number">' + data.items.filter(i => i.type === 'image').length + '</div>' +
-                        '<div class="stat-label">Images</div>' +
-                    '</div>' +
-                    '<div class="stat-card">' +
-                        '<div class="stat-number">' + data.items.filter(i => i.type === 'note').length + '</div>' +
-                        '<div class="stat-label">Notes</div>' +
-                    '</div>' +
-                    '<div class="stat-card">' +
-                        '<div class="stat-number">' + data.tags.length + '</div>' +
-                        '<div class="stat-label">Tags</div>' +
-                    '</div>';
-                document.getElementById('stats').innerHTML = statsHtml;
-                
-                // Update content
-                if (data.items.length === 0) {
-                    document.getElementById('content').innerHTML = '<div class="empty-state">' +
-                            '<h3>No content yet!</h3>' +
-                            '<p>Add some images to the content/images/ folder and click "Scan for New Content"</p>' +
-                        '</div>';
-                } else {
-                    const contentHtml = data.items.map(item => {
-                        if (item.type === 'image') {
-                            const aiInsights = item.creative_insights ? 
-                                '<div class="ai-insights">' +
-                                    '<strong>🤖 AI Insights:</strong> ' + escapeHtml(item.creative_insights) +
-                                '</div>' : '';
-                            
-                            const description = item.description ? 
-                                '<p class="item-description">' + escapeHtml(item.description) + '</p>' : '';
-                            
-                            return '<div class="content-item" onclick="editItem(\'' + item.id + '\')" style="cursor: pointer;">' +
-                                    '<img src="/' + escapeHtml(item.path) + '" alt="' + escapeHtml(item.title) + '" class="image-preview" onerror="this.style.display=\'none\'">' +
-                                    '<div class="item-content">' +
-                                        '<div class="item-title">' + escapeHtml(item.title) + '</div>' +
-                                        (description) +
-                                        (item.notes ? '<p class="item-notes" style="color: #764ba2; font-style: italic; margin: 0.5rem 0;">📝 ' + escapeHtml(item.notes) + '</p>' : '') +
-                                        '<div class="item-tags">' +
-                                            (item.ai_tags || []).map(tag => '<span class="tag ai-tag">🤖 ' + escapeHtml(tag) + '</span>').join('') +
-                                            (item.tags || []).filter(tag => !(item.ai_tags || []).includes(tag)).map(tag => '<span class="tag">' + escapeHtml(tag) + '</span>').join('') +
-                                        '</div>' +
-                                        (aiInsights) +
-                                    '</div>' +
-                                '</div>';
-                        } else {
-                            return '<div class="content-item">' +
-                                    '<div class="item-content">' +
-                                        '<div class="item-title">' + escapeHtml(item.title) + '</div>' +
-                                        '<p>' + escapeHtml(item.content ? item.content.substring(0, 150) : '') + (item.content && item.content.length > 150 ? '...' : '') + '</p>' +
-                                        '<div class="item-tags">' +
-                                            (item.tags || []).map(tag => '<span class="tag">' + escapeHtml(tag) + '</span>').join('') +
-                                        '</div>' +
-                                    '</div>' +
-                                '</div>';
-                        }
-                    }).join('');
-                    document.getElementById('content').innerHTML = contentHtml;
-                }
-            } catch (error) {
-                console.error('Failed to load content:', error);
-                document.getElementById('content').innerHTML = '<div class="empty-state"><h3>Error loading content</h3></div>';
-            }
-        }
-        
-        async function refreshContent() {
-            document.body.classList.add('loading');
-            try {
-                const response = await fetch('/api/scan', { method: 'POST' });
-                const result = await response.json();
-                console.log('Scan result:', result);
-                await loadContent();
-            } catch (error) {
-                console.error('Failed to refresh content:', error);
-            } finally {
-                document.body.classList.remove('loading');
-            }
-        }
-        
-        async function aiScan() {
-            const aiBtn = document.getElementById('aiScanBtn');
-            aiBtn.disabled = true;
-            aiBtn.textContent = '🤖 Analyzing...';
-            document.body.classList.add('loading');
-            
-            try {
-                const response = await fetch('/api/ai-scan', { method: 'POST' });
-                const result = await response.json();
-                
-                if (response.ok) {
-                    console.log('AI analysis result:', result);
-                    alert('✅ ' + (result.message || 'AI analysis completed!'));
-                    await loadContent();
-                } else {
-                    alert('❌ ' + (result.message || 'AI analysis failed'));
-                }
-            } catch (error) {
-                console.error('AI analysis failed:', error);
-                alert('❌ AI analysis failed. Check console for details.');
-            } finally {
-                aiBtn.disabled = false;
-                aiBtn.textContent = '🤖 AI Analysis';
-                document.body.classList.remove('loading');
-            }
-        }
-        
-        // Global variables
-        let allContent = [];
-        let currentProject = 'all';
-        let searchTimeout;
-        
-        // Initialize upload functionality after DOM is ready
-        function initializeUpload() {
-            const uploadZone = document.getElementById('uploadZone');
-            const fileInput = document.getElementById('fileInput');
-            
-            if (!uploadZone || !fileInput) {
-                console.error('Upload elements not found');
-                return;
-            }
-            
-            uploadZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                uploadZone.classList.add('dragover');
-            });
-            
-            uploadZone.addEventListener('dragleave', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                uploadZone.classList.remove('dragover');
-            });
-            
-            uploadZone.addEventListener('drop', async (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                uploadZone.classList.remove('dragover');
-                
-                const files = Array.from(e.dataTransfer.files);
-                console.log('Dropped files:', files);
-                await uploadFiles(files);
-            });
-            
-            // Prevent default drag behavior on document
-            document.addEventListener('dragover', (e) => {
-                e.preventDefault();
-            });
-            
-            document.addEventListener('drop', (e) => {
-                e.preventDefault();
-            });
-        }
-        
-        // Initialize upload when page loads
-        window.addEventListener('DOMContentLoaded', initializeUpload);
-        
-        async function handleFileSelect(event) {
-            const files = Array.from(event.target.files);
-            await uploadFiles(files);
-        }
-        
-        async function uploadFiles(files) {
-            console.log('Uploading files:', files);
-            const formData = new FormData();
-            let imageCount = 0;
-            
-            files.forEach(file => {
-                console.log('File type:', file.type, 'File name:', file.name);
-                if (file.type.startsWith('image/')) {
-                    formData.append('file', file);
-                    imageCount++;
-                }
-            });
-            
-            if (imageCount === 0) {
-                alert('⚠️ No image files selected. Please select JPG, PNG, GIF, or WEBP files.');
-                return;
-            }
-            
-            try {
-                console.log('Sending upload request...');
-                const response = await fetch('/api/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                console.log('Upload response status:', response.status);
-                const result = await response.json();
-                
-                if (response.ok) {
-                    console.log('Upload successful:', result);
-                    alert('✅ Uploaded ' + result.uploaded.length + ' files');
-                    await loadContent();
-                } else {
-                    console.error('Upload failed:', result);
-                    alert('❌ Upload failed: ' + (result.error || 'Unknown error'));
-                }
-            } catch (error) {
-                console.error('Upload error:', error);
-                alert('❌ Upload failed: ' + error.message);
-            }
-        }
-        
-        // Search functionality
-        function debounceSearch() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(applyFilters, 300);
-        }
-        
-        async function applyFilters() {
-            const searchQuery = document.getElementById('searchInput').value;
-            const typeFilter = document.getElementById('typeFilter').value;
-            const projectFilter = document.getElementById('projectFilter').value;
-            
-            let filtered = allContent;
-            
-            // Filter by type
-            if (typeFilter !== 'all') {
-                filtered = filtered.filter(item => item.type === typeFilter);
-            }
-            
-            // Filter by project
-            if (projectFilter !== 'all') {
-                filtered = filtered.filter(item => item.project_id === projectFilter);
-            }
-            
-            // Filter by search query
-            if (searchQuery) {
-                const query = searchQuery.toLowerCase();
-                filtered = filtered.filter(item => {
-                    const searchable = [
-                        item.title || '',
-                        item.description || '',
-                        item.notes || '',
-                        (item.tags || []).join(' '),
-                        item.creative_insights || ''
-                    ].join(' ').toLowerCase();
-                    return searchable.includes(query);
-                });
-            }
-            
-            displayContent(filtered);
-        }
-        
-        function displayContent(items) {
-            const contentDiv = document.getElementById('content');
-            
-            if (items.length === 0) {
-                contentDiv.innerHTML = 
-                    '<div class="empty-state">' +
-                        '<h3>No content found</h3>' +
-                        '<p>Try adjusting your filters or add new content</p>' +
-                    '</div>';
-                return;
-            }
-            
-            const contentHtml = items.map(item => {
-                if (item.type === 'image') {
-                    const aiInsights = item.creative_insights ? 
-                        '<div class="ai-insights">' +
-                            '<strong>🤖 AI Insights:</strong> ' + escapeHtml(item.creative_insights) +
-                        '</div>' : '';
-                    
-                    const description = item.description ? 
-                        '<p class="item-description">' + escapeHtml(item.description) + '</p>' : '';
-                    
-                    return '<div class="content-item" onclick="editItem(\'' + item.id + '\')" style="cursor: pointer;">' +
-                            '<img src="/' + escapeHtml(item.path) + '" alt="' + escapeHtml(item.title) + '" class="image-preview" onerror="this.style.display=\'none\'">' +
-                            '<div class="item-content">' +
-                                '<div class="item-title">' + escapeHtml(item.title) + '</div>' +
-                                (description) +
-                                (item.notes ? '<p class="item-notes" style="color: #764ba2; font-style: italic; margin: 0.5rem 0;">📝 ' + escapeHtml(item.notes) + '</p>' : '') +
-                                '<div class="item-tags">' +
-                                    (item.ai_tags || []).map(tag => '<span class="tag ai-tag">🤖 ' + escapeHtml(tag) + '</span>').join('') +
-                                    (item.tags || []).filter(tag => !(item.ai_tags || []).includes(tag)).map(tag => '<span class="tag">' + escapeHtml(tag) + '</span>').join('') +
-                                '</div>' +
-                                (aiInsights) +
-                            '</div>' +
-                        '</div>';
-                } else {
-                    return '<div class="content-item" onclick="editItem(\'' + item.id + '\')" style="cursor: pointer;">' +
-                            '<div class="item-content">' +
-                                '<div class="item-title">' + escapeHtml(item.title) + '</div>' +
-                                '<p>' + escapeHtml(item.content ? item.content.substring(0, 150) : '') + (item.content && item.content.length > 150 ? '...' : '') + '</p>' +
-                                '<div class="item-tags">' +
-                                    (item.tags || []).map(tag => '<span class="tag">' + escapeHtml(tag) + '</span>').join('') +
-                                '</div>' +
-                            '</div>' +
-                        '</div>';
-                }
-            }).join('');
-            
-            contentDiv.innerHTML = contentHtml;
-        }
-        
-        // Project functionality
-        async function createProject() {
-            const name = prompt('Project name:');
-            if (!name) return;
-            
-            const description = prompt('Project description (optional):');
-            
-            try {
-                const response = await fetch('/api/create-project', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, description })
-                });
-                
-                if (response.ok) {
-                    await loadContent();
-                } else {
-                    alert('❌ Failed to create project');
-                }
-            } catch (error) {
-                console.error('Error creating project:', error);
-            }
-        }
-        
-        function selectProject(projectId) {
-            currentProject = projectId;
-            document.querySelectorAll('.project-card').forEach(card => {
-                card.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
-            
-            document.getElementById('projectFilter').value = projectId;
-            applyFilters();
-        }
-        
-        // Edit functionality
-        function editItem(itemId) {
-            const item = allContent.find(i => i.id === itemId);
-            if (!item) return;
-            
-            const newNotes = prompt('Add notes:', item.notes || '');
-            if (newNotes === null) return;
-            
-            updateItem(itemId, { notes: newNotes });
-        }
-        
-        async function updateItem(itemId, updates) {
-            try {
-                const response = await fetch('/api/update-item', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: itemId, ...updates })
-                });
-                
-                if (response.ok) {
-                    await loadContent();
-                } else {
-                    alert('❌ Failed to update item');
-                }
-            } catch (error) {
-                console.error('Error updating item:', error);
-            }
-        }
-        
-        // Export functionality
-        async function exportContent() {
-            const format = confirm('Export as HTML mood board? (Cancel for JSON)') ? 'html' : 'json';
-            const projectId = currentProject === 'all' ? '' : currentProject;
-            
-            const url = '/api/export?format=' + format + (projectId ? '&project_id=' + projectId : '');
-            window.open(url, '_blank');
-        }
-        
-        
-        // Campaign functionality
-        let campaigns = [];
-        let selectedCampaignItems = [];
-        
-        async function showCampaigns() {
-            // Load campaigns
-            const response = await fetch('/api/campaigns');
-            campaigns = await response.json();
-            
-            // Show campaigns modal
-            const modal = document.createElement('div');
-            modal.className = 'modal active';
-            modal.innerHTML = '<div class="modal-content" style="max-width: 900px;">' +
-                    '<div class="modal-header">' +
-                        '<h2>📋 Campaign Concepts</h2>' +
-                        '<button class="modal-close" onclick="this.closest(\'.modal\').remove()">×</button>' +
-                    '</div>' +
-                    '<button class="campaign-btn" style="margin-bottom: 1rem;" onclick="createCampaign()">+ New Campaign</button>' +
-                    '<div id="campaignsList">' +
-                        (campaigns.map(c => 
-                            '<div class="campaign-card" onclick="viewCampaign(\'' + c.id + '\')">' +
-                                '<div style="display: flex; justify-content: space-between; align-items: start;">' +
-                                    '<div>' +
-                                        '<h3>' + c.name + '</h3>' +
-                                        '<p><strong>Client:</strong> ' + c.client + '</p>' +
-                                        '<p><strong>Objective:</strong> ' + c.objective + '</p>' +
-                                        '<p><strong>Mood Board:</strong> ' + (c.linked_items_details ? c.linked_items_details.length : 0) + ' items</p>' +
-                                    '</div>' +
-                                    '<span class="campaign-status status-' + c.status + '">' + c.status + '</span>' +
-                                '</div>' +
-                            '</div>'
-                        ).join('') || '<p>No campaigns yet. Click "New Campaign" to create one.</p>') +
-                    '</div>' +
-                '</div>';
-            document.body.appendChild(modal);
-        }
-        
-        function createCampaign() {
-            const modal = document.createElement('div');
-            modal.className = 'modal active';
-            modal.innerHTML = '<div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">' +
-                    '<div class="modal-header">' +
-                        '<h2>✨ Create Campaign Concept</h2>' +
-                        '<button class="modal-close" onclick="this.closest(\'.modal\').remove()">×</button>' +
-                    '</div>' +
-                    '<form class="campaign-form" onsubmit="saveCampaign(event)">' +
-                        '<div class="form-row">' +
-                            '<div class="form-group">' +
-                                '<label>Campaign Name *</label>' +
-                                '<input type="text" name="name" required placeholder="Summer 2025 Launch">' +
-                            '</div>' +
-                            '<div class="form-group">' +
-                                '<label>Client *</label>' +
-                                '<input type="text" name="client" required placeholder="Brand Name">' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                            '<label>Campaign Objective *</label>' +
-                            '<textarea name="objective" required rows="2" placeholder="Drive awareness for new product line targeting millennials..."></textarea>' +
-                        '</div>' +
-                        '<div class="form-row">' +
-                            '<div class="form-group">' +
-                                '<label>Target Audience</label>' +
-                                '<input type="text" name="target_audience" placeholder="25-35 urban professionals">' +
-                            '</div>' +
-                            '<div class="form-group">' +
-                                '<label>Timeline</label>' +
-                                '<input type="text" name="timeline" placeholder="Q2 2025">' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                            '<label>Key Messages</label>' +
-                            '<textarea name="key_messages" rows="2" placeholder="Innovation, sustainability, premium quality..."></textarea>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                            '<label>Tone & Voice</label>' +
-                            '<input type="text" name="tone_voice" placeholder="Bold, playful, authentic">' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                            '<label>Deliverables</label>' +
-                            '<textarea name="deliverables" rows="2" placeholder="Social media campaign, website landing page, print ads..."></textarea>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                            '<label>Budget Range</label>' +
-                            '<input type="text" name="budget_range" placeholder="$50k - $100k">' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                            '<label>Visual Inspiration Notes</label>' +
-                            '<textarea name="inspiration_notes" rows="3" placeholder="Looking for vibrant, energetic visuals with bold typography..."></textarea>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                            '<label>Select Mood Board Images</label>' +
-                            '<div class="image-selector" id="imageSelector">' +
-                                allContent.filter(item => item.type === 'image').map(item => 
-                                    '<img src="/' + item.path + '" ' +
-                                         'class="image-thumb" ' +
-                                         'data-id="' + item.id + '"' +
-                                         'onclick="toggleImageSelection(this)" ' +
-                                         'title="' + item.title + '">'
-                                ).join('') +
-                            '</div>' +
-                        '</div>' +
-                        '<button type="submit" class="campaign-btn">Create Campaign</button>' +
-                    '</form>' +
-                '</div>';
-            document.body.appendChild(modal);
-        }
-        
-        function toggleImageSelection(img) {
-            img.classList.toggle('selected');
-            const id = img.dataset.id;
-            if (img.classList.contains('selected')) {
-                if (!selectedCampaignItems.includes(id)) {
-                    selectedCampaignItems.push(id);
-                }
-            } else {
-                selectedCampaignItems = selectedCampaignItems.filter(i => i !== id);
-            }
-        }
-        
-        async function saveCampaign(event) {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-            
-            const campaignData = {};
-            for (let [key, value] of formData.entries()) {
-                campaignData[key] = value;
-            }
-            campaignData.linked_items = selectedCampaignItems;
-            
-            try {
-                const response = await fetch('/api/create-campaign', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(campaignData)
-                });
-                
-                if (response.ok) {
-                    alert('✅ Campaign created successfully!');
-                    document.querySelectorAll('.modal').forEach(m => m.remove());
-                    selectedCampaignItems = [];
-                    showCampaigns();
-                } else {
-                    alert('❌ Failed to create campaign');
-                }
-            } catch (error) {
-                console.error('Error creating campaign:', error);
-                alert('❌ Error creating campaign');
-            }
-        }
-        
-        async function viewCampaign(campaignId) {
-            const campaign = campaigns.find(c => c.id === campaignId);
-            if (!campaign) return;
-            
-            const modal = document.createElement('div');
-            modal.className = 'modal active';
-            modal.innerHTML = '<div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">' +
-                    '<div class="modal-header">' +
-                        '<h2>📋 ' + campaign.name + '</h2>' +
-                        '<button class="modal-close" onclick="this.closest(\'.modal\').remove()">×</button>' +
-                    '</div>' +
-                    '<div class="campaigns-section">' +
-                        '<p><strong>Client:</strong> ' + campaign.client + '</p>' +
-                        '<p><strong>Objective:</strong> ' + campaign.objective + '</p>' +
-                        (campaign.target_audience ? '<p><strong>Target Audience:</strong> ' + campaign.target_audience + '</p>' : '') +
-                        (campaign.key_messages ? '<p><strong>Key Messages:</strong> ' + campaign.key_messages + '</p>' : '') +
-                        (campaign.tone_voice ? '<p><strong>Tone & Voice:</strong> ' + campaign.tone_voice + '</p>' : '') +
-                        (campaign.deliverables ? '<p><strong>Deliverables:</strong> ' + campaign.deliverables + '</p>' : '') +
-                        (campaign.timeline ? '<p><strong>Timeline:</strong> ' + campaign.timeline + '</p>' : '') +
-                        (campaign.budget_range ? '<p><strong>Budget:</strong> ' + campaign.budget_range + '</p>' : '') +
-                        (campaign.inspiration_notes ? '<p><strong>Inspiration Notes:</strong> ' + campaign.inspiration_notes + '</p>' : '') +
-                        '<h3 style="margin-top: 2rem;">Mood Board</h3>' +
-                        '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem;">' +
-                            ((campaign.linked_items_details || []).map(item => 
-                                '<div>' +
-                                    '<img src="/' + item.path + '" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">' +
-                                    '<p style="font-size: 0.9rem; margin-top: 0.5rem;">' + item.title + '</p>' +
-                                '</div>'
-                            ).join('') || '<p>No mood board items selected</p>') +
-                        '</div>' +
-                        '<div style="margin-top: 2rem; display: flex; gap: 1rem;">' +
-                            '<button class="export-btn" onclick="exportCampaign(\'' + campaign.id + '\')">📅 Export Campaign Brief</button>' +
-                            '<button class="campaign-btn" onclick="generateConcepts(\'' + campaign.id + '\')">🎨 Generate Visual Concepts</button>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>';
-            document.body.appendChild(modal);
-        }
-        
-        async function generateConcepts(campaignId) {
-            const campaign = campaigns.find(c => c.id === campaignId);
-            if (!campaign) return;
-            
-            // Show loading state
-            const modal = document.createElement('div');
-            modal.className = 'modal active';
-            modal.innerHTML = '<div class="modal-content" style="max-width: 400px; text-align: center;">' +
-                    '<h2>🎨 Generating Concepts...</h2>' +
-                    '<p>Analyzing mood board themes...</p>' +
-                    '<p style="color: #666; font-size: 0.9rem;">This may take 30-60 seconds</p>' +
-                    '<div style="margin: 2rem 0;">' +
-                        '<div style="width: 50px; height: 50px; border: 4px solid #f0f0f0; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>' +
-                    '</div>' +
-                '</div>' +
-                '<style>' +
-                    '@keyframes spin {' +
-                        '0% { transform: rotate(0deg); }' +
-                        '100% { transform: rotate(360deg); }' +
-                    '}' +
-                '</style>';
-            document.body.appendChild(modal);
-            
-            try {
-                const response = await fetch('/api/generate-concepts', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ campaign_id: campaignId })
-                });
-                
-                const result = await response.json();
-                
-                // Remove loading modal
-                modal.remove();
-                
-                if (response.ok && result.success) {
-                    showGeneratedConcepts(result.concepts, campaign);
-                } else {
-                    alert('❌ ' + (result.message || 'Concept generation failed'));
-                }
-            } catch (error) {
-                modal.remove();
-                console.error('Error generating concepts:', error);
-                alert('❌ Failed to generate concepts');
-            }
-        }
-        
-        function showGeneratedConcepts(conceptData, campaign) {
-            const modal = document.createElement('div');
-            modal.className = 'modal active';
-            
-            // Parse concepts properly
-            let concepts = conceptData.concepts || [];
-            const themes = conceptData.theme_analysis || {};
-            const visuals = conceptData.visuals || [];
-            
-            modal.innerHTML = '<div class="modal-content" style="max-width: 1200px; max-height: 90vh; overflow-y: auto;">' +
-                    '<div class="modal-header">' +
-                        '<h2>🎨 Generated Concepts for ' + campaign.name + '</h2>' +
-                        '<button class="modal-close" onclick="this.closest(\'.modal\').remove()">×</button>' +
-                    '</div>' +
-                    (themes ? 
-                    '<div class="campaigns-section" style="background: linear-gradient(135deg, #f8f9fa, #fff); margin-bottom: 2rem;">' +
-                        '<h3>📊 Theme Analysis</h3>' +
-                        '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">' +
-                            (themes.mood ? '<div><strong>Overall Mood:</strong> ' + themes.mood + '</div>' : '') +
-                            (themes.common_tags ? '<div><strong>Key Elements:</strong> ' + themes.common_tags.slice(0, 5).join(', ') + '</div>' : '') +
-                            (themes.colors ? '<div><strong>Colors:</strong> ' + themes.colors + '</div>' : '') +
-                            (themes.typography ? '<div><strong>Typography:</strong> ' + themes.typography + '</div>' : '') +
-                        '</div>' +
-                        (themes.direction ? '<p style="margin-top: 1rem;"><strong>Creative Direction:</strong> ' + themes.direction + '</p>' : '') +
-                    '</div>' : '') +
-                    '<h3>💡 Creative Concepts</h3>' +
-                    (concepts.length > 0 ? concepts.map((concept, index) => 
-                        '<div class="campaign-card" style="margin-bottom: 1.5rem;">' +
-                            '<h4 style="color: #667eea;">' + (concept['Concept Name'] || ('Concept ' + (index + 1))) + '</h4>' +
-                            (concept['Visual Description'] ? 
-                                '<p><strong>Visual Description:</strong> ' + concept['Visual Description'] + '</p>' : '') +
-                            '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">' +
-                                (concept['Key Visual Elements'] ? 
-                                    '<div>' +
-                                        '<strong>Key Elements:</strong>' +
-                                        '<p style="color: #666; font-size: 0.9rem;">' + concept['Key Visual Elements'] + '</p>' +
-                                    '</div>' : '') +
-                                (concept['Color Palette'] ? 
-                                    '<div>' +
-                                        '<strong>Color Palette:</strong>' +
-                                        '<p style="color: #666; font-size: 0.9rem;">' + concept['Color Palette'] + '</p>' +
-                                    '</div>' : '') +
-                                (concept['Typography Approach'] ? 
-                                    '<div>' +
-                                        '<strong>Typography:</strong>' +
-                                        '<p style="color: #666; font-size: 0.9rem;">' + concept['Typography Approach'] + '</p>' +
-                                    '</div>' : '') +
-                            '</div>' +
-                            (concept['Layout/Composition Style'] ? 
-                                '<p style="margin-top: 1rem;"><strong>Composition:</strong> ' + concept['Layout/Composition Style'] + '</p>' : '') +
-                            (concept['Photography/Illustration Style'] ? 
-                                '<p><strong>Visual Style:</strong> ' + concept['Photography/Illustration Style'] + '</p>' : '') +
-                            (concept['Example Applications'] ? 
-                                '<p><strong>Applications:</strong> ' + concept['Example Applications'] + '</p>' : '') +
-                            (concept['Why This Works'] ? 
-                                '<div style="background: #f8f9ff; padding: 1rem; border-radius: 8px; margin-top: 1rem;">' +
-                                    '<strong>Why This Works:</strong> ' + concept['Why This Works'] +
-                                '</div>' : '') +
-                        '</div>'
-                    ).join('') : '<p>No concepts generated</p>') +
-                    (visuals.length > 0 ? 
-                        '<h3>🖼️ Generated Visual</h3>' +
-                        visuals.map(v => v.success ? 
-                            '<div style="text-align: center;">' +
-                                '<img src="' + v.image_url + '" style="max-width: 100%; border-radius: 8px; margin: 1rem 0;">' +
-                                '<p style="color: #666; font-size: 0.9rem;">' + (v.revised_prompt || 'AI-generated concept visual') + '</p>' +
-                            '</div>' : '<p>Visual generation failed: ' + v.error + '</p>').join('') : '') +
-                    '<div style="margin-top: 2rem; text-align: center;">' +
-                        '<button class="export-btn" onclick="exportConcepts(\'' + campaign.id + '\', ' + JSON.stringify(conceptData).replace(/"/g, '&quot;') + ')">' +
-                            '📥 Export Concepts' +
-                        '</button>' +
-                    '</div>' +
-                '</div>';
-            document.body.appendChild(modal);
-        }
-        
-        function exportConcepts(campaignId, conceptData) {
-            // Create downloadable concept document
-            const campaign = campaigns.find(c => c.id === campaignId);
-            const html = '<!DOCTYPE html>' +
-                '<html>' +
-                '<head>' +
-                    '<title>' + campaign.name + ' - Creative Concepts</title>' +
-                    '<style>' +
-                        'body { font-family: -apple-system, sans-serif; max-width: 1200px; margin: 0 auto; padding: 40px; }' +
-                        'h1 { color: #667eea; }' +
-                        '.concept { background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 8px; }' +
-                        '.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }' +
-                    '</style>' +
-                '</head>' +
-                '<body>' +
-                    '<h1>' + campaign.name + ' - Creative Concepts</h1>' +
-                    '<p>Generated: ' + new Date().toLocaleDateString() + '</p>' +
-                    '<div id="concepts"></div>' +
-                    '<scr' + 'ipt>' +
-                        'const data = ' + JSON.stringify(conceptData) + ';' +
-                        'document.getElementById("concepts").innerHTML = data.concepts.map(c => ' + 
-                            '"<div class=\\"concept\\"><h2>" + (c["Concept Name"] || "Concept") + "</h2>" +' +
-                            'Object.entries(c).map(([k,v]) => "<p><strong>" + k + ":</strong> " + v + "</p>").join("") +' +
-                            '"</div>"' +
-                        ').join("");' +
-                    '</scr' + 'ipt>' +
-                '</body>' +
-                '</html>';
-            
-            const blob = new Blob([html], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = campaign.name.replace(/\\s+/g, '_') + '_concepts.html';
-            a.click();
-        }
-        
-        function exportCampaign(campaignId) {
-            const campaign = campaigns.find(c => c.id === campaignId);
-            if (!campaign) return;
-            
-            // Create downloadable campaign brief
-            const campaignDetails = Object.entries(campaign)
-                .filter(([k,v]) => v && !['id', 'linked_items', 'linked_items_details', 'created_at', 'updated_at'].includes(k))
-                .map(([key, value]) => '<p><strong>' + key.replace(/_/g, ' ').replace(/\\b\\w/g, l => l.toUpperCase()) + ':</strong> ' + value + '</p>')
-                .join('');
-            
-            const moodBoardImages = (campaign.linked_items_details || [])
-                .map(item => '<img src="' + window.location.origin + '/' + item.path + '" alt="' + item.title + '">')
-                .join('');
-            
-            const briefHtml = '<!DOCTYPE html>' +
-                '<html>' +
-                '<head>' +
-                    '<title>' + campaign.name + ' - Campaign Brief</title>' +
-                    '<style>' +
-                        'body { font-family: -apple-system, sans-serif; max-width: 800px; margin: 0 auto; padding: 40px; }' +
-                        'h1 { color: #ff6b6b; }' +
-                        '.mood-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }' +
-                        '.mood-board img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; }' +
-                    '</style>' +
-                '</head>' +
-                '<body>' +
-                    '<h1>' + campaign.name + '</h1>' +
-                    '<p><strong>Client:</strong> ' + campaign.client + '</p>' +
-                    '<p><strong>Date:</strong> ' + new Date().toLocaleDateString() + '</p>' +
-                    '<hr>' +
-                    '<h2>Campaign Details</h2>' +
-                    campaignDetails +
-                    '<h2>Visual Mood Board</h2>' +
-                    '<div class="mood-board">' + moodBoardImages + '</div>' +
-                '</body>' +
-                '</html>';
-            
-            const blob = new Blob([briefHtml], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = campaign.name.replace(/\s+/g, '_') + '_brief.html';
-            a.click();
-        }
-        
-        // Load content on page load
-        loadContent();
-    </script>
-</body>
-</html>
-    """
-    return web.Response(text=html, content_type='text/html')
 
 async def working_dashboard(request):
     """Serve working dashboard"""
@@ -1707,6 +483,33 @@ async def working_dashboard(request):
             flex-wrap: wrap;
             gap: 0.5rem;
             margin-top: 0.5rem;
+        }
+        
+        /* Modal Action Buttons */
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .action-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.2s ease;
+        }
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        .action-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
         
         /* Edit Form Styles */
@@ -2012,6 +815,62 @@ async def working_dashboard(request):
             width: 24px;
             height: 24px;
         }
+        
+        /* Brand Cards */
+        .brand-section {
+            margin: 2rem 0;
+        }
+        .brand-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .brand-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+        .brand-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .brand-colors {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .color-swatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .brand-meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        .brand-accessibility {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .accessibility-pass {
+            background: #d4edda;
+            color: #155724;
+        }
+        .accessibility-warn {
+            background: #fff3cd;
+            color: #856404;
+        }
     </style>
 </head>
 <body>
@@ -2027,6 +886,7 @@ async def working_dashboard(request):
             <button class="refresh-btn" onclick="location.reload()">🔄 Refresh Page</button>
             <button class="refresh-btn" style="background: linear-gradient(45deg, #667eea, #764ba2);" onclick="runAIAnalysis()">🤖 Run AI Analysis</button>
             <button class="refresh-btn" style="background: linear-gradient(45deg, #ff9500, #ff6b35);" onclick="runStyleAnalysis()">🎨 Style Analysis</button>
+            <button class="refresh-btn" style="background: linear-gradient(45deg, #ff6b35, #f093fb);" onclick="toggleBrandSynthesis()">🎨 Brand Synthesis</button>
             <button class="campaign-btn" onclick="loadCampaigns()">📋 View Campaigns</button>
         </div>
         
@@ -2049,6 +909,80 @@ async def working_dashboard(request):
             </div>
         </div>
         
+        <!-- Brand Synthesis Interface -->
+        <div id="brandSynthesisPanel" style="display: none; background: #f8f9ff; border: 2px solid #667eea; border-radius: 12px; padding: 2rem; margin-bottom: 2rem;">
+            <h3 style="color: #667eea; margin-bottom: 1.5rem;">🎨 Create Brand from Selected Images</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <!-- Left: Image Selection -->
+                <div>
+                    <h4>Select Images (2-5 recommended):</h4>
+                    <div id="imageSelector" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; padding: 1rem;">
+                        <p style="color: #666;">Loading images...</p>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 0.5rem;">
+                        Selected: <span id="selectedCount">0</span> images
+                    </p>
+                </div>
+                
+                <!-- Right: Brand Brief -->
+                <div>
+                    <h4>Brand Brief:</h4>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Brand Name:</label>
+                            <input type="text" id="brandName" placeholder="e.g. Creative Studio" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Category:</label>
+                            <select id="brandCategory" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="">Select category...</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Creative Agency">Creative Agency</option>
+                                <option value="Fashion">Fashion</option>
+                                <option value="Food & Beverage">Food & Beverage</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Education">Education</option>
+                                <option value="Consulting">Consulting</option>
+                                <option value="Retail">Retail</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Target Audience:</label>
+                            <input type="text" id="brandAudience" placeholder="e.g. Young professionals, Designers" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem;">
+                                <input type="checkbox" id="generateAlternatives" checked> Generate 3 alternatives
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+                <button class="refresh-btn" onclick="synthesizeBrand()" id="synthesizeBtn" style="background: linear-gradient(45deg, #667eea, #764ba2); padding: 1rem 2rem; font-size: 1.1rem;">
+                    🎨 Generate Brand System
+                </button>
+                <button class="refresh-btn" onclick="toggleBrandSynthesis()" style="background: #6c757d;">
+                    Cancel
+                </button>
+            </div>
+            
+            <div id="synthesisStatus" style="margin-top: 1rem; text-align: center; display: none;">
+                <p style="color: #667eea;">🔄 Generating brand system...</p>
+            </div>
+        </div>
+        
+        <!-- Generated Brands Section -->
+        <div class="brand-section" id="brandSection" style="display: none;">
+            <h2>🎨 Generated Brand Systems</h2>
+            <div class="brand-cards" id="brandCards">
+                <!-- Brands will be loaded here -->
+            </div>
+        </div>
+
         <div id="content" class="content-grid">
             <div class="loading">Loading content...</div>
         </div>
@@ -2147,6 +1081,14 @@ async def working_dashboard(request):
                 
                 // Display content
                 displayContent(data.items || []);
+                
+                // Load brands if they exist
+                if (data.brands && data.brands.length > 0) {
+                    console.log('Loading brands:', data.brands.length, 'brands found');
+                    loadBrands(data.brands);
+                } else {
+                    console.log('No brands found in data:', data);
+                }
                 
                 // Show success message
                 statusDiv.innerHTML = '<div class="success">✅ Content loaded successfully!</div>';
@@ -2522,8 +1464,63 @@ async def working_dashboard(request):
                 modalContent += renderStyleVectorModal(item.style_vector, item.brand_tokens);
             }
             
-            // Enhanced Multi-Agent Analysis or Regular AI Insights
-            if (item.enhanced_analysis) {
+            // Semantic Analysis (honest, measurable data)
+            if (item.semantic_analysis) {
+                const semantic = item.semantic_analysis;
+                modalContent += `
+                    <div class="modal-section">
+                        <h3>🔬 Semantic Analysis</h3>
+                        <p><strong>Analysis Type:</strong> Honest semantic analysis (measurable data only)</p>
+                        
+                        ${semantic.colors ? `
+                        <div style="margin: 1rem 0;">
+                            <h4>📊 Color Analysis</h4>
+                            ${semantic.colors.most_common ? `
+                            <p><strong>Most Common Colors:</strong></p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0;">
+                                ${semantic.colors.most_common.slice(0, 6).map(color => 
+                                    `<div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <div style="width: 20px; height: 20px; background: ${color.hex}; border: 1px solid #ccc; border-radius: 3px;"></div>
+                                        <span style="font-size: 0.9em;">${color.hex} (${color.percentage}%)</span>
+                                    </div>`
+                                ).join('')}
+                            </div>
+                            ` : ''}
+                            ${semantic.colors.total_unique_colors ? `<p><strong>Total Unique Colors:</strong> ${semantic.colors.total_unique_colors}</p>` : ''}
+                        </div>
+                        ` : ''}
+                        
+                        ${semantic.composition ? `
+                        <div style="margin: 1rem 0;">
+                            <h4>📐 Composition</h4>
+                            <p><strong>Dimensions:</strong> ${semantic.composition.width}×${semantic.composition.height} (${semantic.composition.orientation})</p>
+                            <p><strong>Aspect Ratio:</strong> ${semantic.composition.aspect_ratio}</p>
+                            <p><strong>Size Category:</strong> ${semantic.composition.size_category}</p>
+                        </div>
+                        ` : ''}
+                        
+                        ${semantic.visual_properties ? `
+                        <div style="margin: 1rem 0;">
+                            <h4>✨ Visual Properties (Measured)</h4>
+                            <p><strong>Brightness:</strong> ${semantic.visual_properties.brightness} (${semantic.visual_properties.darkness})</p>
+                            <p><strong>Contrast:</strong> ${semantic.visual_properties.contrast}</p>
+                            <p><strong>Saturation:</strong> ${semantic.visual_properties.saturation}</p>
+                            <p><strong>Grayscale:</strong> ${semantic.visual_properties.is_grayscale ? 'Yes' : 'No'}</p>
+                        </div>
+                        ` : ''}
+                        
+                        ${semantic.description_keywords && semantic.description_keywords.length > 0 ? `
+                        <div style="margin: 1rem 0;">
+                            <h4>🔤 Description Keywords</h4>
+                            <p>${semantic.description_keywords.join(', ')}</p>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+            
+            // Multi-Agent Analysis (legacy support)
+            if (item.enhanced_analysis && item.enhanced_analysis.enhanced_description) {
                 const enhanced = item.enhanced_analysis;
                 modalContent += `
                     <div class="modal-section">
@@ -2531,54 +1528,6 @@ async def working_dashboard(request):
                         <p><strong>Enhanced Description:</strong><br>${escapeHtml(enhanced.enhanced_description || '')}</p>
                     </div>
                 `;
-                
-                if (enhanced.strategic_insights) {
-                    modalContent += `
-                        <div class="modal-section">
-                            <h3>🎯 Strategic Brand Insights</h3>
-                            <p>${escapeHtml(enhanced.strategic_insights)}</p>
-                        </div>
-                    `;
-                }
-                
-                if (enhanced.narrative_analysis) {
-                    modalContent += `
-                        <div class="modal-section">
-                            <h3>📖 Visual Storytelling Analysis</h3>
-                            <p>${escapeHtml(enhanced.narrative_analysis)}</p>
-                        </div>
-                    `;
-                }
-                
-                if (enhanced.design_applications) {
-                    modalContent += `
-                        <div class="modal-section">
-                            <h3>🎨 UI/UX Design Applications</h3>
-                            <p>${escapeHtml(enhanced.design_applications)}</p>
-                        </div>
-                    `;
-                }
-                
-                if (enhanced.innovation_potential) {
-                    modalContent += `
-                        <div class="modal-section">
-                            <h3>💡 Innovation Catalyst Insights</h3>
-                            <p>${escapeHtml(enhanced.innovation_potential)}</p>
-                        </div>
-                    `;
-                }
-                
-                if (enhanced.confidence_score) {
-                    modalContent += `
-                        <div class="modal-section">
-                            <h3>📊 Analysis Quality</h3>
-                            <p><strong>Confidence Score:</strong> ${Math.round(enhanced.confidence_score * 100)}%<br>
-                            <strong>Analysis Depth:</strong> ${enhanced.analysis_depth || 'Standard'}<br>
-                            <strong>Agent Collaboration:</strong> ${enhanced.agent_collaboration ? 'Yes' : 'No'}</p>
-                        </div>
-                    `;
-                }
-                
             } else if (item.creative_insights) {
                 modalContent += `
                     <div class="modal-section">
@@ -2624,6 +1573,7 @@ async def working_dashboard(request):
                     </div>
                 `;
             }
+            
             
             modalBody.innerHTML = modalContent;
             modal.classList.add('show');
@@ -2799,6 +1749,7 @@ async def working_dashboard(request):
             }
         });
         
+        
         // Close edit modal with Escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
@@ -2822,6 +1773,355 @@ async def working_dashboard(request):
                 loadCampaigns();
             });
         }
+        
+        // Brand Synthesis Functions
+        let selectedImages = [];
+        
+        function toggleBrandSynthesis() {
+            const panel = document.getElementById('brandSynthesisPanel');
+            const isVisible = panel.style.display !== 'none';
+            
+            if (!isVisible) {
+                panel.style.display = 'block';
+                loadImageSelector();
+            } else {
+                panel.style.display = 'none';
+                selectedImages = [];
+                updateSelectedCount();
+            }
+        }
+        
+        async function loadImageSelector() {
+            const selector = document.getElementById('imageSelector');
+            
+            try {
+                const response = await fetch('/api/content');
+                const data = await response.json();
+                const images = data.items.filter(item => 
+                    item.type === 'image' && item.style_vector
+                );
+                
+                if (images.length === 0) {
+                    selector.innerHTML = '<p style="color: #666;">No images with style vectors found. Run Style Analysis first.</p>';
+                    return;
+                }
+                
+                selector.innerHTML = images.map(item => `
+                    <div style="display: flex; align-items: center; padding: 0.5rem; border-bottom: 1px solid #eee;">
+                        <input type="checkbox" 
+                               id="img-${item.id}" 
+                               value="${item.id}" 
+                               onchange="toggleImageSelection('${item.id}')"
+                               style="margin-right: 1rem;">
+                        <img src="${item.path}" 
+                             alt="${item.title}" 
+                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; margin-right: 1rem;">
+                        <div>
+                            <div style="font-weight: bold; font-size: 0.9rem;">${item.title}</div>
+                            <div style="color: #666; font-size: 0.8rem;">${item.filename}</div>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                selector.innerHTML = '<p style="color: #ff0000;">Error loading images</p>';
+                console.error('Error loading images:', error);
+            }
+        }
+        
+        function toggleImageSelection(imageId) {
+            const checkbox = document.getElementById(`img-${imageId}`);
+            
+            if (checkbox.checked) {
+                if (!selectedImages.includes(imageId)) {
+                    selectedImages.push(imageId);
+                }
+            } else {
+                const index = selectedImages.indexOf(imageId);
+                if (index > -1) {
+                    selectedImages.splice(index, 1);
+                }
+            }
+            
+            updateSelectedCount();
+        }
+        
+        function updateSelectedCount() {
+            const countElement = document.getElementById('selectedCount');
+            countElement.textContent = selectedImages.length;
+            
+            const synthesizeBtn = document.getElementById('synthesizeBtn');
+            synthesizeBtn.disabled = selectedImages.length < 2;
+            
+            if (selectedImages.length < 2) {
+                synthesizeBtn.style.opacity = '0.5';
+                synthesizeBtn.style.cursor = 'not-allowed';
+            } else {
+                synthesizeBtn.style.opacity = '1';
+                synthesizeBtn.style.cursor = 'pointer';
+            }
+        }
+        
+        async function synthesizeBrand() {
+            if (selectedImages.length < 2) {
+                alert('Please select at least 2 images');
+                return;
+            }
+            
+            const brandName = document.getElementById('brandName').value || 'Untitled Brand';
+            const brandCategory = document.getElementById('brandCategory').value;
+            const brandAudience = document.getElementById('brandAudience').value;
+            const generateAlternatives = document.getElementById('generateAlternatives').checked;
+            
+            // Show loading state
+            const statusDiv = document.getElementById('synthesisStatus');
+            const synthesizeBtn = document.getElementById('synthesizeBtn');
+            
+            statusDiv.style.display = 'block';
+            synthesizeBtn.disabled = true;
+            synthesizeBtn.style.opacity = '0.5';
+            
+            try {
+                const brief = {
+                    name: brandName,
+                    category: brandCategory,
+                    audience: brandAudience
+                };
+                
+                const response = await fetch('/api/synthesize', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        image_ids: selectedImages,
+                        brief: brief,
+                        generate_alternatives: generateAlternatives
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    statusDiv.innerHTML = '<p style="color: #28a745;">✅ Brand system created successfully!</p>';
+                    
+                    // Show the generated brand
+                    setTimeout(() => {
+                        alert(`Brand "${result.brand.name}" created successfully! Refresh the page to see all brands.`);
+                        toggleBrandSynthesis(); // Close the panel
+                        loadContent(); // Refresh content
+                    }, 1000);
+                } else {
+                    statusDiv.innerHTML = `<p style="color: #dc3545;">❌ Error: ${result.error}</p>`;
+                }
+                
+            } catch (error) {
+                statusDiv.innerHTML = `<p style="color: #dc3545;">❌ Error: ${error.message}</p>`;
+                console.error('Synthesis error:', error);
+            }
+            
+            // Re-enable button
+            setTimeout(() => {
+                synthesizeBtn.disabled = false;
+                synthesizeBtn.style.opacity = '1';
+                statusDiv.style.display = 'none';
+            }, 3000);
+        }
+        
+        function loadBrands(brands) {
+            console.log('loadBrands called with:', brands.length, 'brands');
+            const brandSection = document.getElementById('brandSection');
+            const brandCards = document.getElementById('brandCards');
+            
+            if (!brandSection) {
+                console.error('brandSection element not found!');
+                return;
+            }
+            if (!brandCards) {
+                console.error('brandCards element not found!');
+                return;
+            }
+            
+            if (!brands || brands.length === 0) {
+                console.log('No brands to display, hiding section');
+                brandSection.style.display = 'none';
+                return;
+            }
+            
+            // Group brands by base name and separate variants
+            const brandGroups = {};
+            brands.forEach(brand => {
+                const baseName = brand.name;
+                if (!brandGroups[baseName]) {
+                    brandGroups[baseName] = { main: null, variants: [] };
+                }
+                
+                if (brand.variant) {
+                    console.log('Found variant:', brand.name, 'variant', brand.variant);
+                    brandGroups[baseName].variants.push(brand);
+                } else {
+                    console.log('Found main brand:', brand.name);
+                    brandGroups[baseName].main = brand;
+                }
+            });
+            
+            console.log('Brand groups:', brandGroups);
+            
+            // Store brand data globally for click handlers
+            window.brandData = brandGroups;
+            
+            // Create cards for main brands only
+            const brandCardsHtml = Object.values(brandGroups)
+                .filter(group => group.main)
+                .map((group, index) => {
+                    const brand = group.main;
+                    const hasVariants = group.variants.length > 0;
+                    
+                    return `
+                        <div class="brand-card" onclick="console.log('Brand card clicked:', '${brand.name}'); showBrandFromData('${brand.name}')">
+                            <h3 style="margin: 0 0 1rem 0; color: #333;">${brand.name}</h3>
+                            <div class="brand-meta">
+                                Created: ${new Date(brand.created_at).toLocaleDateString()}
+                                ${brand.brief && brand.brief.category ? ` • ${brand.brief.category}` : ''}
+                                ${hasVariants ? ` • ${group.variants.length} variants` : ''}
+                            </div>
+                            
+                            <div class="brand-colors">
+                                ${Object.entries(brand.colors).slice(0, 5).map(([name, color]) => 
+                                    `<div class="color-swatch" style="background: ${color};" title="${name}: ${color}"></div>`
+                                ).join('')}
+                            </div>
+                            
+                            <div style="font-size: 0.9rem; margin: 0.5rem 0;">
+                                <strong>Typography:</strong> ${brand.typography.heading.family.split(',')[0]}
+                            </div>
+                            
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; margin: 0.5rem 0;">
+                                ${brand.personality.traits.slice(0, 3).map(trait => 
+                                    `<span style="background: #f0f0f0; color: #333; padding: 0.125rem 0.375rem; border-radius: 8px; font-size: 0.75rem;">${trait}</span>`
+                                ).join('')}
+                            </div>
+                            
+                            <div class="brand-accessibility ${brand.accessibility.passed ? 'accessibility-pass' : 'accessibility-warn'}">
+                                ${brand.accessibility.passed ? '✅ WCAG AA' : '⚠️ Issues'}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            
+            console.log('Setting brand cards HTML and showing section');
+            brandCards.innerHTML = brandCardsHtml;
+            brandSection.style.display = 'block';
+            console.log('Brands should now be visible!');
+        }
+        
+        function showBrandFromData(brandName) {
+            console.log('showBrandFromData called for:', brandName);
+            if (!window.brandData || !window.brandData[brandName]) {
+                console.error('Brand data not found for:', brandName);
+                return;
+            }
+            
+            const brandGroup = window.brandData[brandName];
+            const brand = brandGroup.main;
+            const alternatives = brandGroup.variants;
+            
+            console.log('Found brand:', brand.name, 'with', alternatives.length, 'variants');
+            showBrandResult(brand, alternatives);
+        }
+        
+        function showBrandResult(brand, alternatives = []) {
+            console.log('showBrandResult called with:', brand.name, 'and', alternatives.length, 'alternatives');
+            const modal = document.createElement('div');
+            modal.className = 'modal show';
+            
+            const altSection = alternatives.length > 0 ? `
+                <h3>🔄 Alternatives Generated</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                    ${alternatives.map((alt, i) => `
+                        <div style="border: 1px solid #ddd; border-radius: 8px; padding: 1rem;">
+                            <h4>Variant ${alt.variant}</h4>
+                            <div style="display: flex; gap: 0.5rem; margin: 0.5rem 0;">
+                                ${Object.entries(alt.colors).slice(0, 3).map(([name, color]) => `
+                                    <div style="width: 30px; height: 30px; background: ${color}; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>
+                                `).join('')}
+                            </div>
+                            <p style="font-size: 0.9rem; margin: 0.5rem 0;">${alt.typography.heading.family.split(',')[0]}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            ` : '';
+            
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 800px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2 style="color: #667eea; margin: 0;">🎨 ${brand.name}</h2>
+                        <button onclick="this.closest('.modal').remove()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #999;">×</button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+                        <div>
+                            <h3>🎨 Color Palette</h3>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                                ${Object.entries(brand.colors).map(([name, color]) => `
+                                    <div style="text-align: center;">
+                                        <div style="width: 60px; height: 60px; background: ${color}; border-radius: 8px; margin: 0 auto 0.5rem; border: 2px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.15);"></div>
+                                        <div style="font-size: 0.8rem; font-weight: bold;">${name}</div>
+                                        <div style="font-size: 0.7rem; color: #666;">${color}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3>📝 Typography</h3>
+                            <div style="margin-bottom: 1rem;">
+                                <strong>Heading:</strong><br>
+                                <span style="font-family: ${brand.typography.heading.family}; font-size: 1.2rem; font-weight: ${brand.typography.heading.weight};">
+                                    ${brand.typography.heading.family.split(',')[0]}
+                                </span>
+                            </div>
+                            <div>
+                                <strong>Body:</strong><br>
+                                <span style="font-family: ${brand.typography.body.family}; font-weight: ${brand.typography.body.weight};">
+                                    ${brand.typography.body.family.split(',')[0]}
+                                </span>
+                            </div>
+                            
+                            <h3 style="margin-top: 1.5rem;">🧠 Personality</h3>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0;">
+                                ${brand.personality.traits.map(trait => `
+                                    <span style="background: #e3f2fd; color: #1976d2; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8rem;">${trait}</span>
+                                `).join('')}
+                            </div>
+                            <p style="font-style: italic; color: #666; margin-top: 1rem;">"${brand.personality.voice}"</p>
+                        </div>
+                    </div>
+                    
+                    <div style="background: ${brand.accessibility.passed ? '#d4edda' : '#f8d7da'}; border: 1px solid ${brand.accessibility.passed ? '#c3e6cb' : '#f5c6cb'}; border-radius: 4px; padding: 1rem; margin: 2rem 0;">
+                        <h3>♿ Accessibility: ${brand.accessibility.passed ? '✅ Passed' : '⚠️ Issues Found'}</h3>
+                        ${brand.accessibility.issues.length > 0 ? `
+                            <ul style="margin: 0.5rem 0;">
+                                ${brand.accessibility.issues.slice(0, 2).map(issue => `<li style="font-size: 0.9rem;">${issue}</li>`).join('')}
+                            </ul>
+                        ` : '<p style="margin: 0;">All WCAG AA contrast requirements met!</p>'}
+                    </div>
+                    
+                    ${altSection}
+                    
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button onclick="this.closest('.modal').remove()" style="background: #667eea; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        // Initialize page
+        loadContent();
     </script>
 </body>
 </html>
@@ -2860,6 +2160,8 @@ async def api_update_item(request):
                     item['tags'] = item_data['tags']
                 if 'title' in item_data:
                     item['title'] = item_data['title']
+                if 'description' in item_data:
+                    item['description'] = item_data['description']
                 if 'project_id' in item_data:
                     item['project_id'] = item_data['project_id']
                 
@@ -3257,20 +2559,15 @@ async def run_agent_analysis(agent_type, item, basic_analysis, previous_analysis
         
         prompt = agent_prompts.get(agent_type, '')
         
-        # For demo purposes, return enhanced analysis based on agent type
-        if agent_type == 'brand_strategy':
-            return f"**Strategic Brand Analysis**: This visual asset demonstrates strong commercial potential for cultural technology sectors, particularly appealing to digitally-native audiences aged 25-45. The aesthetic positioning suggests premium brand alignment with innovation-focused messaging."
-            
-        elif agent_type == 'visual_storytelling':
-            return f"**Visual Narrative Structure**: Employs sophisticated layered storytelling technique with progressive complexity that guides viewer engagement. The composition creates emotional journey from curiosity through exploration to understanding, ideal for brand narratives focused on discovery and transformation."
-            
-        elif agent_type == 'ui_ux_design':
-            return f"**Interface Design Applications**: Color hierarchy and geometric patterns translate excellently to digital interfaces. High contrast ratios ensure accessibility compliance while abstract elements provide modern interaction metaphors for progressive web applications and creative industry tools."
-            
-        elif agent_type == 'innovation_catalyst':
-            return f"**Innovation Opportunities**: This aesthetic approach represents emerging 'Controlled Chaos Design' trend - structured randomness that appeals to AI-native generation. Applications include: generative art platforms, creative AI tools, immersive brand experiences, and next-generation design systems that adapt to user behavior."
-            
-        return f"Enhanced {agent_type} analysis completed"
+        # Simple enhanced analysis without brand hallucination
+        analysis_types = {
+            'brand_strategy': "Enhanced description with focus on visual appeal and potential applications.",
+            'visual_storytelling': "Analysis of visual narrative and composition elements.",
+            'ui_ux_design': "Interface design considerations and usability aspects.",
+            'innovation_catalyst': "Creative potential and emerging design trends."
+        }
+        
+        return f"Enhanced {agent_type} analysis: {analysis_types.get(agent_type, 'General enhanced analysis completed')}"
         
     except Exception as e:
         print(f"Agent analysis error ({agent_type}): {e}")
@@ -3280,16 +2577,10 @@ async def synthesize_agent_insights(item, agent_analyses):
     """Synthesize insights from all agents into comprehensive analysis"""
     try:
         synthesis = {
-            'enhanced_description': f"**Multi-Agent Enhanced Description**: {item.get('description', '')} This comprehensive analysis reveals sophisticated design thinking across multiple disciplines, demonstrating both immediate commercial viability and long-term innovation potential.",
-            
-            'strategic_insights': agent_analyses.get('brand_strategy', ''),
-            'narrative_analysis': agent_analyses.get('visual_storytelling', ''),
-            'design_applications': agent_analyses.get('ui_ux_design', ''),
-            'innovation_potential': agent_analyses.get('innovation_catalyst', ''),
+            'enhanced_description': f"Multi-Agent Enhanced Description: {item.get('description', '')} Enhanced with multiple analytical perspectives.",
             
             'enhanced_tags': item.get('ai_tags', []) + [
-                'multi-agent analyzed', 'strategic potential', 'narrative structure', 
-                'interface applications', 'innovation catalyst', 'commercial viability'
+                'multi-agent analyzed', 'enhanced description'
             ],
             
             'confidence_score': 0.92,
@@ -3622,6 +2913,65 @@ async def api_batch_multi_agent_analysis(request):
         print(f"Batch multi-agent analysis error: {e}")
         return web.json_response({"error": str(e)}, status=500)
 
+async def api_synthesize_brand(request):
+    """API endpoint to synthesize a brand from selected images"""
+    try:
+        # Check if synthesis engine is available
+        if not SYNTHESIS_ENGINE_AVAILABLE:
+            return web.json_response({
+                "error": "Brand synthesis engine not available"
+            }, status=503)
+        
+        # Get request data
+        req_data = await request.json()
+        image_ids = req_data.get('image_ids', [])
+        brief = req_data.get('brief', None)
+        weights = req_data.get('weights', None)
+        generate_alternatives = req_data.get('generate_alternatives', False)
+        
+        if not image_ids:
+            return web.json_response({
+                "error": "No image IDs provided"
+            }, status=400)
+        
+        # Create synthesizer
+        synthesizer = BrandSynthesizer()
+        
+        # Generate brand specification
+        brand_spec = synthesizer.synthesize(image_ids, brief, weights)
+        
+        # Generate alternatives if requested
+        alternatives = []
+        if generate_alternatives:
+            alternatives = synthesizer.generate_alternatives(brand_spec, count=3)
+        
+        # Save to data.json
+        data = content_manager._load_data()
+        if 'brands' not in data:
+            data['brands'] = []
+        
+        # Add main brand and alternatives
+        data['brands'].append(brand_spec)
+        for alt in alternatives:
+            data['brands'].append(alt)
+        
+        content_manager._save_data(data)
+        
+        return web.json_response({
+            "success": True,
+            "brand": brand_spec,
+            "alternatives": alternatives,
+            "message": f"Brand '{brand_spec.get('name', 'Untitled')}' synthesized successfully"
+        })
+        
+    except ValueError as e:
+        return web.json_response({"error": str(e)}, status=400)
+    except Exception as e:
+        print(f"Error in brand synthesis: {e}")
+        import traceback
+        traceback.print_exc()
+        return web.json_response({"error": str(e)}, status=500)
+
 async def api_style_analysis(request):
     """API endpoint to analyze or re-analyze style vectors for images"""
     try:
@@ -3685,6 +3035,7 @@ async def api_style_analysis(request):
         print(f"Style analysis error: {e}")
         return web.json_response({"error": str(e)}, status=500)
 
+
 def create_app():
     """Create the web application"""
     app = web.Application()
@@ -3694,7 +3045,6 @@ def create_app():
     
     # Routes
     app.router.add_get('/', working_dashboard)
-    app.router.add_get('/old', dashboard)
     app.router.add_get('/api/content', api_content)
     app.router.add_post('/api/scan', api_scan)
     app.router.add_post('/api/ai-scan', api_ai_scan)
@@ -3708,6 +3058,7 @@ def create_app():
     app.router.add_post('/api/link-campaign-items', api_link_campaign_items)
     app.router.add_get('/api/campaigns', api_get_campaigns)
     app.router.add_post('/api/generate-concepts', api_generate_concepts)
+    app.router.add_post('/api/synthesize', api_synthesize_brand)
     app.router.add_get('/api/search', api_search)
     app.router.add_get('/api/export', api_export)
     app.router.add_post('/api/upload', api_upload)
