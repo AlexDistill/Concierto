@@ -73,6 +73,18 @@ except Exception as e:
     print(f"❌ Error loading synthesis engine: {e}")
     SYNTHESIS_ENGINE_AVAILABLE = False
 
+# Import brand preview generator
+try:
+    from brand_preview import BrandPreviewGenerator
+    BRAND_PREVIEW_AVAILABLE = True
+    print("✅ Brand preview generator loaded")
+except ImportError as e:
+    print(f"⚠️ Brand preview generator not available: {e}")
+    BRAND_PREVIEW_AVAILABLE = False
+except Exception as e:
+    print(f"❌ Error loading brand preview generator: {e}")
+    BRAND_PREVIEW_AVAILABLE = False
+
 class SimpleContentManager:
     """Content management with optional AI analysis"""
     
@@ -822,8 +834,8 @@ async def working_dashboard(request):
         }
         .brand-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
             margin-top: 1rem;
         }
         .brand-card {
@@ -1903,13 +1915,39 @@ async def working_dashboard(request):
                 const result = await response.json();
                 
                 if (result.success) {
-                    statusDiv.innerHTML = '<p style="color: #28a745;">✅ Brand system created successfully!</p>';
+                    statusDiv.innerHTML = `
+                        <div style="color: #28a745; margin-bottom: 1rem;">✅ Brand system created successfully!</div>
+                        <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                            <h4 style="margin: 0 0 0.5rem 0;">${result.brand.name}</h4>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                                <button onclick="window.open('/api/brand-preview/${result.brand.id}', '_blank')" 
+                                        style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                                    📄 View Brand Guide
+                                </button>
+                                <button onclick="downloadTokens('${result.brand.id}', '${result.brand.name}')"
+                                        style="background: #6f42c1; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                                    🎨 Download Figma Tokens
+                                </button>
+                            </div>
+                            ${result.alternatives && result.alternatives.length > 0 ? `
+                                <div>
+                                    <strong>Alternatives:</strong>
+                                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                                        ${result.alternatives.map(alt => `
+                                            <button onclick="window.open('/api/brand-preview/${alt.id}', '_blank')" 
+                                                    style="background: #6c757d; color: white; border: none; padding: 0.25rem 0.75rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                                                ${alt.name}
+                                            </button>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
                     
-                    // Show the generated brand
+                    // Refresh content to show new brands
                     setTimeout(() => {
-                        alert(`Brand "${result.brand.name}" created successfully! Refresh the page to see all brands.`);
-                        toggleBrandSynthesis(); // Close the panel
-                        loadContent(); // Refresh content
+                        loadContent();
                     }, 1000);
                 } else {
                     statusDiv.innerHTML = `<p style="color: #dc3545;">❌ Error: ${result.error}</p>`;
@@ -1926,6 +1964,24 @@ async def working_dashboard(request):
                 synthesizeBtn.style.opacity = '1';
                 statusDiv.style.display = 'none';
             }, 3000);
+        }
+        
+        async function downloadTokens(brandId, brandName) {
+            try {
+                const response = await fetch(`/api/brand-tokens/${brandId}`);
+                const tokens = await response.json();
+                
+                // Create download link
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tokens, null, 2));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", `${brandName.replace(/[^a-z0-9]/gi, '_')}_figma_tokens.json`);
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+            } catch (error) {
+                alert('Error downloading tokens: ' + error.message);
+            }
         }
         
         function loadBrands(brands) {
@@ -1977,6 +2033,80 @@ async def working_dashboard(request):
                     const brand = group.main;
                     const hasVariants = group.variants.length > 0;
                     
+                    // Extract Brand DNA insights
+                    const insights = brand.synthesized_insights || {};
+                    const keywords = insights.keywords || [];
+                    const visualTone = insights.visual_tone || {};
+                    
+                    // Generate Brand DNA section HTML
+                    let brandDnaSection = '';
+                    if (keywords.length > 0 || Object.keys(visualTone).length > 0) {
+                        const themesHtml = keywords.length > 0 ? 
+                            `<div><strong>Themes:</strong> ${keywords.slice(0, 4).join(', ')}</div>` : '';
+                        const visualDesc = Object.values(visualTone).filter(v => v).join(', ');
+                        const visualHtml = visualDesc ? 
+                            `<div><strong>Visual:</strong> ${visualDesc}</div>` : '';
+                        
+                        if (themesHtml || visualHtml) {
+                            const colorMeaningsHtml = insights.color_meanings && insights.color_meanings.length > 0 ?
+                                `<div style="margin-bottom: 0.5rem;">
+                                    <strong style="color: #333;">Emotional Palette:</strong> 
+                                    <span style="color: #666;">${insights.color_meanings.slice(0, 3).join(', ')}</span>
+                                </div>` : '';
+                            
+                            const sourceImagesHtml = brand.source_items && brand.source_items.length > 0 ?
+                                `<div style="margin-top: 0.5rem;">
+                                    <strong style="color: #333; font-size: 0.8rem;">Source Images:</strong>
+                                    <div style="display: flex; gap: 0.25rem; margin-top: 0.25rem; overflow-x: auto;">
+                                        ${brand.source_items.slice(0, 3).map(item => 
+                                            `<img src="/${item.path}" 
+                                                  style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);" 
+                                                  title="${item.title || 'Source image'}" 
+                                                  onclick="event.stopPropagation(); window.open('/#item-${item.id}', '_blank');">`
+                                        ).join('')}
+                                        ${brand.source_items.length > 3 ? `<div style="width: 40px; height: 40px; background: #f0f0f0; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #666;">+${brand.source_items.length - 3}</div>` : ''}
+                                    </div>
+                                </div>` : '';
+                        
+                            brandDnaSection = `
+                                <div class="brand-dna-section" style="
+                                    background: linear-gradient(135deg, #667eea20, transparent);
+                                    padding: 1rem;
+                                    border-radius: 8px;
+                                    margin: 0.75rem 0;
+                                    font-size: 0.85rem;
+                                    border: 1px solid #667eea30;
+                                ">
+                                    <div style="font-weight: bold; color: #667eea; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.25rem;">
+                                        🧬 Brand DNA Analysis
+                                    </div>
+                                    
+                                    ${keywords.length > 0 ? 
+                                        `<div style="margin-bottom: 0.5rem;">
+                                            <strong style="color: #333;">Core Themes:</strong><br>
+                                            <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.25rem;">
+                                                ${keywords.slice(0, 6).map(kw => 
+                                                    `<span style="background: #f0f2ff; color: #667eea; padding: 0.125rem 0.375rem; border-radius: 12px; font-size: 0.75rem; font-weight: 500;">${kw}</span>`
+                                                ).join('')}
+                                            </div>
+                                        </div>` : ''
+                                    }
+                                    
+                                    ${visualDesc ? 
+                                        `<div style="margin-bottom: 0.5rem;">
+                                            <strong style="color: #333;">Visual Style:</strong> 
+                                            <span style="color: #666;">${visualDesc}</span>
+                                        </div>` : ''
+                                    }
+                                    
+                                    ${colorMeaningsHtml}
+                                    
+                                    ${sourceImagesHtml}
+                                </div>
+                            `;
+                        }
+                    }
+
                     return `
                         <div class="brand-card" onclick="console.log('Brand card clicked:', '${brand.name}'); showBrandFromData('${brand.name}')">
                             <h3 style="margin: 0 0 1rem 0; color: #333;">${brand.name}</h3>
@@ -1992,15 +2122,13 @@ async def working_dashboard(request):
                                 ).join('')}
                             </div>
                             
-                            <div style="font-size: 0.9rem; margin: 0.5rem 0;">
-                                <strong>Typography:</strong> ${brand.typography.heading.family.split(',')[0]}
-                            </div>
-                            
                             <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; margin: 0.5rem 0;">
-                                ${brand.personality.traits.slice(0, 3).map(trait => 
-                                    `<span style="background: #f0f0f0; color: #333; padding: 0.125rem 0.375rem; border-radius: 8px; font-size: 0.75rem;">${trait}</span>`
+                                ${brand.personality.traits.slice(0, 4).map(trait => 
+                                    `<span style="background: #f0f2ff; color: #667eea; padding: 0.25rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: 500;">${trait}</span>`
                                 ).join('')}
                             </div>
+                            
+                            ${brandDnaSection}
                             
                             <div class="brand-accessibility ${brand.accessibility.passed ? 'accessibility-pass' : 'accessibility-warn'}">
                                 ${brand.accessibility.passed ? '✅ WCAG AA' : '⚠️ Issues'}
@@ -2972,6 +3100,450 @@ async def api_synthesize_brand(request):
         traceback.print_exc()
         return web.json_response({"error": str(e)}, status=500)
 
+async def api_brand_preview(request):
+    """API endpoint to generate brand preview HTML"""
+    try:
+        if not BRAND_PREVIEW_AVAILABLE:
+            return web.json_response({"error": "Brand preview generator not available"}, status=503)
+        
+        brand_id = request.match_info['brand_id']
+        
+        # Load data
+        data_file = Path('content/data.json')
+        if not data_file.exists():
+            return web.json_response({"error": "Data file not found"}, status=404)
+        
+        with open(data_file) as f:
+            data = json.load(f)
+        
+        # Find brand by ID
+        brand_spec = None
+        for brand in data.get('brands', []):
+            if brand.get('id') == brand_id:
+                brand_spec = brand
+                break
+        
+        if not brand_spec:
+            return web.json_response({"error": "Brand not found"}, status=404)
+        
+        # Generate preview
+        preview_generator = BrandPreviewGenerator()
+        html_preview = preview_generator.generate_html_preview(brand_spec)
+        
+        return web.Response(text=html_preview, content_type='text/html')
+        
+    except Exception as e:
+        print(f"Error generating brand preview: {e}")
+        import traceback
+        traceback.print_exc()
+        return web.json_response({"error": str(e)}, status=500)
+
+async def brands_archive(request):
+    """Serve brands archive page"""
+    try:
+        # Load brand data
+        data = content_manager._load_data()
+        brands = data.get('brands', [])
+        
+        # Sort brands by creation date (newest first)
+        brands_sorted = sorted(brands, key=lambda x: x.get('created_at', ''), reverse=True)
+        
+        # Generate brand cards HTML
+        if not brands_sorted:
+            brands_html = '''
+                <div class="empty-state">
+                    <h2>No brands created yet</h2>
+                    <p>Create your first brand to see it here!</p>
+                    <a href="/" class="btn btn-primary">Go to Dashboard</a>
+                </div>
+            '''
+        else:
+            brands_cards = []
+            for brand in brands_sorted:
+                insights = brand.get('synthesized_insights', {})
+                keywords = insights.get('keywords', [])[:4]
+                visual_tone = insights.get('visual_tone', {})
+                
+                # Generate color swatches
+                color_swatches = []
+                for name, color in list(brand.get('colors', {}).items())[:5]:
+                    color_swatches.append(f'<div class="color-swatch" style="background: {color};" title="{name}: {color}"></div>')
+                
+                # Generate trait tags
+                trait_tags = []
+                for trait in brand.get('personality', {}).get('traits', [])[:4]:
+                    trait_tags.append(f'<span class="trait-tag">{trait}</span>')
+                
+                # DNA section
+                dna_section = ""
+                if keywords or visual_tone:
+                    dna_content = []
+                    if keywords:
+                        dna_content.append(f'<div><strong>Themes:</strong> {", ".join(keywords)}</div>')
+                    if visual_tone:
+                        visual_desc = ', '.join([v for v in visual_tone.values() if v])
+                        if visual_desc:
+                            dna_content.append(f'<div><strong>Visual:</strong> {visual_desc}</div>')
+                    
+                    if dna_content:
+                        dna_section = f'''
+                        <div class="brand-dna">
+                            <div class="dna-title">🧬 Brand DNA</div>
+                            {"".join(dna_content)}
+                        </div>
+                        '''
+                
+                brands_cards.append(f'''
+                    <div class="brand-card">
+                        <div class="brand-header">
+                            <h3 class="brand-title">{brand.get('name', 'Untitled Brand')}</h3>
+                            <div class="brand-date">{brand.get('created_at', '')[:10] if brand.get('created_at') else 'Unknown'}</div>
+                        </div>
+                        
+                        <div class="brand-colors">
+                            {"".join(color_swatches)}
+                        </div>
+                        
+                        <div class="brand-traits">
+                            {"".join(trait_tags)}
+                        </div>
+                        
+                        {dna_section}
+                        
+                        <div class="brand-actions">
+                            <a href="/brand/{brand.get('id')}" target="_blank" class="btn btn-primary">🔬 Full Analysis</a>
+                            <a href="/api/brand-tokens/{brand.get('id')}" target="_blank" class="btn btn-purple">🎨 Tokens</a>
+                        </div>
+                    </div>
+                ''')
+            
+            brands_html = f'<div class="brands-grid">{"".join(brands_cards)}</div>'
+        
+        html_content = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Archive - Concierto</title>
+    <style>
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        body {{ 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }}
+        
+        .header {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }}
+        
+        .nav-bar {{
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }}
+        
+        .nav-bar a {{
+            color: #667eea;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }}
+        
+        .nav-bar a:hover {{
+            background: #f0f2ff;
+        }}
+        
+        .container {{
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }}
+        
+        .archive-stats {{
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            text-align: center;
+        }}
+        
+        .stat-item {{
+            padding: 1rem;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        }}
+        
+        .stat-number {{
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }}
+        
+        .brands-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }}
+        
+        .brand-card {{
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }}
+        
+        .brand-card:hover {{
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }}
+        
+        .brand-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }}
+        
+        .brand-title {{
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }}
+        
+        .brand-date {{
+            font-size: 0.8rem;
+            color: #666;
+            background: #f0f0f0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }}
+        
+        .brand-colors {{
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }}
+        
+        .color-swatch {{
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            border: 2px solid white;
+        }}
+        
+        .brand-traits {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }}
+        
+        .trait-tag {{
+            background: #f0f2ff;
+            color: #667eea;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }}
+        
+        .brand-dna {{
+            background: linear-gradient(135deg, #667eea20, transparent);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }}
+        
+        .dna-title {{
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }}
+        
+        .brand-actions {{
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }}
+        
+        .btn {{
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: transform 0.1s, box-shadow 0.2s;
+            flex: 1;
+            justify-content: center;
+        }}
+        
+        .btn:hover {{
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }}
+        
+        .btn-primary {{
+            background: #667eea;
+            color: white;
+        }}
+        
+        .btn-purple {{
+            background: #6f42c1;
+            color: white;
+        }}
+        
+        .empty-state {{
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }}
+        
+        @media (max-width: 768px) {{
+            .container {{ padding: 0 1rem; }}
+            .brands-grid {{ grid-template-columns: 1fr; }}
+            .nav-bar {{ flex-direction: column; gap: 1rem; }}
+        }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎨 Brand Archive</h1>
+        <p>Your complete collection of synthesized brand identities</p>
+    </div>
+    
+    <div class="nav-bar">
+        <div>
+            <a href="/">← Back to Dashboard</a>
+        </div>
+        <div>
+            <a href="#" onclick="location.reload()">🔄 Refresh</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="archive-stats">
+            <div class="stat-item">
+                <div class="stat-number">{len(brands_sorted)}</div>
+                <div>Total Brands</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{len([b for b in brands_sorted if b.get('synthesized_insights')])}</div>
+                <div>With DNA Analysis</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{len([b for b in brands_sorted if b.get('accessibility', {}).get('passed')])}</div>
+                <div>WCAG Compliant</div>
+            </div>
+        </div>
+        
+        {brands_html}
+    </div>
+</body>
+</html>'''
+        
+        return web.Response(text=html_content, content_type='text/html')
+        
+    except Exception as e:
+        print(f"Error generating brands archive: {e}")
+        import traceback
+        traceback.print_exc()
+        return web.Response(text=f"Error generating archive: {str(e)}", status=500)
+
+async def view_brand_preview(request):
+    """Serve brand preview page - same as API but with clean URL"""
+    try:
+        if not BRAND_PREVIEW_AVAILABLE:
+            return web.Response(text="Brand preview generator not available", status=503)
+        
+        brand_id = request.match_info['brand_id']
+        
+        # Find the brand
+        data = content_manager._load_data()
+        brands = data.get('brands', [])
+        
+        brand_spec = None
+        for brand in brands:
+            if brand.get('id') == brand_id:
+                brand_spec = brand
+                break
+        
+        if not brand_spec:
+            return web.Response(text="Brand not found", status=404)
+        
+        # Generate preview using the same logic as API
+        preview_generator = BrandPreviewGenerator()
+        html_preview = preview_generator.generate_html_preview(brand_spec)
+        
+        return web.Response(text=html_preview, content_type='text/html')
+        
+    except Exception as e:
+        print(f"Error generating brand view: {e}")
+        import traceback
+        traceback.print_exc()
+        return web.Response(text=f"Error generating brand view: {str(e)}", status=500)
+
+async def api_brand_tokens(request):
+    """API endpoint to generate Figma tokens for a brand"""
+    try:
+        if not BRAND_PREVIEW_AVAILABLE:
+            return web.json_response({"error": "Brand preview generator not available"}, status=503)
+        
+        brand_id = request.match_info['brand_id']
+        
+        # Load data
+        data_file = Path('content/data.json')
+        if not data_file.exists():
+            return web.json_response({"error": "Data file not found"}, status=404)
+        
+        with open(data_file) as f:
+            data = json.load(f)
+        
+        # Find brand by ID
+        brand_spec = None
+        for brand in data.get('brands', []):
+            if brand.get('id') == brand_id:
+                brand_spec = brand
+                break
+        
+        if not brand_spec:
+            return web.json_response({"error": "Brand not found"}, status=404)
+        
+        # Generate tokens
+        preview_generator = BrandPreviewGenerator()
+        tokens = preview_generator.generate_figma_tokens(brand_spec)
+        
+        return web.json_response(tokens)
+        
+    except Exception as e:
+        print(f"Error generating brand tokens: {e}")
+        import traceback
+        traceback.print_exc()
+        return web.json_response({"error": str(e)}, status=500)
+
 async def api_style_analysis(request):
     """API endpoint to analyze or re-analyze style vectors for images"""
     try:
@@ -3059,6 +3631,10 @@ def create_app():
     app.router.add_get('/api/campaigns', api_get_campaigns)
     app.router.add_post('/api/generate-concepts', api_generate_concepts)
     app.router.add_post('/api/synthesize', api_synthesize_brand)
+    app.router.add_get('/brands', brands_archive)
+    app.router.add_get('/brand/{brand_id}', view_brand_preview)
+    app.router.add_get('/api/brand-preview/{brand_id}', api_brand_preview)
+    app.router.add_get('/api/brand-tokens/{brand_id}', api_brand_tokens)
     app.router.add_get('/api/search', api_search)
     app.router.add_get('/api/export', api_export)
     app.router.add_post('/api/upload', api_upload)
@@ -3086,12 +3662,12 @@ async def init():
 if __name__ == '__main__':
     print("🎼 Starting Concierto - Simple Content Dashboard")
     print("📁 Make sure to put your images in: content/images/")
-    print("🌐 Dashboard will be at: http://localhost:8080")
+    print("🌐 Dashboard will be at: http://localhost:8084")
     print()
     
     try:
         app = asyncio.run(init())
-        web.run_app(app, host='localhost', port=8080)
+        web.run_app(app, host='localhost', port=8084)
     except KeyboardInterrupt:
         print("\n👋 Server stopped")
     except Exception as e:
