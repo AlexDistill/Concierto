@@ -1,0 +1,10 @@
+{
+  "name": "Conductor Test Brand",
+  "personality": {
+    "archetype": "Creator",
+    "traits": ["innovative", "artistic", "bold"],
+    "voice": "confident and inspiring"
+  },
+  "target_audience": "creative professionals",
+  "industry": "design tools"
+}

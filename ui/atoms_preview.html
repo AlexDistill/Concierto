@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atoms Preview - Concierto Brand System</title>
+    <style>
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .metadata {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .metadata-item {
+            background: rgba(255,255,255,0.1);
+            padding: 0.75rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+        
+        .section {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .section h2 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .section-meta {
+            margin-top: 1rem;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        /* Colors */
+        .colors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+        
+        .color-item {
+            text-align: center;
+        }
+        
+        .color-chip {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            margin: 0 auto 0.5rem;
+            cursor: pointer;
+            border: 2px solid #e2e8f0;
+            transition: transform 0.2s ease;
+        }
+        
+        .color-chip:hover {
+            transform: scale(1.05);
+        }
+        
+        .color-hex {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .color-stats {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .color-stats span {
+            display: block;
+        }
+        
+        /* Palettes */
+        .palettes-container {
+            space-y: 1rem;
+        }
+        
+        .palette-item {
+            margin-bottom: 1rem;
+        }
+        
+        .palette-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .palette-name {
+            font-weight: 600;
+        }
+        
+        .palette-harmony {
+            font-size: 0.75rem;
+            background: #e2e8f0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .palette-confidence {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .palette-colors {
+            display: flex;
+            gap: 0.25rem;
+        }
+        
+        .palette-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* Tags */
+        .tags-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            background: #e2e8f0;
+            color: #2d3748;
+            font-size: 0.875rem;
+            cursor: default;
+        }
+        
+        .tag-large {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .tag-medium {
+            background: #a78bfa;
+            color: white;
+        }
+        
+        .tag-small {
+            background: #e2e8f0;
+        }
+        
+        /* Objects */
+        .objects-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .object-tag {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        
+        /* Themes */
+        .theme-item {
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .theme-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .theme-name {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .theme-confidence {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .theme-evidence {
+            font-size: 0.875rem;
+            color: #64748b;
+            line-height: 1.4;
+        }
+        
+        /* Visual Tone */
+        .tone-primary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        
+        .tone-name {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: #2d3748;
+        }
+        
+        .tone-indicators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .tone-indicator {
+            background: #e0f2fe;
+            color: #0891b2;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+        
+        /* Provenance */
+        .provenance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .provenance-group ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .provenance-group li {
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.875rem;
+        }
+        
+        .provenance-group h4 {
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        /* Source Items */
+        .source-items-section {
+            margin: 2rem;
+            border-top: 2px solid #e2e8f0;
+            padding-top: 2rem;
+        }
+        
+        .source-items-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .toggle-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        .toggle-button:hover {
+            background: #5a67d8;
+        }
+        
+        .source-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .source-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .source-filename {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .source-type {
+            background: #e2e8f0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+        
+        .source-title {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        .source-more {
+            text-align: center;
+            color: #64748b;
+            font-style: italic;
+            margin-top: 1rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #f1f5f9;
+            padding: 1rem 2rem;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .sections-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .metadata {
+                grid-template-columns: 1fr;
+            }
+            
+            .provenance-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <header class="header">
+            <h1>🧬 Atoms Preview</h1>
+            <div class="metadata">
+                <div class="metadata-item">
+                    <strong>File:</strong> merged.json
+                </div>
+                <div class="metadata-item">
+                    <strong>Generated:</strong> 2025-09-05T00:10:22.882320
+                </div>
+                <div class="metadata-item">
+                    <strong>Source Items:</strong> 17
+                </div>
+                <div class="metadata-item">
+                    <strong>Version:</strong> 1.0
+                </div>
+            </div>
+        </header>
+        
+        
+        <div class="sections-grid">
+            
+        <div class="section">
+            <h2>🎨 Colors</h2>
+            <div class="colors-grid">
+                
+            <div class="color-item">
+                <div class="color-chip" data-color="#c0a3ef" style="background-color: #c0a3ef" onclick="copyColor('#c0a3ef')"></div>
+                <div class="color-info">
+                    <div class="color-hex">#c0a3ef</div>
+                    <div class="color-stats">
+                        <span>Weight: 3.62</span>
+                        <span>Sat: 0.32</span> 
+                        <span>Bright: 0.94</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="color-item">
+                <div class="color-chip" data-color="#efa3a4" style="background-color: #efa3a4" onclick="copyColor('#efa3a4')"></div>
+                <div class="color-info">
+                    <div class="color-hex">#efa3a4</div>
+                    <div class="color-stats">
+                        <span>Weight: 3.42</span>
+                        <span>Sat: 0.32</span> 
+                        <span>Bright: 0.94</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="color-item">
+                <div class="color-chip" data-color="#dfcdfc" style="background-color: #dfcdfc" onclick="copyColor('#dfcdfc')"></div>
+                <div class="color-info">
+                    <div class="color-hex">#dfcdfc</div>
+                    <div class="color-stats">
+                        <span>Weight: 1.08</span>
+                        <span>Sat: 0.19</span> 
+                        <span>Bright: 0.99</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="color-item">
+                <div class="color-chip" data-color="#ff8957" style="background-color: #ff8957" onclick="copyColor('#ff8957')"></div>
+                <div class="color-info">
+                    <div class="color-hex">#ff8957</div>
+                    <div class="color-stats">
+                        <span>Weight: 1.06</span>
+                        <span>Sat: 0.66</span> 
+                        <span>Bright: 1.00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="color-item">
+                <div class="color-chip" data-color="#fff7f7" style="background-color: #fff7f7" onclick="copyColor('#fff7f7')"></div>
+                <div class="color-info">
+                    <div class="color-hex">#fff7f7</div>
+                    <div class="color-stats">
+                        <span>Weight: 0.35</span>
+                        <span>Sat: 0.03</span> 
+                        <span>Bright: 1.00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="color-item">
+                <div class="color-chip" data-color="#d9d3b4" style="background-color: #d9d3b4" onclick="copyColor('#d9d3b4')"></div>
+                <div class="color-info">
+                    <div class="color-hex">#d9d3b4</div>
+                    <div class="color-stats">
+                        <span>Weight: 0.32</span>
+                        <span>Sat: 0.17</span> 
+                        <span>Bright: 0.85</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="color-item">
+                <div class="color-chip" data-color="#b690dd" style="background-color: #b690dd" onclick="copyColor('#b690dd')"></div>
+                <div class="color-info">
+                    <div class="color-hex">#b690dd</div>
+                    <div class="color-stats">
+                        <span>Weight: 0.19</span>
+                        <span>Sat: 0.35</span> 
+                        <span>Bright: 0.87</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="color-item">
+                <div class="color-chip" data-color="#e42023" style="background-color: #e42023" onclick="copyColor('#e42023')"></div>
+                <div class="color-info">
+                    <div class="color-hex">#e42023</div>
+                    <div class="color-stats">
+                        <span>Weight: 0.09</span>
+                        <span>Sat: 0.86</span> 
+                        <span>Bright: 0.89</span>
+                    </div>
+                </div>
+            </div>
+            
+            </div>
+            <div class="section-meta">
+                <small>Total unique colors: 69 • Click colors to copy</small>
+            </div>
+        </div>
+        
+            
+        <div class="section">
+            <h2>🌈 Palettes</h2>
+            <div class="palettes-container">
+                
+            <div class="palette-item">
+                <div class="palette-header">
+                    <span class="palette-name">Monochromatic</span>
+                    <span class="palette-harmony">monochromatic</span>
+                    <span class="palette-confidence">0.9</span>
+                </div>
+                <div class="palette-colors">
+                    <div class="palette-color" style="background-color: #3d344c" onclick="copyColor('#3d344c')"></div><div class="palette-color" style="background-color: #7a6899" onclick="copyColor('#7a6899')"></div><div class="palette-color" style="background-color: #ccadff" onclick="copyColor('#ccadff')"></div><div class="palette-color" style="background-color: #a38bcc" onclick="copyColor('#a38bcc')"></div>
+                </div>
+            </div>
+            
+            <div class="palette-item">
+                <div class="palette-header">
+                    <span class="palette-name">Complementary</span>
+                    <span class="palette-harmony">complementary</span>
+                    <span class="palette-confidence">0.7</span>
+                </div>
+                <div class="palette-colors">
+                    <div class="palette-color" style="background-color: #c0a3ef" onclick="copyColor('#c0a3ef')"></div><div class="palette-color" style="background-color: #efa3a4" onclick="copyColor('#efa3a4')"></div>
+                </div>
+            </div>
+            
+            <div class="palette-item">
+                <div class="palette-header">
+                    <span class="palette-name">Triadic</span>
+                    <span class="palette-harmony">triadic</span>
+                    <span class="palette-confidence">0.8</span>
+                </div>
+                <div class="palette-colors">
+                    <div class="palette-color" style="background-color: #c0a3ef" onclick="copyColor('#c0a3ef')"></div><div class="palette-color" style="background-color: #efa3a4" onclick="copyColor('#efa3a4')"></div><div class="palette-color" style="background-color: #dfcdfc" onclick="copyColor('#dfcdfc')"></div>
+                </div>
+            </div>
+            
+            </div>
+        </div>
+        
+            
+        <div class="section">
+            <h2>🏷️ Tags</h2>
+            <div class="tags-cloud">
+                
+            <span class="tag tag-large" title="Frequency: 16, Weight: 0.94">
+                uploaded
+            </span>
+            
+            <span class="tag tag-large" title="Frequency: 16, Weight: 0.94">
+                image
+            </span>
+            
+            <span class="tag tag-large" title="Frequency: 16, Weight: 0.94">
+                visual-inspiration
+            </span>
+            
+            <span class="tag tag-medium" title="Frequency: 4, Weight: 0.24">
+                story
+            </span>
+            
+            <span class="tag tag-medium" title="Frequency: 4, Weight: 0.24">
+                instagram
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                1png
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                6png
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                iguagoatposterapng
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                scrollslowlyandsee
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                3png
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                youll
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                totepng
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                see
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                never
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                scrolling
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                stop
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                start
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                makingpng
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                okaymaybe
+            </span>
+            
+            <span class="tag tag-small" title="Frequency: 2, Weight: 0.12">
+                igpng
+            </span>
+            
+            </div>
+            <div class="section-meta">
+                <small>Showing top 20 of 36 total tags</small>
+            </div>
+        </div>
+        
+            
+        <div class="section">
+            <h2>📦 Objects</h2>
+            <div class="objects-container">
+                <span class="object-tag">instagram</span><span class="object-tag">story</span><span class="object-tag">1.png</span><span class="object-tag">6.png</span><span class="object-tag">iguagoatpostera.png</span><span class="object-tag">scrollslowlyandsee</span><span class="object-tag">3.png</span><span class="object-tag">you&#x27;ll</span><span class="object-tag">never</span><span class="object-tag">this</span>
+            </div>
+        </div>
+        
+            
+        <div class="section">
+            <h2>🎭 Themes</h2>
+            <div class="themes-container">
+                
+            <div class="theme-item">
+                <div class="theme-header">
+                    <span class="theme-name">Muted Sophisticated</span>
+                    <span class="theme-confidence">0.7</span>
+                </div>
+                <div class="theme-evidence">Low saturation average: 0.29</div>
+            </div>
+            
+            </div>
+        </div>
+        
+            
+        <div class="section">
+            <h2>🎨 Visual Tone</h2>
+            <div class="tone-primary">
+                <span class="tone-name">Bright</span>
+                <span class="tone-confidence">Confidence: 0.8</span>
+            </div>
+            <div class="tone-indicators">
+                <span class="tone-indicator">bright (13)</span><span class="tone-indicator">soft (13)</span><span class="tone-indicator">muted (6)</span>
+            </div>
+        </div>
+        
+            
+        <div class="section">
+            <h2>📍 Provenance</h2>
+            <div class="provenance-grid">
+                <div class="provenance-group">
+                    <h4>Sources</h4>
+                    <ul><li>manual_input_image: 16</li><li>unknown: 1</li></ul>
+                </div>
+                <div class="provenance-group">
+                    <h4>File Types</h4>
+                    <ul><li>.png: 16</li></ul>
+                </div>
+            </div>
+            <div class="section-meta">
+                <small>Total items processed: 17</small>
+            </div>
+        </div>
+        
+        </div>
+        
+        
+        <div class="section source-items-section">
+            <div class="source-items-header">
+                <h2>📁 Source Items</h2>
+                <button class="toggle-button" onclick="toggleSourceItems()">🔽 Show Source Items</button>
+            </div>
+            <div id="source-items-content" class="source-items-content" style="display: none;">
+                
+            <div class="source-item">
+                <div class="source-item-header">
+                    <span class="source-filename">Instagram story - 1.png</span>
+                    <span class="source-type">image</span>
+                </div>
+                <div class="source-title">Instagram Story 1</div>
+            </div>
+            
+            <div class="source-item">
+                <div class="source-item-header">
+                    <span class="source-filename">Instagram story - 6.png</span>
+                    <span class="source-type">image</span>
+                </div>
+                <div class="source-title">Instagram Story 6</div>
+            </div>
+            
+            <div class="source-item">
+                <div class="source-item-header">
+                    <span class="source-filename">Unknown</span>
+                    <span class="source-type">unknown</span>
+                </div>
+                <div class="source-title">Bold Typography Trend 2025</div>
+            </div>
+            
+            <div class="source-item">
+                <div class="source-item-header">
+                    <span class="source-filename">iguagoatPosterA.png</span>
+                    <span class="source-type">image</span>
+                </div>
+                <div class="source-title">Iguagoatpostera</div>
+            </div>
+            
+            <div class="source-item">
+                <div class="source-item-header">
+                    <span class="source-filename">scrollSlowlyAndSee - ig - 3.png</span>
+                    <span class="source-type">image</span>
+                </div>
+                <div class="source-title">Scrollslowlyandsee Ig 3</div>
+            </div>
+            
+            <div class="source-item">
+                <div class="source-item-header">
+                    <span class="source-filename">you&#x27;ll never see this tote.png</span>
+                    <span class="source-type">image</span>
+                </div>
+                <div class="source-title">You&#x27;ll Never See This Tote</div>
+            </div>
+            
+            <div class="source-item">
+                <div class="source-item-header">
+                    <span class="source-filename">Instagram story - 6.png</span>
+                    <span class="source-type">image</span>
+                </div>
+                <div class="source-title">Instagram Story 6</div>
+            </div>
+            
+            <div class="source-item">
+                <div class="source-item-header">
+                    <span class="source-filename">stop scrolling start making.png</span>
+                    <span class="source-type">image</span>
+                </div>
+                <div class="source-title">Stop Scrolling Start Making</div>
+            </div>
+            
+            <div class="source-item">
+                <div class="source-item-header">
+                    <span class="source-filename">Instagram story - 1.png</span>
+                    <span class="source-type">image</span>
+                </div>
+                <div class="source-title">Instagram Story 1</div>
+            </div>
+            
+            <div class="source-item">
+                <div class="source-item-header">
+                    <span class="source-filename">okaymaybe - ig.png</span>
+                    <span class="source-type">image</span>
+                </div>
+                <div class="source-title">Okaymaybe Ig</div>
+            </div>
+            <div class="source-more">... and 7 more items</div>
+            </div>
+        </div>
+        
+        
+        <footer class="footer">
+            <p>Generated by Concierto Atoms Preview • 2025-09-05 00:23:53</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Toggle source items visibility
+        function toggleSourceItems() {
+            const section = document.getElementById('source-items-content');
+            const button = document.querySelector('.toggle-button');
+            
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                button.textContent = '🔼 Hide Source Items';
+            } else {
+                section.style.display = 'none';
+                button.textContent = '🔽 Show Source Items';
+            }
+        }
+        
+        // Copy color to clipboard
+        function copyColor(color) {
+            navigator.clipboard.writeText(color).then(() => {
+                // Brief visual feedback
+                const buttons = document.querySelectorAll('.color-chip');
+                buttons.forEach(btn => {
+                    if (btn.getAttribute('data-color') === color) {
+                        btn.style.transform = 'scale(1.1)';
+                        setTimeout(() => btn.style.transform = 'scale(1)', 150);
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

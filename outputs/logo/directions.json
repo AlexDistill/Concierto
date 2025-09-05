@@ -1,0 +1,29 @@
+{
+  "brand_name": "Conductor",
+  "style": "modern",
+  "colors": ["#c0a3ef", "#efa3a4", "#dfcdfc"],
+  "svg_plan": [
+    {
+      "name": "conductor_text_logo",
+      "type": "text", 
+      "text": "CONDUCTOR",
+      "style": "modern",
+      "colors": ["#c0a3ef", "#efa3a4"]
+    },
+    {
+      "name": "conductor_symbol_logo",
+      "type": "symbol",
+      "symbol_type": "circle",
+      "text": "C",
+      "colors": ["#c0a3ef", "#efa3a4"]
+    },
+    {
+      "name": "conductor_combination_logo", 
+      "type": "combination",
+      "text": "CONDUCTOR",
+      "symbol_type": "diamond",
+      "layout": "horizontal",
+      "colors": ["#c0a3ef", "#efa3a4"]
+    }
+  ]
+}

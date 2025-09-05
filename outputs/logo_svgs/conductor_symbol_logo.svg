@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="transparent"/>
+  
+  <!-- Symbol -->
+  <circle cx="100" cy="100" r="40" fill="#c0a3ef" stroke="#efa3a4" stroke-width="3"/>
+  
+  <!-- Text (if any) -->
+  <text x="100" y="170" font-family="sans-serif" font-size="16" font-weight="500" text-anchor="middle" fill="#c0a3ef">C</text>
+</svg>
