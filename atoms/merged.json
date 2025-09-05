@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-09-05T00:10:22.882320",
+  "generated_at": "2025-09-05T00:35:18.301606",
   "source_count": 17,
   "version": "1.0",
   "colors": {
@@ -1025,12 +1025,12 @@
   "tags": {
     "canonical": [
       {
-        "tag": "uploaded",
+        "tag": "image",
         "frequency": 16,
         "weight": 0.9411764705882353
       },
       {
-        "tag": "image",
+        "tag": "uploaded",
         "frequency": 16,
         "weight": 0.9411764705882353
       },
@@ -1040,12 +1040,12 @@
         "weight": 0.9411764705882353
       },
       {
-        "tag": "story",
+        "tag": "instagram",
         "frequency": 4,
         "weight": 0.23529411764705882
       },
       {
-        "tag": "instagram",
+        "tag": "story",
         "frequency": 4,
         "weight": 0.23529411764705882
       },
@@ -1075,12 +1075,7 @@
         "weight": 0.11764705882352941
       },
       {
-        "tag": "youll",
-        "frequency": 2,
-        "weight": 0.11764705882352941
-      },
-      {
-        "tag": "totepng",
+        "tag": "never",
         "frequency": 2,
         "weight": 0.11764705882352941
       },
@@ -1090,17 +1085,22 @@
         "weight": 0.11764705882352941
       },
       {
-        "tag": "never",
+        "tag": "totepng",
         "frequency": 2,
         "weight": 0.11764705882352941
       },
       {
-        "tag": "scrolling",
+        "tag": "youll",
         "frequency": 2,
         "weight": 0.11764705882352941
       },
       {
         "tag": "stop",
+        "frequency": 2,
+        "weight": 0.11764705882352941
+      },
+      {
+        "tag": "scrolling",
         "frequency": 2,
         "weight": 0.11764705882352941
       },
@@ -1126,11 +1126,11 @@
       }
     ],
     "all_counts": {
+      "instagram": 4,
+      "image": 16,
       "1png": 2,
       "story": 4,
       "uploaded": 16,
-      "instagram": 4,
-      "image": 16,
       "visual_inspiration": 16,
       "6png": 2,
       "typography": 1,
@@ -1142,12 +1142,12 @@
       "iguagoatposterapng": 2,
       "scrollslowlyandsee": 2,
       "3png": 2,
-      "youll": 2,
-      "totepng": 2,
-      "see": 2,
       "never": 2,
-      "scrolling": 2,
+      "see": 2,
+      "totepng": 2,
+      "youll": 2,
       "stop": 2,
+      "scrolling": 2,
       "start": 2,
       "makingpng": 2,
       "okaymaybe": 2,
@@ -1223,7 +1223,7 @@
       ".png": 16
     },
     "total_items": 17,
-    "processing_date": "2025-09-05T00:10:22.882403"
+    "processing_date": "2025-09-05T00:35:18.301695"
   },
   "source_items": [
     {
@@ -1239,7 +1239,7 @@
       "added_at": "2025-08-18T14:37:05.852566",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:09:43.804710",
+        "analyzed_at": "2025-09-05T00:34:38.263151",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/Instagram story - 1.png",
         "colors": {
           "most_common": [
@@ -1342,10 +1342,10 @@
           ],
           "dominant_groups": [
             "#bfa2ee",
-            "#362e44",
-            "#675881",
-            "#9780bb",
-            "#0a080c"
+            "#403650",
+            "#72618e",
+            "#9e86c5",
+            "#120f16"
           ],
           "total_unique_colors": 41
         },
@@ -1364,11 +1364,11 @@
           "darkness": "light"
         },
         "description_keywords": [
+          "instagram",
+          "image",
           "1png",
           "story",
-          "uploaded",
-          "instagram",
-          "image"
+          "uploaded"
         ],
         "analysis_type": "semantic_honest_v1"
       }
@@ -1386,7 +1386,7 @@
       "added_at": "2025-08-18T14:37:05.852380",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:09:44.804003",
+        "analyzed_at": "2025-09-05T00:34:39.265254",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/Instagram story - 6.png",
         "colors": {
           "most_common": [
@@ -1488,11 +1488,11 @@
             }
           ],
           "dominant_groups": [
-            "#e42023",
             "#eea2a3",
-            "#e96769",
-            "#ec8a8b",
-            "#e53537"
+            "#e42023",
+            "#e85e60",
+            "#eb7c7d",
+            "#e63b3d"
           ],
           "total_unique_colors": 43
         },
@@ -1511,10 +1511,10 @@
           "darkness": "light"
         },
         "description_keywords": [
-          "story",
-          "uploaded",
           "instagram",
           "image",
+          "story",
+          "uploaded",
           "6png"
         ],
         "analysis_type": "semantic_honest_v1"
@@ -1548,7 +1548,7 @@
       "added_at": "2025-08-18T14:37:05.852768",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:09:58.083160",
+        "analyzed_at": "2025-09-05T00:34:53.357884",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/iguagoatPosterA.png",
         "colors": {
           "most_common": [
@@ -1650,11 +1650,11 @@
             }
           ],
           "dominant_groups": [
-            "#2b4a33",
-            "#c2c5be",
-            "#8e9489",
-            "#da66de",
-            "#466c51"
+            "#db66df",
+            "#456c51",
+            "#bfc1bb",
+            "#2b4b34",
+            "#879081"
           ],
           "total_unique_colors": 10000
         },
@@ -1668,14 +1668,14 @@
         "visual_properties": {
           "brightness": 0.38,
           "contrast": 0.34,
-          "saturation": 0.35,
+          "saturation": 0.36,
           "is_grayscale": false,
           "darkness": "medium"
         },
         "description_keywords": [
-          "iguagoatposterapng",
           "uploaded",
-          "image"
+          "image",
+          "iguagoatposterapng"
         ],
         "analysis_type": "semantic_honest_v1"
       }
@@ -1693,7 +1693,7 @@
       "added_at": "2025-08-18T14:37:05.852033",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:09:59.102481",
+        "analyzed_at": "2025-09-05T00:34:54.375613",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/scrollSlowlyAndSee - ig - 3.png",
         "colors": {
           "most_common": [
@@ -1795,11 +1795,11 @@
             }
           ],
           "dominant_groups": [
-            "#d9d0e7",
             "#dfcdfb",
-            "#615d67",
-            "#cfc7dc",
-            "#ada6b9"
+            "#bdb5c9",
+            "#d4cbe1",
+            "#5f5b65",
+            "#dbd2e9"
           ],
           "total_unique_colors": 2964
         },
@@ -1813,14 +1813,14 @@
         "visual_properties": {
           "brightness": 0.87,
           "contrast": 0.07,
-          "saturation": 0.15,
+          "saturation": 0.14,
           "is_grayscale": false,
           "darkness": "light"
         },
         "description_keywords": [
+          "scrollslowlyandsee",
           "uploaded",
           "image",
-          "scrollslowlyandsee",
           "3png"
         ],
         "analysis_type": "semantic_honest_v1"
@@ -1839,7 +1839,7 @@
       "added_at": "2025-08-18T14:37:05.852278",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:10:00.157317",
+        "analyzed_at": "2025-09-05T00:34:55.441885",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/you'll never see this tote.png",
         "colors": {
           "most_common": [
@@ -1941,11 +1941,11 @@
             }
           ],
           "dominant_groups": [
-            "#e42b2d",
+            "#bcbebf",
             "#eea2a3",
+            "#628885",
             "#e9e9e9",
-            "#688685",
-            "#bbbcbd"
+            "#e42629"
           ],
           "total_unique_colors": 10000
         },
@@ -1964,12 +1964,12 @@
           "darkness": "light"
         },
         "description_keywords": [
-          "youll",
-          "uploaded",
-          "totepng",
+          "never",
           "see",
           "image",
-          "never"
+          "totepng",
+          "uploaded",
+          "youll"
         ],
         "analysis_type": "semantic_honest_v1"
       }
@@ -1987,7 +1987,7 @@
       "added_at": "2025-08-18T14:37:05.852380",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:10:01.166422",
+        "analyzed_at": "2025-09-05T00:34:56.464230",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/Instagram story - 6.png",
         "colors": {
           "most_common": [
@@ -2091,9 +2091,9 @@
           "dominant_groups": [
             "#eea2a3",
             "#e42023",
-            "#e96769",
-            "#e53638",
-            "#ed8d8e"
+            "#e96062",
+            "#e53639",
+            "#eb7678"
           ],
           "total_unique_colors": 43
         },
@@ -2112,10 +2112,10 @@
           "darkness": "light"
         },
         "description_keywords": [
-          "story",
-          "uploaded",
           "instagram",
           "image",
+          "story",
+          "uploaded",
           "6png"
         ],
         "analysis_type": "semantic_honest_v1"
@@ -2134,7 +2134,7 @@
       "added_at": "2025-08-18T14:37:05.852469",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:10:02.143493",
+        "analyzed_at": "2025-09-05T00:34:57.439545",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/stop scrolling start making.png",
         "colors": {
           "most_common": [
@@ -2236,11 +2236,11 @@
             }
           ],
           "dominant_groups": [
-            "#bfa2ee",
-            "#9520e4",
             "#b690dd",
-            "#ac6ae9",
-            "#bb9ae6"
+            "#951fe4",
+            "#bfa2ee",
+            "#ad6de9",
+            "#9930e4"
           ],
           "total_unique_colors": 64
         },
@@ -2254,16 +2254,16 @@
         "visual_properties": {
           "brightness": 0.76,
           "contrast": 0.1,
-          "saturation": 0.35,
+          "saturation": 0.34,
           "is_grayscale": false,
           "darkness": "light"
         },
         "description_keywords": [
-          "scrolling",
           "stop",
-          "uploaded",
+          "scrolling",
           "start",
           "image",
+          "uploaded",
           "makingpng"
         ],
         "analysis_type": "semantic_honest_v1"
@@ -2282,7 +2282,7 @@
       "added_at": "2025-08-18T14:37:05.852566",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:10:03.163554",
+        "analyzed_at": "2025-09-05T00:34:58.460852",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/Instagram story - 1.png",
         "colors": {
           "most_common": [
@@ -2385,10 +2385,10 @@
           ],
           "dominant_groups": [
             "#bfa2ee",
-            "#524566",
-            "#796696",
-            "#1c1824",
-            "#9d85c3"
+            "#3e344d",
+            "#746391",
+            "#121017",
+            "#9f87c6"
           ],
           "total_unique_colors": 41
         },
@@ -2407,11 +2407,11 @@
           "darkness": "light"
         },
         "description_keywords": [
+          "instagram",
+          "image",
           "1png",
           "story",
-          "uploaded",
-          "instagram",
-          "image"
+          "uploaded"
         ],
         "analysis_type": "semantic_honest_v1"
       }
@@ -2429,7 +2429,298 @@
       "added_at": "2025-08-18T14:37:05.852674",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:10:04.169837",
+        "analyzed_at": "2025-09-05T00:34:59.496178",
+        "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/okaymaybe - ig.png",
+        "colors": {
+          "most_common": [
+            {
+              "hex": "#ff8957",
+              "rgb": [
+                255,
+                137,
+                87
+              ],
+              "percentage": 53.08,
+              "saturation": 0.66,
+              "brightness": 1.0,
+              "hue": 17.9
+            },
+            {
+              "hex": "#fff7f7",
+              "rgb": [
+                255,
+                247,
+                247
+              ],
+              "percentage": 17.73,
+              "saturation": 0.03,
+              "brightness": 1.0,
+              "hue": 0.0
+            },
+            {
+              "hex": "#d9d3b4",
+              "rgb": [
+                217,
+                211,
+                180
+              ],
+              "percentage": 15.79,
+              "saturation": 0.17,
+              "brightness": 0.85,
+              "hue": 50.3
+            },
+            {
+              "hex": "#dfd8d8",
+              "rgb": [
+                223,
+                216,
+                216
+              ],
+              "percentage": 2.27,
+              "saturation": 0.03,
+              "brightness": 0.87,
+              "hue": 0.0
+            },
+            {
+              "hex": "#3e61f4",
+              "rgb": [
+                62,
+                97,
+                244
+              ],
+              "percentage": 2.04,
+              "saturation": 0.75,
+              "brightness": 0.96,
+              "hue": 228.5
+            },
+            {
+              "hex": "#41c1df",
+              "rgb": [
+                65,
+                193,
+                223
+              ],
+              "percentage": 1.57,
+              "saturation": 0.71,
+              "brightness": 0.87,
+              "hue": 191.4
+            },
+            {
+              "hex": "#bfb9b9",
+              "rgb": [
+                191,
+                185,
+                185
+              ],
+              "percentage": 1.22,
+              "saturation": 0.03,
+              "brightness": 0.75,
+              "hue": 0.0
+            },
+            {
+              "hex": "#ba3902",
+              "rgb": [
+                186,
+                57,
+                2
+              ],
+              "percentage": 0.73,
+              "saturation": 0.99,
+              "brightness": 0.73,
+              "hue": 17.9
+            }
+          ],
+          "dominant_groups": [
+            "#fef6f6",
+            "#fd8755",
+            "#5bb7d8",
+            "#d3cfb8",
+            "#4063f2"
+          ],
+          "total_unique_colors": 320
+        },
+        "composition": {
+          "width": 1080,
+          "height": 1920,
+          "aspect_ratio": 0.56,
+          "orientation": "portrait",
+          "size_category": "large"
+        },
+        "visual_properties": {
+          "brightness": 0.72,
+          "contrast": 0.28,
+          "saturation": 0.44,
+          "is_grayscale": false,
+          "darkness": "light"
+        },
+        "description_keywords": [
+          "uploaded",
+          "image",
+          "okaymaybe",
+          "igpng"
+        ],
+        "analysis_type": "semantic_honest_v1"
+      }
+    },
+    {
+      "id": "03d7041c",
+      "source": "manual_input_image",
+      "type": "image",
+      "filename": "iguagoatPosterA.png",
+      "filepath": "../content/manual-input/images/iguagoatPosterA.png",
+      "title": "Iguagoatpostera",
+      "description": "Image uploaded: iguagoatPosterA.png",
+      "tags": [],
+      "category": "visual_inspiration",
+      "added_at": "2025-08-18T14:37:05.852768",
+      "processing_method": "auto_from_filename",
+      "semantic_analysis": {
+        "analyzed_at": "2025-09-05T00:35:13.025565",
+        "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/iguagoatPosterA.png",
+        "colors": {
+          "most_common": [
+            {
+              "hex": "#dc67e0",
+              "rgb": [
+                220,
+                103,
+                224
+              ],
+              "percentage": 3.88,
+              "saturation": 0.54,
+              "brightness": 0.88,
+              "hue": 298.0
+            },
+            {
+              "hex": "#477663",
+              "rgb": [
+                71,
+                118,
+                99
+              ],
+              "percentage": 0.61,
+              "saturation": 0.4,
+              "brightness": 0.46,
+              "hue": 155.7
+            },
+            {
+              "hex": "#487763",
+              "rgb": [
+                72,
+                119,
+                99
+              ],
+              "percentage": 0.44,
+              "saturation": 0.39,
+              "brightness": 0.47,
+              "hue": 154.5
+            },
+            {
+              "hex": "#497763",
+              "rgb": [
+                73,
+                119,
+                99
+              ],
+              "percentage": 0.42,
+              "saturation": 0.39,
+              "brightness": 0.47,
+              "hue": 153.9
+            },
+            {
+              "hex": "#447463",
+              "rgb": [
+                68,
+                116,
+                99
+              ],
+              "percentage": 0.41,
+              "saturation": 0.41,
+              "brightness": 0.45,
+              "hue": 158.8
+            },
+            {
+              "hex": "#457563",
+              "rgb": [
+                69,
+                117,
+                99
+              ],
+              "percentage": 0.41,
+              "saturation": 0.41,
+              "brightness": 0.46,
+              "hue": 157.5
+            },
+            {
+              "hex": "#467563",
+              "rgb": [
+                70,
+                117,
+                99
+              ],
+              "percentage": 0.4,
+              "saturation": 0.4,
+              "brightness": 0.46,
+              "hue": 157.0
+            },
+            {
+              "hex": "#437463",
+              "rgb": [
+                67,
+                116,
+                99
+              ],
+              "percentage": 0.37,
+              "saturation": 0.42,
+              "brightness": 0.45,
+              "hue": 159.2
+            }
+          ],
+          "dominant_groups": [
+            "#456c50",
+            "#da67de",
+            "#c1c2bd",
+            "#2a4a33",
+            "#8a9083"
+          ],
+          "total_unique_colors": 10000
+        },
+        "composition": {
+          "width": 6000,
+          "height": 4000,
+          "aspect_ratio": 1.5,
+          "orientation": "landscape",
+          "size_category": "very_large"
+        },
+        "visual_properties": {
+          "brightness": 0.38,
+          "contrast": 0.34,
+          "saturation": 0.34,
+          "is_grayscale": false,
+          "darkness": "medium"
+        },
+        "description_keywords": [
+          "uploaded",
+          "image",
+          "iguagoatposterapng"
+        ],
+        "analysis_type": "semantic_honest_v1"
+      }
+    },
+    {
+      "id": "946a0007",
+      "source": "manual_input_image",
+      "type": "image",
+      "filename": "okaymaybe - ig.png",
+      "filepath": "../content/manual-input/images/okaymaybe - ig.png",
+      "title": "Okaymaybe Ig",
+      "description": "Image uploaded: okaymaybe - ig.png",
+      "tags": [],
+      "category": "visual_inspiration",
+      "added_at": "2025-08-18T14:37:05.852674",
+      "processing_method": "auto_from_filename",
+      "semantic_analysis": {
+        "analyzed_at": "2025-09-05T00:35:14.052267",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/okaymaybe - ig.png",
         "colors": {
           "most_common": [
@@ -2534,8 +2825,8 @@
             "#fef6f6",
             "#fe8957",
             "#d2cfb8",
-            "#4c94e5",
-            "#b63e0a"
+            "#4a8ae6",
+            "#bc3b04"
           ],
           "total_unique_colors": 320
         },
@@ -2555,300 +2846,9 @@
         },
         "description_keywords": [
           "uploaded",
+          "image",
           "okaymaybe",
-          "igpng",
-          "image"
-        ],
-        "analysis_type": "semantic_honest_v1"
-      }
-    },
-    {
-      "id": "03d7041c",
-      "source": "manual_input_image",
-      "type": "image",
-      "filename": "iguagoatPosterA.png",
-      "filepath": "../content/manual-input/images/iguagoatPosterA.png",
-      "title": "Iguagoatpostera",
-      "description": "Image uploaded: iguagoatPosterA.png",
-      "tags": [],
-      "category": "visual_inspiration",
-      "added_at": "2025-08-18T14:37:05.852768",
-      "processing_method": "auto_from_filename",
-      "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:10:17.595546",
-        "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/iguagoatPosterA.png",
-        "colors": {
-          "most_common": [
-            {
-              "hex": "#dc67e0",
-              "rgb": [
-                220,
-                103,
-                224
-              ],
-              "percentage": 3.88,
-              "saturation": 0.54,
-              "brightness": 0.88,
-              "hue": 298.0
-            },
-            {
-              "hex": "#477663",
-              "rgb": [
-                71,
-                118,
-                99
-              ],
-              "percentage": 0.61,
-              "saturation": 0.4,
-              "brightness": 0.46,
-              "hue": 155.7
-            },
-            {
-              "hex": "#487763",
-              "rgb": [
-                72,
-                119,
-                99
-              ],
-              "percentage": 0.44,
-              "saturation": 0.39,
-              "brightness": 0.47,
-              "hue": 154.5
-            },
-            {
-              "hex": "#497763",
-              "rgb": [
-                73,
-                119,
-                99
-              ],
-              "percentage": 0.42,
-              "saturation": 0.39,
-              "brightness": 0.47,
-              "hue": 153.9
-            },
-            {
-              "hex": "#447463",
-              "rgb": [
-                68,
-                116,
-                99
-              ],
-              "percentage": 0.41,
-              "saturation": 0.41,
-              "brightness": 0.45,
-              "hue": 158.8
-            },
-            {
-              "hex": "#457563",
-              "rgb": [
-                69,
-                117,
-                99
-              ],
-              "percentage": 0.41,
-              "saturation": 0.41,
-              "brightness": 0.46,
-              "hue": 157.5
-            },
-            {
-              "hex": "#467563",
-              "rgb": [
-                70,
-                117,
-                99
-              ],
-              "percentage": 0.4,
-              "saturation": 0.4,
-              "brightness": 0.46,
-              "hue": 157.0
-            },
-            {
-              "hex": "#437463",
-              "rgb": [
-                67,
-                116,
-                99
-              ],
-              "percentage": 0.37,
-              "saturation": 0.42,
-              "brightness": 0.45,
-              "hue": 159.2
-            }
-          ],
-          "dominant_groups": [
-            "#466c50",
-            "#8a8f83",
-            "#2a4933",
-            "#db67df",
-            "#c2c4be"
-          ],
-          "total_unique_colors": 10000
-        },
-        "composition": {
-          "width": 6000,
-          "height": 4000,
-          "aspect_ratio": 1.5,
-          "orientation": "landscape",
-          "size_category": "very_large"
-        },
-        "visual_properties": {
-          "brightness": 0.38,
-          "contrast": 0.34,
-          "saturation": 0.36,
-          "is_grayscale": false,
-          "darkness": "medium"
-        },
-        "description_keywords": [
-          "iguagoatposterapng",
-          "uploaded",
-          "image"
-        ],
-        "analysis_type": "semantic_honest_v1"
-      }
-    },
-    {
-      "id": "946a0007",
-      "source": "manual_input_image",
-      "type": "image",
-      "filename": "okaymaybe - ig.png",
-      "filepath": "../content/manual-input/images/okaymaybe - ig.png",
-      "title": "Okaymaybe Ig",
-      "description": "Image uploaded: okaymaybe - ig.png",
-      "tags": [],
-      "category": "visual_inspiration",
-      "added_at": "2025-08-18T14:37:05.852674",
-      "processing_method": "auto_from_filename",
-      "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:10:18.594359",
-        "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/okaymaybe - ig.png",
-        "colors": {
-          "most_common": [
-            {
-              "hex": "#ff8957",
-              "rgb": [
-                255,
-                137,
-                87
-              ],
-              "percentage": 53.08,
-              "saturation": 0.66,
-              "brightness": 1.0,
-              "hue": 17.9
-            },
-            {
-              "hex": "#fff7f7",
-              "rgb": [
-                255,
-                247,
-                247
-              ],
-              "percentage": 17.73,
-              "saturation": 0.03,
-              "brightness": 1.0,
-              "hue": 0.0
-            },
-            {
-              "hex": "#d9d3b4",
-              "rgb": [
-                217,
-                211,
-                180
-              ],
-              "percentage": 15.79,
-              "saturation": 0.17,
-              "brightness": 0.85,
-              "hue": 50.3
-            },
-            {
-              "hex": "#dfd8d8",
-              "rgb": [
-                223,
-                216,
-                216
-              ],
-              "percentage": 2.27,
-              "saturation": 0.03,
-              "brightness": 0.87,
-              "hue": 0.0
-            },
-            {
-              "hex": "#3e61f4",
-              "rgb": [
-                62,
-                97,
-                244
-              ],
-              "percentage": 2.04,
-              "saturation": 0.75,
-              "brightness": 0.96,
-              "hue": 228.5
-            },
-            {
-              "hex": "#41c1df",
-              "rgb": [
-                65,
-                193,
-                223
-              ],
-              "percentage": 1.57,
-              "saturation": 0.71,
-              "brightness": 0.87,
-              "hue": 191.4
-            },
-            {
-              "hex": "#bfb9b9",
-              "rgb": [
-                191,
-                185,
-                185
-              ],
-              "percentage": 1.22,
-              "saturation": 0.03,
-              "brightness": 0.75,
-              "hue": 0.0
-            },
-            {
-              "hex": "#ba3902",
-              "rgb": [
-                186,
-                57,
-                2
-              ],
-              "percentage": 0.73,
-              "saturation": 0.99,
-              "brightness": 0.73,
-              "hue": 17.9
-            }
-          ],
-          "dominant_groups": [
-            "#fef6f6",
-            "#fe8957",
-            "#d1ceb8",
-            "#4a8ae7",
-            "#b73d08"
-          ],
-          "total_unique_colors": 320
-        },
-        "composition": {
-          "width": 1080,
-          "height": 1920,
-          "aspect_ratio": 0.56,
-          "orientation": "portrait",
-          "size_category": "large"
-        },
-        "visual_properties": {
-          "brightness": 0.72,
-          "contrast": 0.28,
-          "saturation": 0.43,
-          "is_grayscale": false,
-          "darkness": "light"
-        },
-        "description_keywords": [
-          "uploaded",
-          "okaymaybe",
-          "igpng",
-          "image"
+          "igpng"
         ],
         "analysis_type": "semantic_honest_v1"
       }
@@ -2871,7 +2871,7 @@
       "added_at": "2025-08-18T13:56:58.808086",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:10:19.198755",
+        "analyzed_at": "2025-09-05T00:35:14.619486",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/raw and emotional b&w portrait photo.png",
         "colors": {
           "most_common": [
@@ -2973,11 +2973,11 @@
             }
           ],
           "dominant_groups": [
-            "#bfb5ae",
-            "#857f77",
+            "#a9a19a",
             "#cdc3b9",
-            "#aca49c",
-            "#5c5b4f"
+            "#7c786f",
+            "#beb4ad",
+            "#59584c"
           ],
           "total_unique_colors": 6101
         },
@@ -2996,12 +2996,12 @@
           "darkness": "light"
         },
         "description_keywords": [
-          "photopng",
-          "uploaded",
+          "emotional",
           "raw",
           "image",
-          "emotional",
-          "portrait"
+          "photopng",
+          "portrait",
+          "uploaded"
         ],
         "analysis_type": "semantic_honest_v1"
       }
@@ -3019,7 +3019,7 @@
       "added_at": "2025-08-18T14:37:05.852033",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:10:20.237186",
+        "analyzed_at": "2025-09-05T00:35:15.666285",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/scrollSlowlyAndSee - ig - 3.png",
         "colors": {
           "most_common": [
@@ -3122,10 +3122,10 @@
           ],
           "dominant_groups": [
             "#dfcdfb",
-            "#d8cfe6",
-            "#857f8d",
-            "#c9c0d6",
-            "#38353b"
+            "#d4cce1",
+            "#938c9c",
+            "#dbd3e9",
+            "#c3bacf"
           ],
           "total_unique_colors": 2964
         },
@@ -3139,14 +3139,14 @@
         "visual_properties": {
           "brightness": 0.87,
           "contrast": 0.07,
-          "saturation": 0.15,
+          "saturation": 0.14,
           "is_grayscale": false,
           "darkness": "light"
         },
         "description_keywords": [
+          "scrollslowlyandsee",
           "uploaded",
           "image",
-          "scrollslowlyandsee",
           "3png"
         ],
         "analysis_type": "semantic_honest_v1"
@@ -3165,7 +3165,7 @@
       "added_at": "2025-08-18T14:37:05.852469",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:10:21.229380",
+        "analyzed_at": "2025-09-05T00:35:16.669824",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/stop scrolling start making.png",
         "colors": {
           "most_common": [
@@ -3268,10 +3268,10 @@
           ],
           "dominant_groups": [
             "#bfa2ee",
-            "#951fe4",
+            "#9520e4",
             "#b690dd",
-            "#ab68e8",
-            "#9a31e5"
+            "#ab66e8",
+            "#ba98e4"
           ],
           "total_unique_colors": 64
         },
@@ -3285,16 +3285,16 @@
         "visual_properties": {
           "brightness": 0.76,
           "contrast": 0.1,
-          "saturation": 0.34,
+          "saturation": 0.35,
           "is_grayscale": false,
           "darkness": "light"
         },
         "description_keywords": [
-          "scrolling",
           "stop",
-          "uploaded",
+          "scrolling",
           "start",
           "image",
+          "uploaded",
           "makingpng"
         ],
         "analysis_type": "semantic_honest_v1"
@@ -3318,7 +3318,7 @@
       "added_at": "2025-08-18T13:56:58.808309",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:10:21.848810",
+        "analyzed_at": "2025-09-05T00:35:17.281031",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/terry_richardson_2000s_vibe.png",
         "colors": {
           "most_common": [
@@ -3420,10 +3420,10 @@
             }
           ],
           "dominant_groups": [
-            "#302e2b",
-            "#aaafac",
-            "#877463",
-            "#9b9c94",
+            "#a9aeab",
+            "#302e2c",
+            "#83705f",
+            "#989890",
             "#6a4033"
           ],
           "total_unique_colors": 10000
@@ -3463,7 +3463,7 @@
       "added_at": "2025-08-18T14:37:05.852278",
       "processing_method": "auto_from_filename",
       "semantic_analysis": {
-        "analyzed_at": "2025-09-05T00:10:22.881832",
+        "analyzed_at": "2025-09-05T00:35:18.300864",
         "file_path": "/Users/alexryan/Documents/work/Conductor/content/manual-input/images/you'll never see this tote.png",
         "colors": {
           "most_common": [
@@ -3566,10 +3566,10 @@
           ],
           "dominant_groups": [
             "#eea2a3",
-            "#e8e8e8",
-            "#b4b5b7",
-            "#5f8380",
-            "#e42729"
+            "#eae9ea",
+            "#6c8886",
+            "#e42629",
+            "#bbbcbd"
           ],
           "total_unique_colors": 10000
         },
@@ -3588,12 +3588,12 @@
           "darkness": "light"
         },
         "description_keywords": [
-          "youll",
-          "uploaded",
-          "totepng",
+          "never",
           "see",
           "image",
-          "never"
+          "totepng",
+          "uploaded",
+          "youll"
         ],
         "analysis_type": "semantic_honest_v1"
       }
