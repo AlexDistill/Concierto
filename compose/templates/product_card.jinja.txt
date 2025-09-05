@@ -1,0 +1,3 @@
+Subject: DTC skincare product card featuring {{ atoms.objects|first_or("bottle") }}
+Aesthetic: {{ territory.thesis }}; tags {{ atoms.tags|join(", ") }}
+Layout: {{ tokens.layout.grid.columns }}-col grid
